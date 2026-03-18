@@ -1,0 +1,337 @@
+{
+  "system": "OpenMemory",
+  "version": "unknown",
+  "architecture": "Cognitive engine (semantic, episodic, procedural, emotional, reflective)",
+  "status": "COMPLETED",
+  "dataset": "5 sessions",
+  "num_queries": 5,
+  "timing": {
+    "setup_seconds": 0.0,
+    "ingest_seconds": 0.1,
+    "total_query_seconds": 0.1,
+    "avg_query_ms": 11.6
+  },
+  "ingest_stats": {
+    "ingested": 45,
+    "errors": 0,
+    "elapsed_seconds": 0.1
+  },
+  "system_stats": {},
+  "results": [
+    {
+      "query_id": 1,
+      "query": "What is the name of Jordan's dog?",
+      "category": "single_hop_fact",
+      "expected": "Biscuit, a Pembroke Welsh Corgi, born March 15, 2023.",
+      "scoring_notes": "HIT requires name + breed. PARTIAL if only name.",
+      "hit_criteria": "Names Biscuit AND identifies breed as Pembroke Welsh Corgi.",
+      "partial_criteria": "Names Biscuit but missing breed, or gets breed but not name.",
+      "num_results": 10,
+      "elapsed_seconds": 0.015,
+      "results": [
+        {
+          "content": "dev i ran the prototype against the pilot data from meridian steel. accuracy is 94.2% on scope 1 emissions",
+          "score": 0.6012849403032099,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Re: CarbonSense Pilot Proposal\n\nHi Jordan,\n\nThanks for sending over the technical specs. Our sustainability team reviewed the proposal and we're impressed with the scope 1 accuracy numbers. We'd like to move forward with a 90-day pilot starting August 1st.\n\nA few questions:\n1. Can the system integrate with our existing SAP ERP?\n2. What's the data refresh frequency?\n3. Do you have SOC 2 compliance?\n\nLet's schedule a call this week.\n\nBest,\nMaria Gonzalez\nVP Sustainability, Meridian Steel",
+          "score": 0.5971066846952359,
+          "metadata": {}
+        },
+        {
+          "content": "[OCR: Screenshot] Slack DM from Dev Patel\n\"just confirmed \u2014 meridian steel, lone star cement, and gulf coast plastics all want pilots. that's 3 paid pilots before we even launch. we should incorporate ASAP. talked to my lawyer, delaware c-corp is the way to go for vc fundraising later\"",
+          "score": 0.5955533722584477,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Two weeks notice\n\nHi David,\n\nI'm writing to formally submit my resignation from Dataflux, effective July 29th. The past three years have been an incredible learning experience and I'm grateful for the mentorship and opportunities.\n\nI'm leaving to pursue a startup in the climate-tech space. I'll make sure all my projects are properly transitioned during my remaining time.\n\nThank you for everything.\n\nBest regards,\nJordan Chen",
+          "score": 0.5919696026187847,
+          "metadata": {}
+        },
+        {
+          "content": "Thanks for sharing all of that. I'll remember these details.",
+          "score": 0.5915402986735374,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Re: Re: CarbonSense Pilot Proposal\n\nHi Maria,\n\nGreat news! Here are answers:\n\n1. Yes \u2014 we have an SAP connector in beta. It pulls from the MM and PP modules for materials and production data.\n2. Currently every 15 minutes via API polling. We're building real-time streaming for Q4.\n3. Not yet \u2014 we're starting the SOC 2 Type 1 process this month. Expected completion by October.\n\nHow's Thursday at 2pm CT for a call?\n\nBest,\nJordan Chen\nCo-founder, CarbonSense",
+          "score": 0.589968377318311,
+          "metadata": {}
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.5895582636489048,
+          "metadata": {}
+        },
+        {
+          "content": "[Note] Startup Ideas Brainstorm \u2014 July 2024\n- Carbon tracking for manufacturers (DOING THIS)\n- AI-powered energy audit tool\n- Supply chain transparency platform\n- Climate risk scoring for real estate\nDev says carbon tracking is most viable. Has the most clear regulatory tailwind.",
+          "score": 0.5891922617590992,
+          "metadata": {}
+        },
+        {
+          "content": "Of course! Go ahead and share them, I'll keep track of everything.",
+          "score": 0.5890118803818402,
+          "metadata": {}
+        },
+        {
+          "content": "[OCR: Document] State of Delaware \u2014 Certificate of Incorporation\nCarbonSense Inc.\nIncorporated: July 25, 2024\nRegistered Agent: Harvard Business Services, Inc.\nAuthorized Shares: 10,000,000 Common\nIncorporator: Jordan Chen\nFile Number: 7892341",
+          "score": 0.5878333352845845,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "query_id": 2,
+      "query": "How much funding did CarbonSense raise in the seed round?",
+      "category": "single_hop_fact",
+      "expected": "$1.5M from Elevation Ventures at a $10M post-money valuation.",
+      "scoring_notes": "HIT requires amount + source. PARTIAL if only amount.",
+      "hit_criteria": "States $1.5M AND Elevation Ventures.",
+      "partial_criteria": "States $1.5M but not the investor, or names Elevation without the amount.",
+      "num_results": 10,
+      "elapsed_seconds": 0.01,
+      "results": [
+        {
+          "content": "Subject: Re: Re: CarbonSense Pilot Proposal\n\nHi Maria,\n\nGreat news! Here are answers:\n\n1. Yes \u2014 we have an SAP connector in beta. It pulls from the MM and PP modules for materials and production data.\n2. Currently every 15 minutes via API polling. We're building real-time streaming for Q4.\n3. Not yet \u2014 we're starting the SOC 2 Type 1 process this month. Expected completion by October.\n\nHow's Thursday at 2pm CT for a call?\n\nBest,\nJordan Chen\nCo-founder, CarbonSense",
+          "score": 0.6005059569459831,
+          "metadata": {}
+        },
+        {
+          "content": "[OCR: Document] State of Delaware \u2014 Certificate of Incorporation\nCarbonSense Inc.\nIncorporated: July 25, 2024\nRegistered Agent: Harvard Business Services, Inc.\nAuthorized Shares: 10,000,000 Common\nIncorporator: Jordan Chen\nFile Number: 7892341",
+          "score": 0.5961321685771872,
+          "metadata": {}
+        },
+        {
+          "content": "[Note] Startup Ideas Brainstorm \u2014 July 2024\n- Carbon tracking for manufacturers (DOING THIS)\n- AI-powered energy audit tool\n- Supply chain transparency platform\n- Climate risk scoring for real estate\nDev says carbon tracking is most viable. Has the most clear regulatory tailwind.",
+          "score": 0.5892187800490097,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Re: CarbonSense Pilot Proposal\n\nHi Jordan,\n\nThanks for sending over the technical specs. Our sustainability team reviewed the proposal and we're impressed with the scope 1 accuracy numbers. We'd like to move forward with a 90-day pilot starting August 1st.\n\nA few questions:\n1. Can the system integrate with our existing SAP ERP?\n2. What's the data refresh frequency?\n3. Do you have SOC 2 compliance?\n\nLet's schedule a call this week.\n\nBest,\nMaria Gonzalez\nVP Sustainability, Meridian Steel",
+          "score": 0.5880167403558922,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Two weeks notice\n\nHi David,\n\nI'm writing to formally submit my resignation from Dataflux, effective July 29th. The past three years have been an incredible learning experience and I'm grateful for the mentorship and opportunities.\n\nI'm leaving to pursue a startup in the climate-tech space. I'll make sure all my projects are properly transitioned during my remaining time.\n\nThank you for everything.\n\nBest regards,\nJordan Chen",
+          "score": 0.5861978419361281,
+          "metadata": {}
+        },
+        {
+          "content": "no lol the opposite. i want to quit. to go full time on carbonsense with dev",
+          "score": 0.5848294725545666,
+          "metadata": {}
+        },
+        {
+          "content": "dev told me: \"nice. what about scope 2? that's where the grid data gets messy\"",
+          "score": 0.5805161007966924,
+          "metadata": {}
+        },
+        {
+          "content": "[OCR: Screenshot] Slack DM from Dev Patel\n\"just confirmed \u2014 meridian steel, lone star cement, and gulf coast plastics all want pilots. that's 3 paid pilots before we even launch. we should incorporate ASAP. talked to my lawyer, delaware c-corp is the way to go for vc fundraising later\"",
+          "score": 0.5792740040781417,
+          "metadata": {}
+        },
+        {
+          "content": "dev told me: \"i'll work on the eGRID integration this weekend. also we should use postgres not sqlite for production\"",
+          "score": 0.5789509889445161,
+          "metadata": {}
+        },
+        {
+          "content": "dev i ran the prototype against the pilot data from meridian steel. accuracy is 94.2% on scope 1 emissions",
+          "score": 0.575749824213119,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "query_id": 3,
+      "query": "What is Jordan's half marathon finish time?",
+      "category": "single_hop_fact",
+      "expected": "1:52:34 at the Austin Half Marathon on April 6, 2025.",
+      "scoring_notes": "HIT requires exact time. PARTIAL if event is correct but time is wrong.",
+      "hit_criteria": "States 1:52:34.",
+      "partial_criteria": "Mentions Austin Half Marathon or approximate time but not exact.",
+      "num_results": 10,
+      "elapsed_seconds": 0.01,
+      "results": [
+        {
+          "content": "Subject: Re: CarbonSense Pilot Proposal\n\nHi Jordan,\n\nThanks for sending over the technical specs. Our sustainability team reviewed the proposal and we're impressed with the scope 1 accuracy numbers. We'd like to move forward with a 90-day pilot starting August 1st.\n\nA few questions:\n1. Can the system integrate with our existing SAP ERP?\n2. What's the data refresh frequency?\n3. Do you have SOC 2 compliance?\n\nLet's schedule a call this week.\n\nBest,\nMaria Gonzalez\nVP Sustainability, Meridian Steel",
+          "score": 0.5966362668542236,
+          "metadata": {}
+        },
+        {
+          "content": "riley told me: \"is everything ok? you're not getting fired are you\"",
+          "score": 0.5955910608419338,
+          "metadata": {}
+        },
+        {
+          "content": "no lol the opposite. i want to quit. to go full time on carbonsense with dev",
+          "score": 0.5932521319544822,
+          "metadata": {}
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.5916191377149711,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Two weeks notice\n\nHi David,\n\nI'm writing to formally submit my resignation from Dataflux, effective July 29th. The past three years have been an incredible learning experience and I'm grateful for the mentorship and opportunities.\n\nI'm leaving to pursue a startup in the climate-tech space. I'll make sure all my projects are properly transitioned during my remaining time.\n\nThank you for everything.\n\nBest regards,\nJordan Chen",
+          "score": 0.5915738742970831,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Re: Re: CarbonSense Pilot Proposal\n\nHi Maria,\n\nGreat news! Here are answers:\n\n1. Yes \u2014 we have an SAP connector in beta. It pulls from the MM and PP modules for materials and production data.\n2. Currently every 15 minutes via API polling. We're building real-time streaming for Q4.\n3. Not yet \u2014 we're starting the SOC 2 Type 1 process this month. Expected completion by October.\n\nHow's Thursday at 2pm CT for a call?\n\nBest,\nJordan Chen\nCo-founder, CarbonSense",
+          "score": 0.5887329814789567,
+          "metadata": {}
+        },
+        {
+          "content": "[OCR: Document] State of Delaware \u2014 Certificate of Incorporation\nCarbonSense Inc.\nIncorporated: July 25, 2024\nRegistered Agent: Harvard Business Services, Inc.\nAuthorized Shares: 10,000,000 Common\nIncorporator: Jordan Chen\nFile Number: 7892341",
+          "score": 0.5847023739903866,
+          "metadata": {}
+        },
+        {
+          "content": "perfect. been thinking about leaving dataflux to go full time on this carbon tracking thing",
+          "score": 0.5846602060702303,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Fwd: Dataflux Exit \u2014 401k Rollover Options\n\nJordan,\n\nAttached are your options for rolling over your Dataflux 401k ($47,382.19). You have 60 days to decide:\n\n1. Roll into new employer plan (N/A for you)\n2. Roll into Traditional IRA\n3. Roll into Roth IRA (tax event)\n4. Cash out (10% penalty + taxes \u2014 NOT recommended)\n\nI'd suggest option 2 given your situation. Let me know if you want to discuss.\n\nBest,\nCarla Huang, CFP\nAustin Financial Planning",
+          "score": 0.5815523063884298,
+          "metadata": {}
+        },
+        {
+          "content": "[OCR: Screenshot] Slack DM from Dev Patel\n\"just confirmed \u2014 meridian steel, lone star cement, and gulf coast plastics all want pilots. that's 3 paid pilots before we even launch. we should incorporate ASAP. talked to my lawyer, delaware c-corp is the way to go for vc fundraising later\"",
+          "score": 0.5810031008737997,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "query_id": 4,
+      "query": "What was the scope 1 accuracy on the Meridian Steel pilot?",
+      "category": "single_hop_fact",
+      "expected": "96.1% (initially projected 90%, exceeded expectations).",
+      "scoring_notes": "HIT requires 96.1%. PARTIAL if close but wrong number.",
+      "hit_criteria": "States 96.1%.",
+      "partial_criteria": "Mentions Meridian Steel pilot with an approximate but incorrect accuracy number (e.g. 95% or 96%).",
+      "num_results": 10,
+      "elapsed_seconds": 0.011,
+      "results": [
+        {
+          "content": "dev i ran the prototype against the pilot data from meridian steel. accuracy is 94.2% on scope 1 emissions",
+          "score": 0.6358542380927773,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Re: CarbonSense Pilot Proposal\n\nHi Jordan,\n\nThanks for sending over the technical specs. Our sustainability team reviewed the proposal and we're impressed with the scope 1 accuracy numbers. We'd like to move forward with a 90-day pilot starting August 1st.\n\nA few questions:\n1. Can the system integrate with our existing SAP ERP?\n2. What's the data refresh frequency?\n3. Do you have SOC 2 compliance?\n\nLet's schedule a call this week.\n\nBest,\nMaria Gonzalez\nVP Sustainability, Meridian Steel",
+          "score": 0.6261885314578522,
+          "metadata": {}
+        },
+        {
+          "content": "dev told me: \"nice. what about scope 2? that's where the grid data gets messy\"",
+          "score": 0.6084037343251815,
+          "metadata": {}
+        },
+        {
+          "content": "[OCR: Screenshot] Slack DM from Dev Patel\n\"just confirmed \u2014 meridian steel, lone star cement, and gulf coast plastics all want pilots. that's 3 paid pilots before we even launch. we should incorporate ASAP. talked to my lawyer, delaware c-corp is the way to go for vc fundraising later\"",
+          "score": 0.6066250629601143,
+          "metadata": {}
+        },
+        {
+          "content": "dev told me: \"i'll work on the eGRID integration this weekend. also we should use postgres not sqlite for production\"",
+          "score": 0.5994004669391839,
+          "metadata": {}
+        },
+        {
+          "content": "no lol the opposite. i want to quit. to go full time on carbonsense with dev",
+          "score": 0.5910160282567282,
+          "metadata": {}
+        },
+        {
+          "content": "scope 2 is at 87.6% but i think we can get it above 90 if we integrate the EPA eGRID dataset",
+          "score": 0.5894176480034392,
+          "metadata": {}
+        },
+        {
+          "content": "[Note] Startup Ideas Brainstorm \u2014 July 2024\n- Carbon tracking for manufacturers (DOING THIS)\n- AI-powered energy audit tool\n- Supply chain transparency platform\n- Climate risk scoring for real estate\nDev says carbon tracking is most viable. Has the most clear regulatory tailwind.",
+          "score": 0.5866919591424878,
+          "metadata": {}
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.5820938503125584,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Re: Re: CarbonSense Pilot Proposal\n\nHi Maria,\n\nGreat news! Here are answers:\n\n1. Yes \u2014 we have an SAP connector in beta. It pulls from the MM and PP modules for materials and production data.\n2. Currently every 15 minutes via API polling. We're building real-time streaming for Q4.\n3. Not yet \u2014 we're starting the SOC 2 Type 1 process this month. Expected completion by October.\n\nHow's Thursday at 2pm CT for a call?\n\nBest,\nJordan Chen\nCo-founder, CarbonSense",
+          "score": 0.5789823035140452,
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "query_id": 5,
+      "query": "What is the address of Jordan's new house?",
+      "category": "single_hop_fact",
+      "expected": "2847 Chicon St, Austin TX 78702. 4 bed/2 bath, $495,000, closed October 15, 2025.",
+      "scoring_notes": "HIT requires street address. PARTIAL if neighborhood or price only.",
+      "hit_criteria": "States 2847 Chicon St.",
+      "partial_criteria": "Mentions East Austin or purchase price without exact address.",
+      "num_results": 10,
+      "elapsed_seconds": 0.012,
+      "results": [
+        {
+          "content": "[OCR: Screenshot] Slack DM from Dev Patel\n\"just confirmed \u2014 meridian steel, lone star cement, and gulf coast plastics all want pilots. that's 3 paid pilots before we even launch. we should incorporate ASAP. talked to my lawyer, delaware c-corp is the way to go for vc fundraising later\"",
+          "score": 0.5998100758115398,
+          "metadata": {}
+        },
+        {
+          "content": "dev i ran the prototype against the pilot data from meridian steel. accuracy is 94.2% on scope 1 emissions",
+          "score": 0.5981674794557243,
+          "metadata": {}
+        },
+        {
+          "content": "[Note] Startup Ideas Brainstorm \u2014 July 2024\n- Carbon tracking for manufacturers (DOING THIS)\n- AI-powered energy audit tool\n- Supply chain transparency platform\n- Climate risk scoring for real estate\nDev says carbon tracking is most viable. Has the most clear regulatory tailwind.",
+          "score": 0.5961155838367114,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Re: Re: CarbonSense Pilot Proposal\n\nHi Maria,\n\nGreat news! Here are answers:\n\n1. Yes \u2014 we have an SAP connector in beta. It pulls from the MM and PP modules for materials and production data.\n2. Currently every 15 minutes via API polling. We're building real-time streaming for Q4.\n3. Not yet \u2014 we're starting the SOC 2 Type 1 process this month. Expected completion by October.\n\nHow's Thursday at 2pm CT for a call?\n\nBest,\nJordan Chen\nCo-founder, CarbonSense",
+          "score": 0.5954307829677751,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Re: CarbonSense Pilot Proposal\n\nHi Jordan,\n\nThanks for sending over the technical specs. Our sustainability team reviewed the proposal and we're impressed with the scope 1 accuracy numbers. We'd like to move forward with a 90-day pilot starting August 1st.\n\nA few questions:\n1. Can the system integrate with our existing SAP ERP?\n2. What's the data refresh frequency?\n3. Do you have SOC 2 compliance?\n\nLet's schedule a call this week.\n\nBest,\nMaria Gonzalez\nVP Sustainability, Meridian Steel",
+          "score": 0.5926718874659358,
+          "metadata": {}
+        },
+        {
+          "content": "Subject: Two weeks notice\n\nHi David,\n\nI'm writing to formally submit my resignation from Dataflux, effective July 29th. The past three years have been an incredible learning experience and I'm grateful for the mentorship and opportunities.\n\nI'm leaving to pursue a startup in the climate-tech space. I'll make sure all my projects are properly transitioned during my remaining time.\n\nThank you for everything.\n\nBest regards,\nJordan Chen",
+          "score": 0.5899024675731579,
+          "metadata": {}
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.5898606403080225,
+          "metadata": {}
+        },
+        {
+          "content": "Thanks for sharing all of that. I'll remember these details.",
+          "score": 0.5898443340963325,
+          "metadata": {}
+        },
+        {
+          "content": "dev told me: \"i'll work on the eGRID integration this weekend. also we should use postgres not sqlite for production\"",
+          "score": 0.588843314423165,
+          "metadata": {}
+        },
+        {
+          "content": "Of course! Go ahead and share them, I'll keep track of everything.",
+          "score": 0.588737138628599,
+          "metadata": {}
+        }
+      ]
+    }
+  ]
+}

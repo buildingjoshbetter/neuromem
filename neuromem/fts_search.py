@@ -1,0 +1,248 @@
+"""
+Neuromem FTS5 Search Module
+============================
+
+Full-text search powered by SQLite FTS5 with BM25 ranking and score
+normalization. Provides the keyword-search layer of the Neuromem hybrid
+retrieval pipeline (L3 Semantic layer uses FTS5 + vector + RRF fusion).
+
+Key design decisions:
+    - Graceful query handling: raw FTS5 MATCH first, fall back to OR'd words
+      if the query contains characters that break FTS5 syntax.
+    - Score normalization: BM25 raw scores (negative, more negative = better)
+      are flipped and scaled to 0-1 where 1.0 = most relevant result.
+    - Time and sender filtering happen in SQL (not post-hoc) where possible,
+      with FTS5 providing the candidate set.
+"""
+
+import sqlite3
+
+
+# ---------------------------------------------------------------------------
+# Internal helpers
+# ---------------------------------------------------------------------------
+
+def _build_safe_query(query: str) -> str:
+    """
+    Convert a natural-language query into a safe FTS5 MATCH expression.
+
+    Splits on whitespace, wraps each token in double quotes to neutralize
+    special characters, and joins with OR so any matching term counts.
+    """
+    tokens = [f'"{w}"' for w in query.split() if w.strip()]
+    return " OR ".join(tokens) if tokens else '""'
+
+
+def _normalize_scores(results: list[dict]) -> None:
+    """
+    Normalize raw BM25 scores to 0-1 range in place.
+
+    FTS5 ``rank`` values are negative: more negative means more relevant.
+    We flip them so that the most relevant result gets score 1.0 and the
+    least relevant approaches 0.0.
+
+    When all results share the same raw score (or there is only one result),
+    every result receives a score of 1.0.
+    """
+    if not results:
+        return
+
+    min_score = min(r["raw_score"] for r in results)
+    max_score = max(r["raw_score"] for r in results)
+    score_range = max_score - min_score
+
+    if score_range == 0:
+        # All results have identical relevance -- treat them equally.
+        for r in results:
+            r["score"] = 1.0
+    else:
+        for r in results:
+            # Flip: most negative raw_score -> highest normalized score
+            r["score"] = (max_score - r["raw_score"]) / score_range
+
+
+def _rows_to_results(rows: list[tuple]) -> list[dict]:
+    """Convert raw query rows into result dicts with raw_score preserved."""
+    return [
+        {
+            "id": row[0],
+            "content": row[1],
+            "sender": row[2],
+            "recipient": row[3],
+            "timestamp": row[4],
+            "category": row[5],
+            "modality": row[6],
+            "raw_score": row[7],
+            "score": 0.0,  # placeholder, filled by _normalize_scores
+        }
+        for row in rows
+    ]
+
+
+_FTS_SELECT = """
+    SELECT
+        m.id, m.content, m.sender, m.recipient, m.timestamp,
+        m.category, m.modality,
+        messages_fts.rank AS bm25_score
+    FROM messages_fts
+    JOIN messages m ON m.id = messages_fts.rowid
+"""
+
+
+# ---------------------------------------------------------------------------
+# Public API
+# ---------------------------------------------------------------------------
+
+def search_fts(
+    conn: sqlite3.Connection,
+    query: str,
+    limit: int = 10,
+) -> list[dict]:
+    """
+    Search messages using FTS5 with BM25 ranking.
+
+    The function tries the raw query as an FTS5 MATCH expression first.
+    If that raises a syntax error (common with natural-language input),
+    it falls back to OR-ing each individual word.
+
+    Scores are normalized to the 0-1 range where 1.0 = most relevant.
+
+    Args:
+        conn:  Open database connection (must have messages_fts table).
+        query: Search query -- plain English or FTS5 syntax.
+        limit: Maximum number of results to return.
+
+    Returns:
+        List of result dicts ordered by relevance (best first).
+        Each dict contains: id, content, sender, recipient, timestamp,
+        category, modality, raw_score, score.
+    """
+    if not query or not query.strip():
+        return []
+
+    sql = f"{_FTS_SELECT} WHERE messages_fts MATCH ? ORDER BY messages_fts.rank LIMIT ?"
+
+    try:
+        rows = conn.execute(sql, (query, limit)).fetchall()
+    except sqlite3.OperationalError:
+        safe = _build_safe_query(query)
+        if not safe:
+            return []
+        try:
+            rows = conn.execute(sql, (safe, limit)).fetchall()
+        except sqlite3.OperationalError:
+            return []
+
+    results = _rows_to_results(rows)
+    _normalize_scores(results)
+    return results
+
+
+def search_fts_by_sender(
+    conn: sqlite3.Connection,
+    query: str,
+    sender: str,
+    limit: int = 10,
+) -> list[dict]:
+    """
+    Search within a specific sender's messages only.
+
+    Combines FTS5 MATCH with a sender filter in a single query so SQLite
+    can optimize the join.
+
+    Args:
+        conn:   Open database connection.
+        query:  Search query.
+        sender: Sender name to restrict results to (case-sensitive).
+        limit:  Maximum number of results.
+
+    Returns:
+        List of result dicts filtered to *sender*, ordered by relevance.
+    """
+    if not query or not query.strip():
+        return []
+
+    sql = (
+        f"{_FTS_SELECT}"
+        " WHERE messages_fts MATCH ? AND m.sender = ?"
+        " ORDER BY messages_fts.rank LIMIT ?"
+    )
+
+    try:
+        rows = conn.execute(sql, (query, sender, limit)).fetchall()
+    except sqlite3.OperationalError:
+        safe = _build_safe_query(query)
+        if not safe:
+            return []
+        try:
+            rows = conn.execute(sql, (safe, sender, limit)).fetchall()
+        except sqlite3.OperationalError:
+            return []
+
+    results = _rows_to_results(rows)
+    _normalize_scores(results)
+    return results
+
+
+def search_fts_in_range(
+    conn: sqlite3.Connection,
+    query: str,
+    after: str | None = None,
+    before: str | None = None,
+    limit: int = 10,
+) -> list[dict]:
+    """
+    Search with timestamp filtering.
+
+    Retrieves a larger candidate set from FTS5 (up to 10x *limit*), then
+    applies timestamp bounds. This approach lets FTS5 do the heavy lifting
+    on relevance while SQL handles temporal filtering.
+
+    Timestamps are compared lexicographically (ISO-8601 strings).
+
+    Args:
+        conn:   Open database connection.
+        query:  Search query.
+        after:  Inclusive lower bound timestamp (e.g. ``"2025-06-01"``).
+        before: Inclusive upper bound timestamp (e.g. ``"2025-07-01"``).
+        limit:  Maximum number of results to return after filtering.
+
+    Returns:
+        List of result dicts within the time range, ordered by relevance.
+    """
+    if not query or not query.strip():
+        return []
+
+    # Fetch a generous candidate pool so temporal filtering still yields
+    # enough results.
+    candidate_limit = max(limit * 10, 100)
+
+    sql = (
+        f"{_FTS_SELECT}"
+        " WHERE messages_fts MATCH ?"
+        " ORDER BY messages_fts.rank LIMIT ?"
+    )
+
+    try:
+        rows = conn.execute(sql, (query, candidate_limit)).fetchall()
+    except sqlite3.OperationalError:
+        safe = _build_safe_query(query)
+        if not safe:
+            return []
+        try:
+            rows = conn.execute(sql, (safe, candidate_limit)).fetchall()
+        except sqlite3.OperationalError:
+            return []
+
+    results = _rows_to_results(rows)
+
+    # Apply timestamp bounds
+    if after is not None:
+        results = [r for r in results if r["timestamp"] >= after]
+    if before is not None:
+        results = [r for r in results if r["timestamp"] <= before]
+
+    # Trim to requested limit, then normalize scores across the final set
+    results = results[:limit]
+    _normalize_scores(results)
+    return results

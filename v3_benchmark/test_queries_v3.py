@@ -1,0 +1,552 @@
+"""
+Generalist Benchmark Queries v3 — 50 queries across 10 categories (5 each).
+Designed for the v3 benchmark of 15 memory systems.
+
+Scoring: Each query rated HIT (2 points), PARTIAL (1 point), MISS (0 points),
+ERROR (-1 point, system failed to respond).
+
+Character: Jordan Chen, 28yo founder of CarbonSense (climate-tech startup)
+Timeline: July 2024 — January 2026
+
+Categories:
+  1. single_hop_fact       — Simple fact recall
+  2. preference_recall     — User preferences
+  3. temporal_reasoning    — Time-aware queries
+  4. fact_updates          — Facts that changed over time (contradiction resolution)
+  5. multi_hop_reasoning   — Connecting facts across sessions
+  6. cross_session_continuity — References to prior conversations
+  7. negation_abstention   — Should NOT hallucinate
+  8. multi_session_synthesis — Summarize across sessions
+  9. entity_tracking       — Distinguish entities
+ 10. belief_evolution      — Opinions that changed over time
+"""
+
+TEST_QUERIES_V3 = [
+    # ================================================================
+    # CATEGORY 1: SINGLE HOP FACT (5 queries)
+    # Simple fact recall — answer lives in one message/document.
+    # Tests basic retrieval. Favors: vector search, keyword search.
+    # ================================================================
+    {
+        "id": 1,
+        "query": "What is the name of Jordan's dog?",
+        "category": "single_hop_fact",
+        "expected": "Biscuit, a Pembroke Welsh Corgi, born March 15, 2023.",
+        "scoring_notes": "HIT requires name + breed. PARTIAL if only name.",
+        "hit_criteria": "Names Biscuit AND identifies breed as Pembroke Welsh Corgi.",
+        "partial_criteria": "Names Biscuit but missing breed, or gets breed but not name.",
+    },
+    {
+        "id": 2,
+        "query": "How much funding did CarbonSense raise in the seed round?",
+        "category": "single_hop_fact",
+        "expected": "$1.5M from Elevation Ventures at a $10M post-money valuation.",
+        "scoring_notes": "HIT requires amount + source. PARTIAL if only amount.",
+        "hit_criteria": "States $1.5M AND Elevation Ventures.",
+        "partial_criteria": "States $1.5M but not the investor, or names Elevation without the amount.",
+    },
+    {
+        "id": 3,
+        "query": "What is Jordan's half marathon finish time?",
+        "category": "single_hop_fact",
+        "expected": "1:52:34 at the Austin Half Marathon on April 6, 2025.",
+        "scoring_notes": "HIT requires exact time. PARTIAL if event is correct but time is wrong.",
+        "hit_criteria": "States 1:52:34.",
+        "partial_criteria": "Mentions Austin Half Marathon or approximate time but not exact.",
+    },
+    {
+        "id": 4,
+        "query": "What was the scope 1 accuracy on the Meridian Steel pilot?",
+        "category": "single_hop_fact",
+        "expected": "96.1% (initially projected 90%, exceeded expectations).",
+        "scoring_notes": "HIT requires 96.1%. PARTIAL if close but wrong number.",
+        "hit_criteria": "States 96.1%.",
+        "partial_criteria": "Mentions Meridian Steel pilot with an approximate but incorrect accuracy number (e.g. 95% or 96%).",
+    },
+    {
+        "id": 5,
+        "query": "What is the address of Jordan's new house?",
+        "category": "single_hop_fact",
+        "expected": "2847 Chicon St, Austin TX 78702. 4 bed/2 bath, $495,000, closed October 15, 2025.",
+        "scoring_notes": "HIT requires street address. PARTIAL if neighborhood or price only.",
+        "hit_criteria": "States 2847 Chicon St.",
+        "partial_criteria": "Mentions East Austin or purchase price without exact address.",
+    },
+
+    # ================================================================
+    # CATEGORY 2: PREFERENCE RECALL (5 queries)
+    # User preferences scattered across conversations.
+    # Tests Mem0's primary claim: remembering user preferences.
+    # ================================================================
+    {
+        "id": 6,
+        "query": "What coffee does Jordan prefer?",
+        "category": "preference_recall",
+        "expected": "Oat milk lattes, favorite spot is Epoch Coffee on North Loop in Austin.",
+        "scoring_notes": "HIT requires oat milk latte + Epoch Coffee. PARTIAL if only one.",
+        "hit_criteria": "Mentions oat milk latte AND Epoch Coffee.",
+        "partial_criteria": "Mentions either oat milk latte or Epoch Coffee, but not both.",
+    },
+    {
+        "id": 7,
+        "query": "What meditation app does Jordan use?",
+        "category": "preference_recall",
+        "expected": "Switched from Headspace to Insight Timer (around August 2025). Free and better guided sessions.",
+        "scoring_notes": "HIT requires Insight Timer as current. MISS if only says Headspace.",
+        "hit_criteria": "States Insight Timer as current app, ideally noting the switch from Headspace.",
+        "partial_criteria": "Mentions Headspace without noting the switch, or mentions meditation without specific app.",
+    },
+    {
+        "id": 8,
+        "query": "What are Jordan's favorite restaurants in Austin?",
+        "category": "preference_recall",
+        "expected": "Uchi and Uchiko (sushi/omakase), Veracruz All Natural (breakfast tacos), Torchy's Tacos, Thai-Kun, Dai Due (charcuterie), Odd Duck, Epoch Coffee. Special occasions at Uchi.",
+        "scoring_notes": "HIT requires 4+ restaurants. PARTIAL if 2-3.",
+        "hit_criteria": "Names 4 or more specific Austin restaurants Jordan frequents.",
+        "partial_criteria": "Names 2-3 specific restaurants.",
+    },
+    {
+        "id": 9,
+        "query": "What TV shows has Jordan watched and enjoyed?",
+        "category": "preference_recall",
+        "expected": "Shogun with Riley (called it 'best show ever'), The Bear on Hulu (Severance also mentioned in v2 expected answers).",
+        "scoring_notes": "HIT requires 2+ shows. PARTIAL if 1 show.",
+        "hit_criteria": "Names at least 2 shows Jordan watched (Shogun, The Bear, Severance).",
+        "partial_criteria": "Names 1 show correctly.",
+    },
+    {
+        "id": 10,
+        "query": "What does Jordan eat for breakfast?",
+        "category": "preference_recall",
+        "expected": "Usually overnight oats or eggs. Part of his morning routine (wake 6am, meditate, gym/run, shower, breakfast, work by 8:30). Also loves Veracruz breakfast tacos.",
+        "scoring_notes": "HIT requires overnight oats or eggs + one other detail. PARTIAL if just one food.",
+        "hit_criteria": "States overnight oats or eggs AND mentions another breakfast detail (routine, tacos, etc.).",
+        "partial_criteria": "Mentions one breakfast item without additional context.",
+    },
+
+    # ================================================================
+    # CATEGORY 3: TEMPORAL REASONING (5 queries)
+    # Time-aware queries requiring understanding of sequences and dates.
+    # Tests Zep/Graphiti temporal knowledge graph capabilities.
+    # ================================================================
+    {
+        "id": 11,
+        "query": "What happened in the month after Demo Day (June 15, 2025)?",
+        "category": "temporal_reasoning",
+        "expected": "14 investor follow-ups, 3 firms wanted to lead Series A (Sequoia, a16z, Khosla). Missed anniversary dinner with Riley (July 3). Health scare — chest tightness, started therapy with Dr. Choi (July 22). EcoTrace raised $40M.",
+        "scoring_notes": "HIT requires 3+ events from June 15 - July 15 2025. PARTIAL if 1-2.",
+        "hit_criteria": "Mentions 3 or more of: investor follow-ups, missed anniversary, health scare/therapy start, EcoTrace fundraise.",
+        "partial_criteria": "Mentions 1-2 events from this period.",
+    },
+    {
+        "id": 12,
+        "query": "How did CarbonSense's MRR grow over time?",
+        "category": "temporal_reasoning",
+        "expected": "$8,000 (Dec 2024) -> $43,000 (May 2025) -> $67,000 (July 2025) -> $82,000 (Sep 2025) -> ~$100,000 (Dec 2025, implied by $1.2M ARR).",
+        "scoring_notes": "HIT requires at least 3 data points in correct order. PARTIAL if trend correct but numbers wrong.",
+        "hit_criteria": "Provides 3+ MRR data points in correct chronological order with approximately correct values.",
+        "partial_criteria": "Correctly describes growth trend without specific numbers, or provides 1-2 data points.",
+    },
+    {
+        "id": 13,
+        "query": "What was Jordan's health trajectory from early 2025 to late 2025?",
+        "category": "temporal_reasoning",
+        "expected": "Jan: Healthy (RHR 64, 7.2hr sleep, 8500 steps). Deteriorated through spring/summer. July: Crisis (RHR 72, 5.8hr sleep, 4200 steps, chest tightness). Started therapy July 22. By Dec: Recovery (RHR 66, 7.0hr sleep, 7200 steps, VO2 Max 44).",
+        "scoring_notes": "HIT requires decline + recovery arc with data. PARTIAL if trend without numbers.",
+        "hit_criteria": "Describes the decline-then-recovery arc with at least 2 specific health metrics (RHR, sleep, steps).",
+        "partial_criteria": "Describes health getting worse then better without specific data points.",
+    },
+    {
+        "id": 14,
+        "query": "When did Jordan quit his job and what happened in the first month?",
+        "category": "temporal_reasoning",
+        "expected": "Quit Dataflux July 29, 2024 (submitted notice July 16). First month: incorporated CarbonSense (July 25), set up infrastructure with Dev, started Meridian Steel pilot deployment, anxiety about money (only $45K savings + $47K 401k rollover).",
+        "scoring_notes": "HIT requires quit date + 2 first-month events. PARTIAL if date only.",
+        "hit_criteria": "States quit date (July 29 or July 2024) AND mentions 2+ first-month events (incorporation, pilot, financial anxiety).",
+        "partial_criteria": "States quit date or mentions first-month events but not both.",
+    },
+    {
+        "id": 15,
+        "query": "What are Jordan's upcoming events as of January 2026?",
+        "category": "temporal_reasoning",
+        "expected": "Board meeting (Jan 15, 2026), Lily's birthday dinner at Uchi (Feb 8), Austin Marathon (Feb 16), Parents visiting (Feb 15-22), Riley's graduation (May 17), ACL Festival (Oct 10-12), Portland reunion (Aug 15), proposal (after Riley's graduation).",
+        "scoring_notes": "HIT requires 4+ upcoming events. PARTIAL if 2-3.",
+        "hit_criteria": "Lists 4 or more specific upcoming events with approximate dates.",
+        "partial_criteria": "Lists 2-3 upcoming events.",
+    },
+
+    # ================================================================
+    # CATEGORY 4: FACT UPDATES (5 queries)
+    # Facts that changed over time — system must return CURRENT state.
+    # Tests contradiction resolution. Favors: temporal KGs, bi-temporal models.
+    # ================================================================
+    {
+        "id": 16,
+        "query": "What database does CarbonSense use for time series data?",
+        "category": "fact_updates",
+        "expected": "ClickHouse (migrated from PostgreSQL via TimescaleDB consideration in May 2025. Postgres had 2.3s query times, TimescaleDB wasn't fast enough, ClickHouse got it to 47ms. Postgres still used for users/auth/billing).",
+        "scoring_notes": "HIT requires ClickHouse as current + migration context. MISS if says PostgreSQL or TimescaleDB as current.",
+        "hit_criteria": "States ClickHouse as current database, ideally mentioning migration from PostgreSQL.",
+        "partial_criteria": "Mentions ClickHouse but also says PostgreSQL without clarifying which is current for time series.",
+    },
+    {
+        "id": 17,
+        "query": "What is CarbonSense's pricing?",
+        "category": "fact_updates",
+        "expected": "$5,000/facility base, $12,000/facility enterprise (changed from original $2,000/$5,000 in March 2025 per Nina's advice). Meridian grandfathered at $2K for year 1.",
+        "scoring_notes": "HIT requires current pricing ($5K base). MISS if says $2K as current.",
+        "hit_criteria": "States $5,000/facility as current base price, ideally mentioning the increase from $2,000.",
+        "partial_criteria": "Mentions pricing changed but gets the current number wrong, or mentions $5K without context.",
+    },
+    {
+        "id": 18,
+        "query": "Where is CarbonSense's office?",
+        "category": "fact_updates",
+        "expected": "WeWork Austin (switched October 2025 from leased office at 2847 E Cesar Chavez. Originally considered Domain and Springdale locations but chose WeWork for flexibility. Also has WeWork Houston satellite for Rachel's sales team).",
+        "scoring_notes": "HIT requires WeWork as current. MISS if says E Cesar Chavez or Domain.",
+        "hit_criteria": "States WeWork Austin as current office, ideally mentioning WeWork Houston satellite.",
+        "partial_criteria": "Mentions WeWork but confuses timeline, or correctly identifies current location without history.",
+    },
+    {
+        "id": 19,
+        "query": "When does Jordan go to the gym?",
+        "category": "fact_updates",
+        "expected": "Mornings again (as of October 2025). Originally mornings at 6am, switched to evenings in June 2025 (couldn't sync with Jake who coaches little league). Back to mornings after the 7pm work boundary started working.",
+        "scoring_notes": "HIT requires morning as current + evolution. PARTIAL if just 'mornings' without context.",
+        "hit_criteria": "States mornings as current AND describes at least one change (the switch to evenings and back).",
+        "partial_criteria": "Says mornings without noting the schedule evolved, or describes the change without stating current time.",
+    },
+    {
+        "id": 20,
+        "query": "What veterinarian does Biscuit go to?",
+        "category": "fact_updates",
+        "expected": "Thrive Veterinary on Burnet Road (switched from Heart of Texas on South Lamar after a billing issue). Also had emergency visit at Veterinary Emergency Clinic of Austin in Dec 2024 for chicken bone ingestion ($795).",
+        "scoring_notes": "HIT requires Thrive as current. MISS if says Heart of Texas.",
+        "hit_criteria": "States Thrive Veterinary on Burnet Road as current vet.",
+        "partial_criteria": "Mentions Thrive but also Heart of Texas without clarifying which is current, or mentions the emergency visit.",
+    },
+
+    # ================================================================
+    # CATEGORY 5: MULTI HOP REASONING (5 queries)
+    # Answer requires connecting facts from different messages/sessions.
+    # Tests graph traversal, LLM reasoning across memory.
+    # ================================================================
+    {
+        "id": 21,
+        "query": "How did Dr. Woo's lab contribute to CarbonSense's product improvement?",
+        "category": "multi_hop_reasoning",
+        "expected": "Dr. Woo (UT Austin professor, advisor) -> sponsored PhD student Chen Wei -> Chen Wei developed synthetic data augmentation technique (VAE) -> Generated 50K training samples from 2K real data points -> Improved scope 3 accuracy from 84.7% to 88.9% -> Chen Wei published at ICML. Also, Dr. Woo recommended hiring Aisha Rahman (former postdoc), who built the scope 3 model.",
+        "scoring_notes": "HIT requires Dr. Woo -> Chen Wei -> accuracy improvement chain. PARTIAL if only one link.",
+        "hit_criteria": "Traces Dr. Woo -> Chen Wei -> scope 3 accuracy improvement (84.7% to 88.9%) with at least 2 links in the chain.",
+        "partial_criteria": "Mentions Dr. Woo's involvement but only one link (e.g., just mentions Chen Wei or just Aisha).",
+    },
+    {
+        "id": 22,
+        "query": "How did Riley influence Jordan's mental health recovery?",
+        "category": "multi_hop_reasoning",
+        "expected": "Riley's professor (Dr. Martinez) recommended the book 'Burnout' -> Later Riley recommended Dr. Linda Choi (from Dr. Martinez) -> Jordan started therapy July 22 -> Therapy led to 7pm work boundary -> Better sleep/health -> Saved the relationship -> Jordan planning to propose.",
+        "scoring_notes": "HIT requires Riley -> Dr. Choi recommendation -> therapy -> improvement chain. PARTIAL if 2 links.",
+        "hit_criteria": "Traces at least 3 links: Riley/Dr. Martinez -> Dr. Choi referral -> therapy -> health improvement or relationship recovery.",
+        "partial_criteria": "Mentions Riley pushed therapy and Jordan improved, but missing intermediate links.",
+    },
+    {
+        "id": 23,
+        "query": "What is the connection between the EPA regulations and CarbonSense's growth?",
+        "category": "multi_hop_reasoning",
+        "expected": "EPA released new scope 3 reporting requirements for manufacturers >$100M revenue -> Expanded CarbonSense TAM from $2B to $8B -> Made product essentially mandatory -> Drove massive inbound demand -> Nina used this in fundraise positioning -> Led to Series A success. EU CSRD mandate drives European expansion via KlimaSync.",
+        "scoring_notes": "HIT requires EPA -> TAM expansion -> growth connection. PARTIAL if only mentions regulations.",
+        "hit_criteria": "Connects EPA scope 3 mandate -> TAM expansion ($2B to $8B) -> business growth/fundraising success.",
+        "partial_criteria": "Mentions EPA regulations helped growth but without the TAM expansion detail or causal chain.",
+    },
+    {
+        "id": 24,
+        "query": "How did Sam's involvement with CarbonSense evolve?",
+        "category": "multi_hop_reasoning",
+        "expected": "Started as advisor/sounding board -> Helped mock pitch for Elevation interview -> Did moonlighting sales consulting (part-time) -> Helped close deals -> CarbonSense hired Rachel Torres as real VP Sales (Aug 2025) -> Sam stepped back -> Now considering his own fintech startup idea.",
+        "scoring_notes": "HIT requires progression from advisor -> sales -> stepped back -> own idea. PARTIAL if 2 stages.",
+        "hit_criteria": "Describes at least 3 stages of Sam's involvement (advisor, moonlighting sales, stepped back, fintech idea).",
+        "partial_criteria": "Mentions Sam helped with sales and later stepped back, but missing other stages.",
+    },
+    {
+        "id": 25,
+        "query": "Trace the path from meeting Nina Vasquez to the Series A close.",
+        "category": "multi_hop_reasoning",
+        "expected": "Met Nina at Epoch Coffee (Nov 20, 2024, she wore orange scarf) -> Applied to Elevation cohort (Jan 15 deadline) -> Accepted + $1.5M seed at $10M (Feb 10) -> Cohort + Demo Day (June 15) -> 14 investor meetings -> 3 firms wanted to lead (Sequoia, a16z, Khosla) -> Khosla term sheet $10M at $55M pre (Aug 10) -> Series A signed (Aug 25).",
+        "scoring_notes": "HIT requires at least 4 links in the chain. PARTIAL if 2-3 links.",
+        "hit_criteria": "Traces 4+ steps from Nina meeting through seed to Demo Day to Series A close.",
+        "partial_criteria": "Mentions Nina -> Elevation -> Series A but missing intermediate steps.",
+    },
+
+    # ================================================================
+    # CATEGORY 6: CROSS SESSION CONTINUITY (5 queries)
+    # References to prior conversations — does the system track
+    # what was discussed before and connect it to later context?
+    # Tests Letta/EverMemOS session persistence.
+    # ================================================================
+    {
+        "id": 26,
+        "query": "Jordan mentioned wanting to quit his job early on. What ultimately happened with that decision?",
+        "category": "cross_session_continuity",
+        "expected": "Jordan discussed quitting Dataflux with Sam (July 2024), told Lily to keep it secret from parents, discussed with Riley. Submitted notice July 16, last day July 29, 2024. Went on to co-found CarbonSense with Dev. Company grew to $1.2M ARR and $65M valuation by Dec 2025.",
+        "scoring_notes": "HIT requires linking early discussions to actual quit + outcome. PARTIAL if just the quit.",
+        "hit_criteria": "Connects early quit discussions (with Sam, Lily, Riley) to the actual resignation and subsequent CarbonSense success.",
+        "partial_criteria": "States Jordan quit Dataflux to start CarbonSense but doesn't connect to earlier discussions about the decision.",
+    },
+    {
+        "id": 27,
+        "query": "Jordan was worried about running out of money. How did that concern play out?",
+        "category": "cross_session_continuity",
+        "expected": "Early: $45K savings + $47K 401k rollover, $4,200/month burn, ~22 months runway. Tracked obsessively. By Dec 2024: $8K MRR + starting to get revenue. Feb 2025: $1.5M seed from Elevation. Aug 2025: $10M Series A from Khosla. Dec 2025: $10.8M in bank, $120K salary, bought $495K house, Rivian R1S.",
+        "scoring_notes": "HIT requires early worry + later financial success arc. PARTIAL if only one phase.",
+        "hit_criteria": "Connects early financial anxiety ($45K savings, burn rate tracking) to later financial success ($1.5M seed, Series A, house purchase).",
+        "partial_criteria": "Mentions either the early worry or the later success but not the arc connecting them.",
+    },
+    {
+        "id": 28,
+        "query": "Riley suggested Jordan see a therapist. Did he follow through, and what changed?",
+        "category": "cross_session_continuity",
+        "expected": "Riley recommended Dr. Linda Choi (via her professor Dr. Martinez). Jordan started therapy July 22, 2025 (CBT, biweekly). Results: implemented 7pm work hard stop (80% compliance), improved health metrics (RHR 72->66, sleep 5.8->7.0 hrs), relationship improved, still going as of Jan 2026.",
+        "scoring_notes": "HIT requires recommendation -> therapy start -> specific improvements. PARTIAL if just confirms therapy.",
+        "hit_criteria": "Links Riley's recommendation to therapy start with Dr. Choi AND describes at least 2 specific improvements (7pm boundary, health metrics, relationship).",
+        "partial_criteria": "Confirms Jordan started therapy after Riley's suggestion but missing specific outcomes.",
+    },
+    {
+        "id": 29,
+        "query": "Jordan talked about getting a second dog. What was the outcome?",
+        "category": "cross_session_continuity",
+        "expected": "Jordan suggested getting a second dog because Biscuit gets lonely. Later saw a golden retriever puppy at the shelter (Dec 2025) with a little bandana. Riley said no — Biscuit needs to lose weight first (2 pounds overweight at 30.1 lbs). Riley said 'ask me again in spring, MAYBE.'",
+        "scoring_notes": "HIT requires the full arc: want -> shelter visit -> Riley's no + reason. PARTIAL if just yes/no.",
+        "hit_criteria": "Describes Jordan wanting a second dog, the shelter puppy sighting, AND Riley saying no because of Biscuit's weight.",
+        "partial_criteria": "States they didn't get a second dog but missing the discussion details or Riley's reasoning.",
+    },
+    {
+        "id": 30,
+        "query": "Dev suggested using PostgreSQL early on. How did that technology choice evolve?",
+        "category": "cross_session_continuity",
+        "expected": "Dev initially said 'we should use postgres not sqlite for production' (July 2024). They deployed on RDS Postgres. By April 2025 query times hit 2.3s. Considered TimescaleDB first but wasn't fast enough. Aisha suggested ClickHouse — got query times to 47ms. Migrated May 2025. Postgres still used for users/auth/billing.",
+        "scoring_notes": "HIT requires initial choice -> problem -> migration chain. PARTIAL if just current state.",
+        "hit_criteria": "Traces the arc: initial Postgres choice -> performance problems (2.3s) -> TimescaleDB considered -> ClickHouse migration (47ms).",
+        "partial_criteria": "Mentions migration from Postgres to ClickHouse but missing intermediate steps or performance numbers.",
+    },
+
+    # ================================================================
+    # CATEGORY 7: NEGATION / ABSTENTION (5 queries)
+    # System should NOT hallucinate. Must say "no" or "not yet" correctly.
+    # Tests precision, low hallucination rate.
+    # ================================================================
+    {
+        "id": 31,
+        "query": "Did CarbonSense acquire EcoTrace?",
+        "category": "negation_abstention",
+        "expected": "No. Jordan asked Nina about it (July 2025) and she said 'absolutely not' — EcoTrace raised $40M and wouldn't sell for less than $100M. CarbonSense's strategy is to compete on accuracy, not acquire.",
+        "scoring_notes": "HIT requires clear 'no' with context. MISS if suggests acquisition happened.",
+        "hit_criteria": "Clearly states no acquisition occurred, ideally citing Nina's response or EcoTrace's $40M raise.",
+        "partial_criteria": "Says no but without any supporting context.",
+    },
+    {
+        "id": 32,
+        "query": "Does CarbonSense use Kubernetes?",
+        "category": "negation_abstention",
+        "expected": "No. Dev asked about it and Jordan said 'definitely not, k8s is overkill for our stage. ECS is fine.' They use AWS ECS for container orchestration.",
+        "scoring_notes": "HIT requires clear 'no' with ECS alternative. MISS if suggests they use K8s.",
+        "hit_criteria": "States no Kubernetes, they use AWS ECS, ideally quoting the 'overkill' reasoning.",
+        "partial_criteria": "Says they don't use Kubernetes but doesn't mention ECS as the alternative.",
+    },
+    {
+        "id": 33,
+        "query": "Is Sam an employee of CarbonSense?",
+        "category": "negation_abstention",
+        "expected": "No. Sam did part-time sales consulting/moonlighting but was never a full-time employee. Jordan explicitly said 'no i'm not hiring sam as a full time employee.' Sam has his own job and is now considering his own fintech startup.",
+        "scoring_notes": "HIT requires clear 'no' with context about moonlighting. MISS if says Sam is an employee.",
+        "hit_criteria": "Clearly states Sam is not an employee, mentions the moonlighting/consulting arrangement.",
+        "partial_criteria": "Says no but without context about what Sam actually did for CarbonSense.",
+    },
+    {
+        "id": 34,
+        "query": "Did Jordan propose to Riley?",
+        "category": "negation_abstention",
+        "expected": "Not yet as of December 2025. He bought a vintage art deco ring ($4,200 from Fredericksburg estate sale, on layaway). Plan is to propose after Riley's graduation (May 17, 2026) at Lady Bird Lake at sunset. Sam and Lily know. Parents don't.",
+        "scoring_notes": "HIT requires 'not yet' + plan details. MISS if says he proposed.",
+        "hit_criteria": "States not yet proposed, mentions the ring and/or the plan to propose after Riley's graduation.",
+        "partial_criteria": "Says not yet but without any plan details.",
+    },
+    {
+        "id": 35,
+        "query": "Did Jordan get a second dog?",
+        "category": "negation_abstention",
+        "expected": "No. Jordan wanted to (saw a golden retriever puppy at the shelter in Dec 2025) but Riley said no — Biscuit needs to lose weight first. Riley said 'ask me again in spring, MAYBE.'",
+        "scoring_notes": "HIT requires clear 'no' with discussion details. MISS if suggests they got one.",
+        "hit_criteria": "States no second dog, mentions Riley's refusal and Biscuit's weight issue.",
+        "partial_criteria": "Says no second dog but without the context of the discussion.",
+    },
+
+    # ================================================================
+    # CATEGORY 8: MULTI SESSION SYNTHESIS (5 queries)
+    # Summarize information scattered across many sessions.
+    # Tests EverMemOS/MemMachine consolidation capabilities.
+    # ================================================================
+    {
+        "id": 36,
+        "query": "Summarize the CarbonSense journey from founding to Series A.",
+        "category": "multi_session_synthesis",
+        "expected": "Side project (pre-July 2024) -> Jordan quits Dataflux (July 29) -> Delaware C-Corp (July 25) -> Meridian Steel pilot (Aug-Oct, 96.1% accuracy) -> Met Nina at Epoch Coffee (Nov 20) -> Applied to Elevation (Jan 15) -> Accepted, $1.5M seed at $10M (Feb 10) -> Hired Aisha (Mar) -> 7 customers, $43K MRR (May) -> Demo Day (June 15) -> 14 investors -> Khosla term sheet $10M at $55M pre (Aug 10) -> Series A closed (Aug 25) -> 14 employees, $1.2M ARR by Dec 2025.",
+        "scoring_notes": "HIT requires 6+ milestones in chronological order. PARTIAL if 3-5.",
+        "hit_criteria": "Lists 6+ milestones in correct chronological order from founding through Series A close.",
+        "partial_criteria": "Lists 3-5 milestones, generally in correct order.",
+    },
+    {
+        "id": 37,
+        "query": "Summarize Jordan and Riley's relationship over this period.",
+        "category": "multi_session_synthesis",
+        "expected": "Supportive but strained. Riley supported the startup decision. Fredericksburg weekend (Jan 2025). Valentine's at Uchi. But Jordan increasingly absent — missed anniversary (July 3). Riley pushed therapy recommendation. Things improved after 7pm boundary. Bought house together (Oct 2025). Jordan planning to propose after Riley's graduation (May 2026). Riley finishing Master's in counseling psych at UT.",
+        "scoring_notes": "HIT requires arc (support -> strain -> recovery) with milestones. PARTIAL if flat summary.",
+        "hit_criteria": "Describes the relationship arc with at least 3 specific events (missed anniversary, therapy push, house purchase, proposal plan).",
+        "partial_criteria": "Describes the relationship generally without specific events, or mentions events without the arc.",
+    },
+    {
+        "id": 38,
+        "query": "What is the full team at CarbonSense as of December 2025?",
+        "category": "multi_session_synthesis",
+        "expected": "14 people: CEO Jordan Chen, CTO Dev Patel, ML Engineer Aisha Rahman, Backend: Luis Moreno + Preet Kaur, Frontend: Danny Okafor, VP Sales: Rachel Torres, AEs: Mike Chen + Sarah Lindquist, SDR: Jamie Walsh, Customer Success: Tanya Reed, Product Manager: Omar Hassan, Office Admin: Becky Tran. Plus sponsored PhD student Chen Wei at UT Austin.",
+        "scoring_notes": "HIT requires 8+ names with roles. PARTIAL if 4-7.",
+        "hit_criteria": "Names 8+ team members with their roles.",
+        "partial_criteria": "Names 4-7 team members with roles.",
+    },
+    {
+        "id": 39,
+        "query": "What were the key turning points in CarbonSense's trajectory?",
+        "category": "multi_session_synthesis",
+        "expected": "1. Meridian pilot exceeding targets (Oct 2024). 2. Meeting Nina Vasquez (Nov 2024). 3. EPA scope 3 mandate expanding TAM to $8B (Jan 2025). 4. Elevation seed acceptance (Feb 2025). 5. Hiring Aisha (Mar 2025). 6. Go rewrite for performance (May 2025). 7. Demo Day (June 2025). 8. Khosla Series A (Aug 2025). 9. TechCrunch feature (Sep 2025). 10. KlimaSync European partnership (Nov 2025).",
+        "scoring_notes": "HIT requires 5+ turning points. PARTIAL if 3-4.",
+        "hit_criteria": "Identifies 5+ specific turning points with approximate dates.",
+        "partial_criteria": "Identifies 3-4 turning points.",
+    },
+    {
+        "id": 40,
+        "query": "What is CarbonSense's complete tech stack as of late 2025?",
+        "category": "multi_session_synthesis",
+        "expected": "Go API layer (rewritten from Python May 2025) + Python ML pipelines, gRPC communication. PostgreSQL (users/auth/billing) + ClickHouse (time series, migrated from Postgres). React 18 + TypeScript + Vite + Tailwind (frontend). AWS (ECS, S3, CloudFront, CloudWatch). Scope 3 uses Graph Attention Networks. SOC 2 Type 1 certified. GitHub Actions CI/CD.",
+        "scoring_notes": "HIT requires Go + Python + ClickHouse + at least 2 other components. PARTIAL if some correct.",
+        "hit_criteria": "Mentions Go API, Python ML, ClickHouse for time series, and at least 2 other components (React, AWS ECS, gRPC, etc.).",
+        "partial_criteria": "Mentions some stack components correctly but missing key elements (e.g., says Python API instead of Go).",
+    },
+
+    # ================================================================
+    # CATEGORY 9: ENTITY TRACKING (5 queries)
+    # Can the system distinguish between different people/entities?
+    # Tests Hindsight/Graphiti entity resolution.
+    # ================================================================
+    {
+        "id": 41,
+        "query": "Who is Marcus? There may be more than one.",
+        "category": "entity_tracking",
+        "expected": "Two Marcus: (1) Marcus Johnson — Jordan's gym buddy, does Olympic lifts (225 clean and jerk), met through Jake at Gold's Gym. (2) Lily's ex-boyfriend Marcus — met at Thanksgiving 2024, did CrossFit, they broke up August 2025 when he wanted to move to Seattle.",
+        "scoring_notes": "HIT requires identifying BOTH Marcus. PARTIAL if only one.",
+        "hit_criteria": "Identifies both Marcus Johnson (gym buddy) and Lily's ex-boyfriend Marcus as separate people.",
+        "partial_criteria": "Identifies one Marcus correctly but misses the other or conflates them.",
+    },
+    {
+        "id": 42,
+        "query": "Who is Rachel? There may be more than one.",
+        "category": "entity_tracking",
+        "expected": "Two Rachel: (1) Rachel Torres — VP Sales at CarbonSense, hired August 2025, 12 years enterprise SaaS experience, $180K + 1% equity. Built sales team, opened Houston office. (2) Rachel Kim — Riley's college friend from University of Oregon, now a doctor in Seattle.",
+        "scoring_notes": "HIT requires both Rachels. PARTIAL if only one.",
+        "hit_criteria": "Identifies both Rachel Torres (VP Sales) and Rachel Kim (Riley's friend) as separate people.",
+        "partial_criteria": "Identifies one Rachel correctly but misses the other.",
+    },
+    {
+        "id": 43,
+        "query": "What does Jordan discuss with Dev vs Sam?",
+        "category": "entity_tracking",
+        "expected": "Dev: Technical topics (architecture, databases, ML models, hiring engineers, infrastructure, security, deployments). Sam: Personal topics (life advice, relationships, career, F1, ACL, proposal plans, running, emotional support). Some overlap on business strategy.",
+        "scoring_notes": "HIT requires clear distinction with examples. PARTIAL if vaguely correct.",
+        "hit_criteria": "Clearly distinguishes Dev (technical/business) from Sam (personal/emotional) with at least 2 specific examples for each.",
+        "partial_criteria": "Notes a difference but without specific examples, or only distinguishes one relationship clearly.",
+    },
+    {
+        "id": 44,
+        "query": "Who is Aisha Rahman and why is she important?",
+        "category": "entity_tracking",
+        "expected": "ML engineer, PhD in industrial emissions modeling, hired March 2025 at $135K + 0.75% equity. Built scope 3 model (84.7% -> 88.9% accuracy). Got Google offer ($280K), was retained with raise to $160K + 1.25% + $30K student loan coverage. Collaborated with Chen Wei on ICML paper.",
+        "scoring_notes": "HIT requires hire + scope 3 work + retention. PARTIAL if only basic facts.",
+        "hit_criteria": "Mentions Aisha's role, scope 3 model work, AND the Google retention situation.",
+        "partial_criteria": "Mentions Aisha as ML engineer but missing either scope 3 contribution or retention story.",
+    },
+    {
+        "id": 45,
+        "query": "Who is Nina Vasquez and what is her relationship with CarbonSense?",
+        "category": "entity_tracking",
+        "expected": "Partner at Elevation Ventures, led their $1.5M seed investment. Met Jordan at Epoch Coffee Nov 20, 2024 (wore orange scarf). Has a board seat. Advises on strategy, pricing, fundraising. Pushed pricing higher ($2K -> $5K). Connected Jordan to Rachel Torres. Recommended Series B in Q2 2026.",
+        "scoring_notes": "HIT requires investor + specific interactions. PARTIAL if only role.",
+        "hit_criteria": "Identifies Nina as Elevation Ventures partner who led seed, AND mentions at least 2 specific contributions (pricing advice, Rachel intro, board seat, etc.).",
+        "partial_criteria": "Identifies Nina as an investor but without specific contributions beyond funding.",
+    },
+
+    # ================================================================
+    # CATEGORY 10: BELIEF EVOLUTION (5 queries)
+    # Opinions and beliefs that changed over time.
+    # Tests Hindsight's ability to track evolving perspectives.
+    # ================================================================
+    {
+        "id": 46,
+        "query": "How did Jordan's relationship with money change over the period?",
+        "category": "belief_evolution",
+        "expected": "Initially anxious: tracked savings obsessively ($45K savings, $47K 401k), worried about $4,200/month burn. After seed: more comfortable but still frugal ($120K salary when could take more). After Series A: bought house ($495K), Rivian R1S, nicer dinners. But still thoughtful: grandfathered Meridian pricing, chose WeWork over lease for flexibility, engagement ring on layaway ($4,200).",
+        "scoring_notes": "HIT requires evolution from anxious -> comfortable with examples. PARTIAL if just one phase.",
+        "hit_criteria": "Describes at least 3 phases of money relationship with specific examples (early anxiety, post-seed frugality, post-Series A spending).",
+        "partial_criteria": "Describes the change generally or only covers one phase with examples.",
+    },
+    {
+        "id": 47,
+        "query": "How did Jordan's opinion on work-life balance evolve?",
+        "category": "belief_evolution",
+        "expected": "Early (2024): All-in on work, no boundaries, gym at 6am then work all day. Mid-2025: Work consumed everything, switched gym to evenings, missed anniversary dinner (July 3), health deteriorated (RHR 72, sleep 5.8hrs). Turning point: therapy with Dr. Choi (July 22). Implemented 7pm hard stop. By late 2025: 80% compliance on boundaries, back to morning gym, health recovered, actively planning personal life (proposal, marathon, family visits).",
+        "scoring_notes": "HIT requires the arc across 3 phases. PARTIAL if only describes current state.",
+        "hit_criteria": "Describes at least 3 phases: early all-in, mid-2025 crisis, and post-therapy recovery with specific examples.",
+        "partial_criteria": "Mentions work-life balance improved but without the full arc or specific turning points.",
+    },
+    {
+        "id": 48,
+        "query": "How did Jordan's approach to hiring and delegation change?",
+        "category": "belief_evolution",
+        "expected": "Early: Jordan and Dev did everything themselves (2-person team, July-Dec 2024). Hired Aisha as first employee (Mar 2025). Sam moonlighted for sales instead of hiring properly. Therapy revealed Jordan has 'difficulty delegating.' By Aug 2025: hired VP Sales Rachel Torres, then rapidly built 14-person team. Learned to trust specialists (Rachel for sales, Aisha for ML, Omar for product).",
+        "scoring_notes": "HIT requires the arc from doing-everything to delegation. PARTIAL if only one phase.",
+        "hit_criteria": "Describes the arc: early self-reliance -> difficulty delegating (therapy insight) -> building team/trusting specialists with at least 2 specific examples.",
+        "partial_criteria": "Mentions Jordan learned to delegate but without the arc or specific examples.",
+    },
+    {
+        "id": 49,
+        "query": "How did Jordan's views on competition with EcoTrace evolve?",
+        "category": "belief_evolution",
+        "expected": "Early awareness: Nina mentioned EcoTrace as portfolio competitor (Nov 2024). Mid-2025: Considered acquiring them (asked Nina, who said 'absolutely not'). EcoTrace raised $40M (July 2025) and started undercutting CarbonSense by 40%. Lost Boeing deal to EcoTrace on price. Final stance: don't compete on price, compete on accuracy and scope 3 — 'EcoTrace is buying growth, we're earning it.' Nina: 'EcoTrace is a faster horse, you're building a car.'",
+        "scoring_notes": "HIT requires evolution across 3+ stages. PARTIAL if only current view.",
+        "hit_criteria": "Describes at least 3 stages of the competitive response (awareness, acquisition attempt, pricing war, final strategy differentiation).",
+        "partial_criteria": "Mentions EcoTrace competition but without showing how Jordan's approach evolved.",
+    },
+    {
+        "id": 50,
+        "query": "How did Jordan's diet and health habits change over the timeline?",
+        "category": "belief_evolution",
+        "expected": "Early: Morning routine with meditation (Headspace), gym with Jake, overnight oats. Tried weekday vegetarian (Jan 2025, quit after 2 weeks when Jake grilled brisket tacos). Mid-2025: Health declined, gym switched to evenings, sleep dropped. Post-therapy: Switched to Insight Timer for meditation, back to morning gym, implemented 7pm boundary. By Dec 2025: RHR 66, 7.0hr sleep, training for marathon (18-week plan), supplements (creatine, protein powder).",
+        "scoring_notes": "HIT requires evolution across 3+ phases with specifics. PARTIAL if only current habits.",
+        "hit_criteria": "Describes at least 3 phases of health evolution with specific details (apps, failed vegetarian attempt, health metrics, marathon training).",
+        "partial_criteria": "Mentions some health habits but without showing how they changed over time.",
+    },
+]
+
+if __name__ == "__main__":
+    print(f"Total queries: {len(TEST_QUERIES_V3)}")
+    print(f"\nBy category:")
+    cats = {}
+    for q in TEST_QUERIES_V3:
+        cat = q["category"]
+        cats[cat] = cats.get(cat, 0) + 1
+    for cat, count in sorted(cats.items()):
+        print(f"  {cat}: {count}")
+
+    print(f"\n{'='*70}")
+    for q in TEST_QUERIES_V3:
+        print(f"\nQ{q['id']} [{q['category']}]: {q['query']}")
+        print(f"  Expected: {q['expected'][:120]}...")
+        print(f"  HIT: {q['hit_criteria']}")
+        print(f"  PARTIAL: {q['partial_criteria']}")

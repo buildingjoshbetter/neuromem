@@ -1,0 +1,254 @@
+"""
+Neuromem Cross-Encoder Reranker
+===============================
+
+Reranks retrieval results using a cross-encoder model that jointly encodes
+(query, document) pairs for more accurate relevance scoring than embedding-
+based similarity alone.
+
+Uses `cross-encoder/ms-marco-MiniLM-L6-v2` by default (22M params, ~100MB,
+fast on CPU).  Can optionally use GPU if available.
+
+Usage::
+
+    from neuromem.reranker import rerank
+
+    results = search_hybrid(conn, query, limit=50)
+    reranked = rerank(query, results, top_k=10)
+
+Dependencies:
+    - sentence-transformers (``pip install sentence-transformers``)
+"""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    pass
+
+# ---------------------------------------------------------------------------
+# Singleton model loader
+# ---------------------------------------------------------------------------
+
+_model = None
+_model_name: str = "cross-encoder/ms-marco-MiniLM-L6-v2"
+
+
+def get_reranker(model_name: str | None = None, device: str | None = None):
+    """
+    Lazy-load the cross-encoder reranker (singleton).
+
+    Args:
+        model_name: HuggingFace model ID.  Defaults to
+                    ``cross-encoder/ms-marco-MiniLM-L6-v2``.
+        device:     Device string (``"cpu"``, ``"cuda:0"``, etc.).
+                    If None, auto-detects.
+
+    Returns:
+        A ``sentence_transformers.CrossEncoder`` instance.
+    """
+    global _model, _model_name
+
+    name = model_name or _model_name
+    if _model is not None and name == _model_name:
+        return _model
+
+    from sentence_transformers import CrossEncoder
+
+    if device is None:
+        try:
+            import torch
+            device = "cuda:0" if torch.cuda.is_available() else "cpu"
+        except ImportError:
+            device = "cpu"
+
+    _model = CrossEncoder(name, device=device)
+    _model_name = name
+    return _model
+
+
+# ---------------------------------------------------------------------------
+# Reranking
+# ---------------------------------------------------------------------------
+
+def rerank(
+    query: str,
+    results: list[dict],
+    top_k: int = 10,
+    model_name: str | None = None,
+    device: str | None = None,
+    batch_size: int = 64,
+) -> list[dict]:
+    """
+    Rerank a list of retrieval results using a cross-encoder.
+
+    The cross-encoder scores each (query, document.content) pair and returns
+    the top *top_k* results sorted by cross-encoder score descending.
+
+    Args:
+        query:      The search query.
+        results:    List of result dicts (must have ``"content"`` key).
+        top_k:      Number of results to return after reranking.
+        model_name: Optional override for the cross-encoder model.
+        device:     Optional device string.
+        batch_size: Batch size for prediction.
+
+    Returns:
+        Top *top_k* results sorted by cross-encoder score, each with an added
+        ``"rerank_score"`` key.
+    """
+    if not results:
+        return []
+
+    if len(results) <= 1:
+        return results[:top_k]
+
+    model = get_reranker(model_name=model_name, device=device)
+
+    # Build (query, content) pairs
+    pairs = [(query, r.get("content", "")) for r in results]
+
+    # Score all pairs
+    scores = model.predict(pairs, batch_size=batch_size, show_progress_bar=False)
+
+    # Attach scores and sort
+    scored = []
+    for r, score in zip(results, scores):
+        entry = dict(r)  # shallow copy
+        entry["rerank_score"] = float(score)
+        scored.append(entry)
+
+    scored.sort(key=lambda r: r["rerank_score"], reverse=True)
+    return scored[:top_k]
+
+
+def rerank_with_fusion(
+    query: str,
+    results: list[dict],
+    top_k: int = 10,
+    rrf_weight: float = 0.3,
+    rerank_weight: float = 0.7,
+    **kwargs,
+) -> list[dict]:
+    """
+    Rerank results and fuse cross-encoder scores with original RRF scores.
+
+    This blends the original retrieval ranking with the cross-encoder's
+    assessment, preventing the reranker from completely overriding useful
+    signals from keyword/vector search.
+
+    Args:
+        query:          The search query.
+        results:        List of result dicts.
+        top_k:          Number of results to return.
+        rrf_weight:     Weight for original RRF/retrieval score.
+        rerank_weight:  Weight for cross-encoder score.
+
+    Returns:
+        Top *top_k* results sorted by fused score.
+    """
+    if not results:
+        return []
+
+    reranked = rerank(query, results, top_k=len(results), **kwargs)
+
+    # Normalize scores to [0, 1] for fair fusion
+    rerank_scores = [r["rerank_score"] for r in reranked]
+    rr_min, rr_max = min(rerank_scores), max(rerank_scores)
+    rr_range = rr_max - rr_min if rr_max > rr_min else 1.0
+
+    orig_scores = [r.get("score", r.get("rrf_score", 0)) for r in reranked]
+    orig_min, orig_max = min(orig_scores), max(orig_scores)
+    orig_range = orig_max - orig_min if orig_max > orig_min else 1.0
+
+    for r in reranked:
+        norm_rerank = (r["rerank_score"] - rr_min) / rr_range
+        norm_orig = (r.get("score", r.get("rrf_score", 0)) - orig_min) / orig_range
+        r["fused_score"] = rerank_weight * norm_rerank + rrf_weight * norm_orig
+        r["score"] = r["fused_score"]
+
+    reranked.sort(key=lambda r: r["fused_score"], reverse=True)
+    return reranked[:top_k]
+
+
+# ---------------------------------------------------------------------------
+# LLM-based reranking
+# ---------------------------------------------------------------------------
+
+_RERANK_PROMPT = """Given the question below, rate each document's relevance from 0-10.
+0 = completely irrelevant, 10 = directly answers the question or contains key evidence.
+
+Question: {query}
+
+Documents:
+{documents}
+
+For each document, output ONLY a line like "D1: 8" (document number: score).
+Output ALL {n} scores, one per line:"""
+
+
+def rerank_with_llm(
+    query: str,
+    results: list[dict],
+    llm_fn,
+    top_k: int = 15,
+) -> list[dict]:
+    """
+    Rerank results using an LLM judge for relevance scoring.
+
+    Much more accurate than cross-encoder models for conversational
+    content because the LLM understands context, paraphrasing, and
+    can reason about relevance.
+
+    Args:
+        query:   The search query.
+        results: Candidate results to rerank.
+        llm_fn:  Callable that takes a prompt and returns text.
+        top_k:   Number of results to return.
+
+    Returns:
+        Top *top_k* results sorted by LLM-assigned relevance score.
+    """
+    if not results or len(results) <= top_k:
+        return results[:top_k]
+
+    # Build document list for prompt (truncate long content)
+    doc_lines = []
+    for i, r in enumerate(results):
+        content = r.get("content", "")[:200]
+        sender = r.get("sender", "")
+        doc_lines.append(f"D{i+1}: [{sender}] {content}")
+
+    documents = "\n".join(doc_lines)
+    prompt = _RERANK_PROMPT.format(
+        query=query, documents=documents, n=len(results),
+    )
+
+    try:
+        response = llm_fn(prompt)
+        # Parse scores from "D1: 8" format
+        import re
+        scores = {}
+        for line in response.strip().split("\n"):
+            m = re.match(r'D(\d+)\s*:\s*(\d+)', line.strip())
+            if m:
+                idx = int(m.group(1)) - 1  # 0-based
+                score = int(m.group(2))
+                if 0 <= idx < len(results):
+                    scores[idx] = score
+
+        # Assign scores to results
+        scored = []
+        for i, r in enumerate(results):
+            entry = dict(r)
+            entry["llm_rerank_score"] = scores.get(i, 0)
+            entry["score"] = scores.get(i, 0)
+            scored.append(entry)
+
+        scored.sort(key=lambda r: (-r["llm_rerank_score"], -r.get("rrf_score", 0)))
+        return scored[:top_k]
+
+    except Exception:
+        # Fallback: return original order
+        return results[:top_k]

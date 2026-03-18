@@ -1,0 +1,49 @@
+# Virtual environments
+.venv*/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Databases (large binary files)
+*.db
+*.db-shm
+*.db-wal
+
+# Data directories (large/external)
+lancedb_data/
+m1_qdrant_data/
+v2_qdrant_data/
+EverMemOS/
+locomo_data/
+longmemeval_benchmark/
+
+# Generated/synthetic data
+synthetic_messages.json
+synthetic_v2_messages.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# API keys / secrets
+.env
+*.env
+
+# Large JSON result files (keep markdown summaries instead)
+benchmark_chromadb_results.json
+benchmark_langmem_results.json
+benchmark_v2_*_results.json
+benchmark_v2_*_scored.json
+m1_results.json

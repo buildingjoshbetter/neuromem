@@ -1,0 +1,179 @@
+{
+  "system": "Neuromem",
+  "version": "2.0.0",
+  "benchmark": "LoCoMo",
+  "search_mode": "agentic",
+  "top_k": 15,
+  "conversations_tested": 5,
+  "total_qa_pairs": 815,
+  "total_turns": 3337,
+  "avg_recall_at_k": 0.517,
+  "avg_content_overlap": 0.5201,
+  "per_conversation": [
+    {
+      "conversation": "conv-41",
+      "overall_recall_at_k": 0.5167,
+      "overall_content_overlap": 0.5912,
+      "total_questions": 152,
+      "top_k": 15,
+      "by_category": {
+        "single_hop": {
+          "count": 31,
+          "avg_recall_at_k": 0.2753,
+          "avg_content_overlap": 0.35,
+          "avg_query_ms": 1140.7
+        },
+        "multi_hop": {
+          "count": 27,
+          "avg_recall_at_k": 0.7037,
+          "avg_content_overlap": 0.4407,
+          "avg_query_ms": 1228.5
+        },
+        "temporal": {
+          "count": 8,
+          "avg_recall_at_k": 0.125,
+          "avg_content_overlap": 0.175,
+          "avg_query_ms": 1334.6
+        },
+        "open_domain": {
+          "count": 86,
+          "avg_recall_at_k": 0.5814,
+          "avg_content_overlap": 0.7641,
+          "avg_query_ms": 1300.9
+        }
+      }
+    },
+    {
+      "conversation": "conv-42",
+      "overall_recall_at_k": 0.4645,
+      "overall_content_overlap": 0.5118,
+      "total_questions": 199,
+      "top_k": 15,
+      "by_category": {
+        "single_hop": {
+          "count": 37,
+          "avg_recall_at_k": 0.2188,
+          "avg_content_overlap": 0.2353,
+          "avg_query_ms": 1362.6
+        },
+        "multi_hop": {
+          "count": 40,
+          "avg_recall_at_k": 0.5625,
+          "avg_content_overlap": 0.3367,
+          "avg_query_ms": 1305.5
+        },
+        "temporal": {
+          "count": 11,
+          "avg_recall_at_k": 0.1364,
+          "avg_content_overlap": 0.0992,
+          "avg_query_ms": 1255.5
+        },
+        "open_domain": {
+          "count": 111,
+          "avg_recall_at_k": 0.5435,
+          "avg_content_overlap": 0.7079,
+          "avg_query_ms": 1508.8
+        }
+      }
+    },
+    {
+      "conversation": "conv-44",
+      "overall_recall_at_k": 0.4783,
+      "overall_content_overlap": 0.5449,
+      "total_questions": 123,
+      "top_k": 15,
+      "by_category": {
+        "single_hop": {
+          "count": 30,
+          "avg_recall_at_k": 0.1831,
+          "avg_content_overlap": 0.3483,
+          "avg_query_ms": 1355.9
+        },
+        "multi_hop": {
+          "count": 24,
+          "avg_recall_at_k": 0.4514,
+          "avg_content_overlap": 0.3776,
+          "avg_query_ms": 959.6
+        },
+        "temporal": {
+          "count": 7,
+          "avg_recall_at_k": 0.0714,
+          "avg_content_overlap": 0.4142,
+          "avg_query_ms": 1140.5
+        },
+        "open_domain": {
+          "count": 62,
+          "avg_recall_at_k": 0.6774,
+          "avg_content_overlap": 0.7196,
+          "avg_query_ms": 1148.8
+        }
+      }
+    },
+    {
+      "conversation": "conv-47",
+      "overall_recall_at_k": 0.5006,
+      "overall_content_overlap": 0.5451,
+      "total_questions": 150,
+      "top_k": 15,
+      "by_category": {
+        "single_hop": {
+          "count": 20,
+          "avg_recall_at_k": 0.2042,
+          "avg_content_overlap": 0.3674,
+          "avg_query_ms": 1783.5
+        },
+        "multi_hop": {
+          "count": 34,
+          "avg_recall_at_k": 0.5147,
+          "avg_content_overlap": 0.3938,
+          "avg_query_ms": 1421.6
+        },
+        "temporal": {
+          "count": 13,
+          "avg_recall_at_k": 0.4231,
+          "avg_content_overlap": 0.1062,
+          "avg_query_ms": 1366.0
+        },
+        "open_domain": {
+          "count": 83,
+          "avg_recall_at_k": 0.5783,
+          "avg_content_overlap": 0.7186,
+          "avg_query_ms": 1796.8
+        }
+      }
+    },
+    {
+      "conversation": "conv-48",
+      "overall_recall_at_k": 0.6249,
+      "overall_content_overlap": 0.4073,
+      "total_questions": 191,
+      "top_k": 15,
+      "by_category": {
+        "single_hop": {
+          "count": 21,
+          "avg_recall_at_k": 0.4849,
+          "avg_content_overlap": 0.2023,
+          "avg_query_ms": 1476.1
+        },
+        "multi_hop": {
+          "count": 42,
+          "avg_recall_at_k": 0.627,
+          "avg_content_overlap": 0.2925,
+          "avg_query_ms": 1491.2
+        },
+        "temporal": {
+          "count": 10,
+          "avg_recall_at_k": 0.45,
+          "avg_content_overlap": 0.2254,
+          "avg_query_ms": 1512.9
+        },
+        "open_domain": {
+          "count": 118,
+          "avg_recall_at_k": 0.6638,
+          "avg_content_overlap": 0.5001,
+          "avg_query_ms": 1481.5
+        }
+      }
+    }
+  ]
+}

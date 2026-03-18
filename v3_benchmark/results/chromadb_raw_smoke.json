@@ -1,0 +1,591 @@
+{
+  "system": "ChromaDB",
+  "version": "1.5.5",
+  "architecture": "Pure vector similarity (all-MiniLM-L6-v2, cosine)",
+  "status": "COMPLETED",
+  "dataset": "5 sessions",
+  "num_queries": 5,
+  "timing": {
+    "setup_seconds": 2.5,
+    "ingest_seconds": 1.0,
+    "total_query_seconds": 0.1,
+    "avg_query_ms": 17.3
+  },
+  "ingest_stats": {
+    "ingested": 45,
+    "errors": 0,
+    "elapsed_seconds": 1.0,
+    "collection_count": 45
+  },
+  "system_stats": {
+    "embedding_model": "all-MiniLM-L6-v2",
+    "collection_count": 45
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "query": "What is the name of Jordan's dog?",
+      "category": "single_hop_fact",
+      "expected": "Biscuit, a Pembroke Welsh Corgi, born March 15, 2023.",
+      "scoring_notes": "HIT requires name + breed. PARTIAL if only name.",
+      "hit_criteria": "Names Biscuit AND identifies breed as Pembroke Welsh Corgi.",
+      "partial_criteria": "Names Biscuit but missing breed, or gets breed but not name.",
+      "num_results": 10,
+      "elapsed_seconds": 0.008,
+      "results": [
+        {
+          "content": "lily told me: \"omg jordan!! what kind of company? are you sure??\"",
+          "score": 0.4762,
+          "metadata": {
+            "session_id": "3",
+            "turn_index": 1,
+            "timestamp": "2024-07-05T21:00:00",
+            "role": "user"
+          }
+        },
+        {
+          "content": "riley told me: \"already got him! he looks so fluffy. sending pics\"",
+          "score": 0.2678,
+          "metadata": {
+            "session_id": "5",
+            "turn_index": 1,
+            "timestamp": "2024-07-10T15:30:00",
+            "role": "user"
+          }
+        },
+        {
+          "content": "[OCR: Receipt] HEB Mueller \u2014 Date: 07/14/2024\nGorilla Mode Pre-Workout $44.99\nChicken breast 3lb $12.49\nBrown rice 5lb $6.99\nBroccoli crowns $3.49\nGreek yogurt x4 $7.96\nBiscuit's dog food (Blue Buffalo) $52.99\nTotal: $128.91\nPayment: Visa ending 4821",
+          "score": 0.1848,
+          "metadata": {
+            "role": "user",
+            "turn_index": 4,
+            "timestamp": "2024-07-01T09:00:00",
+            "session_id": "1"
+          }
+        },
+        {
+          "content": "omg his little face \ud83d\ude02 also riley i want to talk tonight about something important. about work",
+          "score": 0.1663,
+          "metadata": {
+            "turn_index": 2,
+            "timestamp": "2024-07-10T15:30:00",
+            "role": "user",
+            "session_id": "5"
+          }
+        },
+        {
+          "content": "sam told me: \"yeah dude barton springs beer garden? 7pm?\"",
+          "score": 0.1511,
+          "metadata": {
+            "role": "user",
+            "turn_index": 1,
+            "session_id": "2",
+            "timestamp": "2024-07-03T18:30:00"
+          }
+        },
+        {
+          "content": "hey can you pick up biscuit from the groomer? i have a meeting til 6",
+          "score": 0.1274,
+          "metadata": {
+            "turn_index": 0,
+            "session_id": "5",
+            "timestamp": "2024-07-10T15:30:00",
+            "role": "user"
+          }
+        },
+        {
+          "content": "sam told me: \"wait for real? you've been talking about this for months. what changed?\"",
+          "score": 0.1207,
+          "metadata": {
+            "turn_index": 4,
+            "timestamp": "2024-07-03T18:30:00",
+            "role": "user",
+            "session_id": "2"
+          }
+        },
+        {
+          "content": "hey sam you free for drinks tonight? need to talk through something",
+          "score": 0.1023,
+          "metadata": {
+            "turn_index": 0,
+            "role": "user",
+            "session_id": "2",
+            "timestamp": "2024-07-03T18:30:00"
+          }
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.0942,
+          "metadata": {
+            "role": "assistant",
+            "session_id": "2",
+            "turn_index": 6,
+            "timestamp": "2024-07-03T18:30:00"
+          }
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.0942,
+          "metadata": {
+            "turn_index": 6,
+            "role": "assistant",
+            "session_id": "5",
+            "timestamp": "2024-07-10T15:30:00"
+          }
+        }
+      ]
+    },
+    {
+      "query_id": 2,
+      "query": "How much funding did CarbonSense raise in the seed round?",
+      "category": "single_hop_fact",
+      "expected": "$1.5M from Elevation Ventures at a $10M post-money valuation.",
+      "scoring_notes": "HIT requires amount + source. PARTIAL if only amount.",
+      "hit_criteria": "States $1.5M AND Elevation Ventures.",
+      "partial_criteria": "States $1.5M but not the investor, or names Elevation without the amount.",
+      "num_results": 10,
+      "elapsed_seconds": 0.008,
+      "results": [
+        {
+          "content": "[OCR: Document] State of Delaware \u2014 Certificate of Incorporation\nCarbonSense Inc.\nIncorporated: July 25, 2024\nRegistered Agent: Harvard Business Services, Inc.\nAuthorized Shares: 10,000,000 Common\nIncorporator: Jordan Chen\nFile Number: 7892341",
+          "score": 0.4007,
+          "metadata": {
+            "turn_index": 16,
+            "session_id": "1",
+            "role": "user",
+            "timestamp": "2024-07-01T09:00:00"
+          }
+        },
+        {
+          "content": "Subject: Re: Re: CarbonSense Pilot Proposal\n\nHi Maria,\n\nGreat news! Here are answers:\n\n1. Yes \u2014 we have an SAP connector in beta. It pulls from the MM and PP modules for materials and production data.\n2. Currently every 15 minutes via API polling. We're building real-time streaming for Q4.\n3. Not yet \u2014 we're starting the SOC 2 Type 1 process this month. Expected completion by October.\n\nHow's Thursday at 2pm CT for a call?\n\nBest,\nJordan Chen\nCo-founder, CarbonSense",
+          "score": 0.3819,
+          "metadata": {
+            "timestamp": "2024-07-01T09:00:00",
+            "session_id": "1",
+            "turn_index": 8,
+            "role": "user"
+          }
+        },
+        {
+          "content": "Subject: Re: CarbonSense Pilot Proposal\n\nHi Jordan,\n\nThanks for sending over the technical specs. Our sustainability team reviewed the proposal and we're impressed with the scope 1 accuracy numbers. We'd like to move forward with a 90-day pilot starting August 1st.\n\nA few questions:\n1. Can the system integrate with our existing SAP ERP?\n2. What's the data refresh frequency?\n3. Do you have SOC 2 compliance?\n\nLet's schedule a call this week.\n\nBest,\nMaria Gonzalez\nVP Sustainability, Meridian Steel",
+          "score": 0.3736,
+          "metadata": {
+            "turn_index": 6,
+            "role": "user",
+            "session_id": "1",
+            "timestamp": "2024-07-01T09:00:00"
+          }
+        },
+        {
+          "content": "[Note] Startup Ideas Brainstorm \u2014 July 2024\n- Carbon tracking for manufacturers (DOING THIS)\n- AI-powered energy audit tool\n- Supply chain transparency platform\n- Climate risk scoring for real estate\nDev says carbon tracking is most viable. Has the most clear regulatory tailwind.",
+          "score": 0.3681,
+          "metadata": {
+            "timestamp": "2024-07-01T09:00:00",
+            "turn_index": 2,
+            "session_id": "1",
+            "role": "user"
+          }
+        },
+        {
+          "content": "no lol the opposite. i want to quit. to go full time on carbonsense with dev",
+          "score": 0.3496,
+          "metadata": {
+            "session_id": "5",
+            "timestamp": "2024-07-10T15:30:00",
+            "turn_index": 5,
+            "role": "user"
+          }
+        },
+        {
+          "content": "[OCR: Screenshot] Slack DM from Dev Patel\n\"just confirmed \u2014 meridian steel, lone star cement, and gulf coast plastics all want pilots. that's 3 paid pilots before we even launch. we should incorporate ASAP. talked to my lawyer, delaware c-corp is the way to go for vc fundraising later\"",
+          "score": 0.3216,
+          "metadata": {
+            "role": "user",
+            "session_id": "1",
+            "timestamp": "2024-07-01T09:00:00",
+            "turn_index": 12
+          }
+        },
+        {
+          "content": "scope 2 is at 87.6% but i think we can get it above 90 if we integrate the EPA eGRID dataset",
+          "score": 0.3109,
+          "metadata": {
+            "role": "user",
+            "turn_index": 2,
+            "timestamp": "2024-07-08T10:00:00",
+            "session_id": "4"
+          }
+        },
+        {
+          "content": "[OCR: Receipt] HEB Mueller \u2014 Date: 07/14/2024\nGorilla Mode Pre-Workout $44.99\nChicken breast 3lb $12.49\nBrown rice 5lb $6.99\nBroccoli crowns $3.49\nGreek yogurt x4 $7.96\nBiscuit's dog food (Blue Buffalo) $52.99\nTotal: $128.91\nPayment: Visa ending 4821",
+          "score": 0.2757,
+          "metadata": {
+            "session_id": "1",
+            "turn_index": 4,
+            "timestamp": "2024-07-01T09:00:00",
+            "role": "user"
+          }
+        },
+        {
+          "content": "dev i ran the prototype against the pilot data from meridian steel. accuracy is 94.2% on scope 1 emissions",
+          "score": 0.2698,
+          "metadata": {
+            "timestamp": "2024-07-08T10:00:00",
+            "role": "user",
+            "turn_index": 0,
+            "session_id": "4"
+          }
+        },
+        {
+          "content": "carbon emissions tracking for manufacturing. like a fitbit for factories. dev and i have been building it nights and weekends for 6 months",
+          "score": 0.2679,
+          "metadata": {
+            "timestamp": "2024-07-05T21:00:00",
+            "role": "user",
+            "turn_index": 2,
+            "session_id": "3"
+          }
+        }
+      ]
+    },
+    {
+      "query_id": 3,
+      "query": "What is Jordan's half marathon finish time?",
+      "category": "single_hop_fact",
+      "expected": "1:52:34 at the Austin Half Marathon on April 6, 2025.",
+      "scoring_notes": "HIT requires exact time. PARTIAL if event is correct but time is wrong.",
+      "hit_criteria": "States 1:52:34.",
+      "partial_criteria": "Mentions Austin Half Marathon or approximate time but not exact.",
+      "num_results": 10,
+      "elapsed_seconds": 0.007,
+      "results": [
+        {
+          "content": "lily told me: \"omg jordan!! what kind of company? are you sure??\"",
+          "score": 0.2473,
+          "metadata": {
+            "role": "user",
+            "timestamp": "2024-07-05T21:00:00",
+            "session_id": "3",
+            "turn_index": 1
+          }
+        },
+        {
+          "content": "sam told me: \"yeah dude barton springs beer garden? 7pm?\"",
+          "score": 0.2157,
+          "metadata": {
+            "session_id": "2",
+            "timestamp": "2024-07-03T18:30:00",
+            "role": "user",
+            "turn_index": 1
+          }
+        },
+        {
+          "content": "I've recorded all 11 items from 2024-07. Let me know if you need to look anything up.",
+          "score": 0.1572,
+          "metadata": {
+            "turn_index": 18,
+            "timestamp": "2024-07-01T09:00:00",
+            "role": "assistant",
+            "session_id": "1"
+          }
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.1333,
+          "metadata": {
+            "role": "assistant",
+            "turn_index": 3,
+            "timestamp": "2024-07-03T18:30:00",
+            "session_id": "2"
+          }
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.1333,
+          "metadata": {
+            "turn_index": 6,
+            "session_id": "2",
+            "timestamp": "2024-07-03T18:30:00",
+            "role": "assistant"
+          }
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.1333,
+          "metadata": {
+            "timestamp": "2024-07-10T15:30:00",
+            "turn_index": 6,
+            "role": "assistant",
+            "session_id": "5"
+          }
+        },
+        {
+          "content": "[OCR: Receipt] HEB Mueller \u2014 Date: 07/14/2024\nGorilla Mode Pre-Workout $44.99\nChicken breast 3lb $12.49\nBrown rice 5lb $6.99\nBroccoli crowns $3.49\nGreek yogurt x4 $7.96\nBiscuit's dog food (Blue Buffalo) $52.99\nTotal: $128.91\nPayment: Visa ending 4821",
+          "score": 0.1217,
+          "metadata": {
+            "turn_index": 4,
+            "role": "user",
+            "session_id": "1",
+            "timestamp": "2024-07-01T09:00:00"
+          }
+        },
+        {
+          "content": "Subject: Two weeks notice\n\nHi David,\n\nI'm writing to formally submit my resignation from Dataflux, effective July 29th. The past three years have been an incredible learning experience and I'm grateful for the mentorship and opportunities.\n\nI'm leaving to pursue a startup in the climate-tech space. I'll make sure all my projects are properly transitioned during my remaining time.\n\nThank you for everything.\n\nBest regards,\nJordan Chen",
+          "score": 0.1032,
+          "metadata": {
+            "session_id": "1",
+            "timestamp": "2024-07-01T09:00:00",
+            "role": "user",
+            "turn_index": 10
+          }
+        },
+        {
+          "content": "Subject: Re: Re: CarbonSense Pilot Proposal\n\nHi Maria,\n\nGreat news! Here are answers:\n\n1. Yes \u2014 we have an SAP connector in beta. It pulls from the MM and PP modules for materials and production data.\n2. Currently every 15 minutes via API polling. We're building real-time streaming for Q4.\n3. Not yet \u2014 we're starting the SOC 2 Type 1 process this month. Expected completion by October.\n\nHow's Thursday at 2pm CT for a call?\n\nBest,\nJordan Chen\nCo-founder, CarbonSense",
+          "score": 0.0935,
+          "metadata": {
+            "session_id": "1",
+            "timestamp": "2024-07-01T09:00:00",
+            "role": "user",
+            "turn_index": 8
+          }
+        },
+        {
+          "content": "scope 2 is at 87.6% but i think we can get it above 90 if we integrate the EPA eGRID dataset",
+          "score": 0.0868,
+          "metadata": {
+            "timestamp": "2024-07-08T10:00:00",
+            "role": "user",
+            "session_id": "4",
+            "turn_index": 2
+          }
+        }
+      ]
+    },
+    {
+      "query_id": 4,
+      "query": "What was the scope 1 accuracy on the Meridian Steel pilot?",
+      "category": "single_hop_fact",
+      "expected": "96.1% (initially projected 90%, exceeded expectations).",
+      "scoring_notes": "HIT requires 96.1%. PARTIAL if close but wrong number.",
+      "hit_criteria": "States 96.1%.",
+      "partial_criteria": "Mentions Meridian Steel pilot with an approximate but incorrect accuracy number (e.g. 95% or 96%).",
+      "num_results": 10,
+      "elapsed_seconds": 0.03,
+      "results": [
+        {
+          "content": "dev i ran the prototype against the pilot data from meridian steel. accuracy is 94.2% on scope 1 emissions",
+          "score": 0.7056,
+          "metadata": {
+            "timestamp": "2024-07-08T10:00:00",
+            "turn_index": 0,
+            "session_id": "4",
+            "role": "user"
+          }
+        },
+        {
+          "content": "scope 2 is at 87.6% but i think we can get it above 90 if we integrate the EPA eGRID dataset",
+          "score": 0.403,
+          "metadata": {
+            "timestamp": "2024-07-08T10:00:00",
+            "turn_index": 2,
+            "session_id": "4",
+            "role": "user"
+          }
+        },
+        {
+          "content": "dev told me: \"nice. what about scope 2? that's where the grid data gets messy\"",
+          "score": 0.3877,
+          "metadata": {
+            "session_id": "4",
+            "turn_index": 1,
+            "role": "user",
+            "timestamp": "2024-07-08T10:00:00"
+          }
+        },
+        {
+          "content": "Subject: Re: CarbonSense Pilot Proposal\n\nHi Jordan,\n\nThanks for sending over the technical specs. Our sustainability team reviewed the proposal and we're impressed with the scope 1 accuracy numbers. We'd like to move forward with a 90-day pilot starting August 1st.\n\nA few questions:\n1. Can the system integrate with our existing SAP ERP?\n2. What's the data refresh frequency?\n3. Do you have SOC 2 compliance?\n\nLet's schedule a call this week.\n\nBest,\nMaria Gonzalez\nVP Sustainability, Meridian Steel",
+          "score": 0.3492,
+          "metadata": {
+            "timestamp": "2024-07-01T09:00:00",
+            "session_id": "1",
+            "role": "user",
+            "turn_index": 6
+          }
+        },
+        {
+          "content": "[OCR: Screenshot] Slack DM from Dev Patel\n\"just confirmed \u2014 meridian steel, lone star cement, and gulf coast plastics all want pilots. that's 3 paid pilots before we even launch. we should incorporate ASAP. talked to my lawyer, delaware c-corp is the way to go for vc fundraising later\"",
+          "score": 0.2362,
+          "metadata": {
+            "turn_index": 12,
+            "session_id": "1",
+            "role": "user",
+            "timestamp": "2024-07-01T09:00:00"
+          }
+        },
+        {
+          "content": "I've recorded all 11 items from 2024-07. Let me know if you need to look anything up.",
+          "score": 0.1765,
+          "metadata": {
+            "timestamp": "2024-07-01T09:00:00",
+            "session_id": "1",
+            "role": "assistant",
+            "turn_index": 18
+          }
+        },
+        {
+          "content": "perfect. been thinking about leaving dataflux to go full time on this carbon tracking thing",
+          "score": 0.1603,
+          "metadata": {
+            "role": "user",
+            "session_id": "2",
+            "timestamp": "2024-07-03T18:30:00",
+            "turn_index": 2
+          }
+        },
+        {
+          "content": "dev is in. he quit oracle last week. we have a working prototype and three companies want to pilot it",
+          "score": 0.1401,
+          "metadata": {
+            "role": "user",
+            "session_id": "2",
+            "timestamp": "2024-07-03T18:30:00",
+            "turn_index": 5
+          }
+        },
+        {
+          "content": "sam told me: \"wait for real? you've been talking about this for months. what changed?\"",
+          "score": 0.1337,
+          "metadata": {
+            "role": "user",
+            "timestamp": "2024-07-03T18:30:00",
+            "session_id": "2",
+            "turn_index": 4
+          }
+        },
+        {
+          "content": "no lol the opposite. i want to quit. to go full time on carbonsense with dev",
+          "score": 0.1324,
+          "metadata": {
+            "timestamp": "2024-07-10T15:30:00",
+            "turn_index": 5,
+            "session_id": "5",
+            "role": "user"
+          }
+        }
+      ]
+    },
+    {
+      "query_id": 5,
+      "query": "What is the address of Jordan's new house?",
+      "category": "single_hop_fact",
+      "expected": "2847 Chicon St, Austin TX 78702. 4 bed/2 bath, $495,000, closed October 15, 2025.",
+      "scoring_notes": "HIT requires street address. PARTIAL if neighborhood or price only.",
+      "hit_criteria": "States 2847 Chicon St.",
+      "partial_criteria": "Mentions East Austin or purchase price without exact address.",
+      "num_results": 10,
+      "elapsed_seconds": 0.033,
+      "results": [
+        {
+          "content": "lily told me: \"omg jordan!! what kind of company? are you sure??\"",
+          "score": 0.4717,
+          "metadata": {
+            "session_id": "3",
+            "turn_index": 1,
+            "role": "user",
+            "timestamp": "2024-07-05T21:00:00"
+          }
+        },
+        {
+          "content": "sam told me: \"yeah dude barton springs beer garden? 7pm?\"",
+          "score": 0.2701,
+          "metadata": {
+            "session_id": "2",
+            "timestamp": "2024-07-03T18:30:00",
+            "turn_index": 1,
+            "role": "user"
+          }
+        },
+        {
+          "content": "[OCR: Document] State of Delaware \u2014 Certificate of Incorporation\nCarbonSense Inc.\nIncorporated: July 25, 2024\nRegistered Agent: Harvard Business Services, Inc.\nAuthorized Shares: 10,000,000 Common\nIncorporator: Jordan Chen\nFile Number: 7892341",
+          "score": 0.2118,
+          "metadata": {
+            "timestamp": "2024-07-01T09:00:00",
+            "turn_index": 16,
+            "session_id": "1",
+            "role": "user"
+          }
+        },
+        {
+          "content": "riley told me: \"already got him! he looks so fluffy. sending pics\"",
+          "score": 0.1601,
+          "metadata": {
+            "turn_index": 1,
+            "timestamp": "2024-07-10T15:30:00",
+            "session_id": "5",
+            "role": "user"
+          }
+        },
+        {
+          "content": "sam told me: \"wait for real? you've been talking about this for months. what changed?\"",
+          "score": 0.1524,
+          "metadata": {
+            "session_id": "2",
+            "turn_index": 4,
+            "timestamp": "2024-07-03T18:30:00",
+            "role": "user"
+          }
+        },
+        {
+          "content": "omg his little face \ud83d\ude02 also riley i want to talk tonight about something important. about work",
+          "score": 0.1384,
+          "metadata": {
+            "turn_index": 2,
+            "role": "user",
+            "session_id": "5",
+            "timestamp": "2024-07-10T15:30:00"
+          }
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.1269,
+          "metadata": {
+            "timestamp": "2024-07-03T18:30:00",
+            "session_id": "2",
+            "turn_index": 3,
+            "role": "assistant"
+          }
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.1269,
+          "metadata": {
+            "role": "assistant",
+            "timestamp": "2024-07-03T18:30:00",
+            "session_id": "2",
+            "turn_index": 6
+          }
+        },
+        {
+          "content": "That's a big decision. What's driving this?",
+          "score": 0.1269,
+          "metadata": {
+            "role": "assistant",
+            "turn_index": 6,
+            "session_id": "5",
+            "timestamp": "2024-07-10T15:30:00"
+          }
+        },
+        {
+          "content": "Hey, I want to share some documents and notes from 2024-07. Can you remember these?",
+          "score": 0.1267,
+          "metadata": {
+            "session_id": "1",
+            "timestamp": "2024-07-01T09:00:00",
+            "role": "user",
+            "turn_index": 0
+          }
+        }
+      ]
+    }
+  ]
+}

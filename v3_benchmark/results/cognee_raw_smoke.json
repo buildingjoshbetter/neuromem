@@ -1,0 +1,82 @@
+{
+  "system": "Cognee",
+  "version": "0.5.5",
+  "architecture": "Knowledge graph + LLM extraction (multi-hop reasoning)",
+  "status": "COMPLETED",
+  "dataset": "5 sessions",
+  "num_queries": 5,
+  "timing": {
+    "setup_seconds": 2.0,
+    "ingest_seconds": 2.4,
+    "total_query_seconds": 0.9,
+    "avg_query_ms": 179.2
+  },
+  "ingest_stats": {
+    "ingested": 0,
+    "errors": 6,
+    "elapsed_seconds": 2.4
+  },
+  "system_stats": {},
+  "results": [
+    {
+      "query_id": 1,
+      "query": "What is the name of Jordan's dog?",
+      "category": "single_hop_fact",
+      "expected": "Biscuit, a Pembroke Welsh Corgi, born March 15, 2023.",
+      "scoring_notes": "HIT requires name + breed. PARTIAL if only name.",
+      "hit_criteria": "Names Biscuit AND identifies breed as Pembroke Welsh Corgi.",
+      "partial_criteria": "Names Biscuit but missing breed, or gets breed but not name.",
+      "num_results": 0,
+      "elapsed_seconds": 0.757,
+      "results": []
+    },
+    {
+      "query_id": 2,
+      "query": "How much funding did CarbonSense raise in the seed round?",
+      "category": "single_hop_fact",
+      "expected": "$1.5M from Elevation Ventures at a $10M post-money valuation.",
+      "scoring_notes": "HIT requires amount + source. PARTIAL if only amount.",
+      "hit_criteria": "States $1.5M AND Elevation Ventures.",
+      "partial_criteria": "States $1.5M but not the investor, or names Elevation without the amount.",
+      "num_results": 0,
+      "elapsed_seconds": 0.037,
+      "results": []
+    },
+    {
+      "query_id": 3,
+      "query": "What is Jordan's half marathon finish time?",
+      "category": "single_hop_fact",
+      "expected": "1:52:34 at the Austin Half Marathon on April 6, 2025.",
+      "scoring_notes": "HIT requires exact time. PARTIAL if event is correct but time is wrong.",
+      "hit_criteria": "States 1:52:34.",
+      "partial_criteria": "Mentions Austin Half Marathon or approximate time but not exact.",
+      "num_results": 0,
+      "elapsed_seconds": 0.035,
+      "results": []
+    },
+    {
+      "query_id": 4,
+      "query": "What was the scope 1 accuracy on the Meridian Steel pilot?",
+      "category": "single_hop_fact",
+      "expected": "96.1% (initially projected 90%, exceeded expectations).",
+      "scoring_notes": "HIT requires 96.1%. PARTIAL if close but wrong number.",
+      "hit_criteria": "States 96.1%.",
+      "partial_criteria": "Mentions Meridian Steel pilot with an approximate but incorrect accuracy number (e.g. 95% or 96%).",
+      "num_results": 0,
+      "elapsed_seconds": 0.032,
+      "results": []
+    },
+    {
+      "query_id": 5,
+      "query": "What is the address of Jordan's new house?",
+      "category": "single_hop_fact",
+      "expected": "2847 Chicon St, Austin TX 78702. 4 bed/2 bath, $495,000, closed October 15, 2025.",
+      "scoring_notes": "HIT requires street address. PARTIAL if neighborhood or price only.",
+      "hit_criteria": "States 2847 Chicon St.",
+      "partial_criteria": "Mentions East Austin or purchase price without exact address.",
+      "num_results": 0,
+      "elapsed_seconds": 0.035,
+      "results": []
+    }
+  ]
+}

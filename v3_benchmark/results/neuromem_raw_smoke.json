@@ -1,0 +1,720 @@
+{
+  "system": "Neuromem",
+  "version": "1.0.0",
+  "architecture": "6-layer memory (FTS5 + Model2Vec RRF + personality + salience + consolidation)",
+  "status": "COMPLETED",
+  "dataset": "5 sessions",
+  "num_queries": 5,
+  "timing": {
+    "setup_seconds": 0.0,
+    "ingest_seconds": 0.0,
+    "total_query_seconds": 0.0,
+    "avg_query_ms": 1.1
+  },
+  "ingest_stats": {
+    "ingested": 35,
+    "errors": 0,
+    "elapsed_seconds": 0.018,
+    "neuromem_stats": {
+      "create_db": "0.005s",
+      "load_messages": "35 messages in 0.001s",
+      "build_vectors": "ERROR: No module named 'sqlite_vec'",
+      "build_profiles": "0.003s",
+      "extract_preferences": "0.001s",
+      "build_summaries": "0.002s",
+      "detect_contradictions": "0.001s",
+      "build_surprise_index": "0.005s"
+    }
+  },
+  "system_stats": {
+    "message_count": 35,
+    "capabilities": {
+      "fts5": true,
+      "vector_search": false,
+      "hybrid_rrf": false,
+      "temporal": true,
+      "salience": true,
+      "personality": true,
+      "consolidation": true,
+      "predictive": true
+    },
+    "db_size_kb": 4.0,
+    "layers": {
+      "fts5": true,
+      "vector_search": false,
+      "hybrid_rrf": false,
+      "temporal": true,
+      "salience": true,
+      "personality": true,
+      "consolidation": true,
+      "predictive": true
+    }
+  },
+  "results": [
+    {
+      "query_id": 1,
+      "query": "What is the name of Jordan's dog?",
+      "category": "single_hop_fact",
+      "expected": "Biscuit, a Pembroke Welsh Corgi, born March 15, 2023.",
+      "scoring_notes": "HIT requires name + breed. PARTIAL if only name.",
+      "hit_criteria": "Names Biscuit AND identifies breed as Pembroke Welsh Corgi.",
+      "partial_criteria": "Names Biscuit but missing breed, or gets breed but not name.",
+      "num_results": 10,
+      "elapsed_seconds": 0.003,
+      "results": [
+        {
+          "content": "Great name. What's the plan for the first month after you leave Dataflux?",
+          "score": 1.0,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-16T20:10:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 20
+          }
+        },
+        {
+          "content": "Dev quitting Oracle is a big commitment signal. With your savings you have roughly 18-20 months of runway if you're careful. What about Riley's income?",
+          "score": 0.5467159529171814,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-05T19:10:00",
+            "category": "session_2",
+            "source": "fts",
+            "message_id": 13
+          }
+        },
+        {
+          "content": "Six months of building already puts you way ahead. The carbon tracking idea seems most viable since you have a working prototype. What does it actually do?",
+          "score": 0.5325167190483886,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-01T09:06:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 4
+          }
+        },
+        {
+          "content": "Three paid pilots before incorporation is exceptional. What are you calling the company?",
+          "score": 0.35219886700956726,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-16T20:06:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 18
+          }
+        },
+        {
+          "content": "first week as founders. working out of dev's apartment. my morning routine is wake 6am, meditate 10 min with headspace, gym or run, breakfast (usually overnight oats or eggs), work by 8:30",
+          "score": 0.3234073328728281,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-05T21:00:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 22
+          }
+        },
+        {
+          "content": "working on getting back to squatting 315 by end of summer. bench was stuck at 225 for months but i just broke through to 235 using pause reps and close-grip sets. creatine is definitely helping",
+          "score": 0.3147296773604584,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-20T19:04:00",
+            "category": "session_5",
+            "source": "fts",
+            "message_id": 31
+          }
+        },
+        {
+          "content": "honestly i'm sleeping 5-6 hours and freaking out about money. no revenue yet, $3k in unexpected legal fees. riley is supportive but i can tell she's worried. sam keeps telling me to breathe and that first 6 months of any startup is pure grind",
+          "score": 0.30201712591713875,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-20T19:08:00",
+            "category": "session_5",
+            "source": "fts",
+            "message_id": 33
+          }
+        },
+        {
+          "content": "The eGRID integration could be a differentiator. What about scope 3?",
+          "score": 0.2696987458465511,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-05T21:10:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 27
+          }
+        },
+        {
+          "content": "Three pilot commitments before you've even launched is a strong signal. That's rare. What companies?",
+          "score": 0.2663453425996461,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-01T09:10:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 6
+          }
+        },
+        {
+          "content": "That's a mature security setup for a two-person startup. What about the actual data accuracy?",
+          "score": 0.24107324324923718,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-05T21:06:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 25
+          }
+        }
+      ]
+    },
+    {
+      "query_id": 2,
+      "query": "How much funding did CarbonSense raise in the seed round?",
+      "category": "single_hop_fact",
+      "expected": "$1.5M from Elevation Ventures at a $10M post-money valuation.",
+      "scoring_notes": "HIT requires amount + source. PARTIAL if only amount.",
+      "hit_criteria": "States $1.5M AND Elevation Ventures.",
+      "partial_criteria": "States $1.5M but not the investor, or names Elevation without the amount.",
+      "num_results": 10,
+      "elapsed_seconds": 0.001,
+      "results": [
+        {
+          "content": "she'll have a stipend from UT, about $28k/year. not much but it helps. also we have biscuit \u2014 he's our corgi, pembroke welsh corgi, born march 15 2023. gotta factor in vet bills and blue buffalo food lol",
+          "score": 1.0,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-07-05T19:12:00",
+            "category": "session_2",
+            "source": "fts",
+            "message_id": 14
+          }
+        },
+        {
+          "content": "yeah jake also called out my deadlift form \u2014 rounding my lower back. dropped the weight to fix it. also marcus johnson from the gym does olympic lifts, 225 clean and jerk. he's a beast. jake introduced us",
+          "score": 0.7627814914623516,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-20T19:12:00",
+            "category": "session_5",
+            "source": "fts",
+            "message_id": 35
+          }
+        },
+        {
+          "content": "Nice progress. How's the stress level with the startup?",
+          "score": 0.6458737263874313,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-20T19:06:00",
+            "category": "session_5",
+            "source": "fts",
+            "message_id": 32
+          }
+        },
+        {
+          "content": "set up infrastructure with dev, start the meridian steel pilot deployment, get the carbonsense.io domain running. dev already has github actions CI/CD, terraform for AWS, react 18 with typescript and vite frontend. we're using ECS on AWS",
+          "score": 0.6202897564578115,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-07-16T20:12:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 21
+          }
+        },
+        {
+          "content": "How's Riley feeling about the idea? That's usually the most important conversation.",
+          "score": 0.6034398507916796,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-05T19:02:00",
+            "category": "session_2",
+            "source": "fts",
+            "message_id": 9
+          }
+        },
+        {
+          "content": "Good that you're establishing routines early. How's the pilot deployment going?",
+          "score": 0.5866026722785355,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-05T21:02:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 23
+          }
+        },
+        {
+          "content": "CarbonSense. actually it was riley's idea. we almost called it EmissionIQ but she said 'it should sound like common sense for carbon.' brilliant. we're incorporating july 25 as a delaware c-corp",
+          "score": 0.5700769396404121,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-07-16T20:08:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 19
+          }
+        },
+        {
+          "content": "That takes courage. How are you feeling?",
+          "score": 0.5543920842933994,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-16T20:02:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 16
+          }
+        },
+        {
+          "content": "Creatine is well-supported by research. How are your lifts going?",
+          "score": 0.5130542579694356,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-20T19:02:00",
+            "category": "session_5",
+            "source": "fts",
+            "message_id": 30
+          }
+        },
+        {
+          "content": "it's like a fitbit for factories. monitors scope 1 and scope 2 emissions in near real-time. dev says carbon tracking has the most clear regulatory tailwind. we already have three companies interested in piloting it",
+          "score": 0.5125389687205982,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-07-01T09:08:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 5
+          }
+        }
+      ]
+    },
+    {
+      "query_id": 3,
+      "query": "What is Jordan's half marathon finish time?",
+      "category": "single_hop_fact",
+      "expected": "1:52:34 at the Austin Half Marathon on April 6, 2025.",
+      "scoring_notes": "HIT requires exact time. PARTIAL if event is correct but time is wrong.",
+      "hit_criteria": "States 1:52:34.",
+      "partial_criteria": "Mentions Austin Half Marathon or approximate time but not exact.",
+      "num_results": 10,
+      "elapsed_seconds": 0.001,
+      "results": [
+        {
+          "content": "it's like a fitbit for factories. monitors scope 1 and scope 2 emissions in near real-time. dev says carbon tracking has the most clear regulatory tailwind. we already have three companies interested in piloting it",
+          "score": 1.0,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-07-01T09:08:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 5
+          }
+        },
+        {
+          "content": "Three paid pilots before incorporation is exceptional. What are you calling the company?",
+          "score": 0.5723562773900699,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-16T20:06:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 18
+          }
+        },
+        {
+          "content": "Three pilot commitments before you've even launched is a strong signal. That's rare. What companies?",
+          "score": 0.5291635593774335,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-01T09:10:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 6
+          }
+        },
+        {
+          "content": "Dev quitting Oracle is a big commitment signal. With your savings you have roughly 18-20 months of runway if you're careful. What about Riley's income?",
+          "score": 0.433376553816287,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-05T19:10:00",
+            "category": "session_2",
+            "source": "fts",
+            "message_id": 13
+          }
+        },
+        {
+          "content": "What's your financial cushion look like?",
+          "score": 0.4282632047145196,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-05T19:06:00",
+            "category": "session_2",
+            "source": "fts",
+            "message_id": 11
+          }
+        },
+        {
+          "content": "The eGRID integration could be a differentiator. What about scope 3?",
+          "score": 0.3903146892067277,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-05T21:10:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 27
+          }
+        },
+        {
+          "content": "Great name. What's the plan for the first month after you leave Dataflux?",
+          "score": 0.3649913273531732,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-16T20:10:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 20
+          }
+        },
+        {
+          "content": "That's a mature security setup for a two-person startup. What about the actual data accuracy?",
+          "score": 0.3419531619235693,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-05T21:06:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 25
+          }
+        },
+        {
+          "content": "Those are all in the climate-tech space, which has strong regulatory tailwinds right now. What's your background that connects to these?",
+          "score": 0.30159752818207397,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-01T09:02:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 2
+          }
+        },
+        {
+          "content": "Six months of building already puts you way ahead. The carbon tracking idea seems most viable since you have a working prototype. What does it actually do?",
+          "score": 0.2782111140518098,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-01T09:06:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 4
+          }
+        }
+      ]
+    },
+    {
+      "query_id": 4,
+      "query": "What was the scope 1 accuracy on the Meridian Steel pilot?",
+      "category": "single_hop_fact",
+      "expected": "96.1% (initially projected 90%, exceeded expectations).",
+      "scoring_notes": "HIT requires 96.1%. PARTIAL if close but wrong number.",
+      "hit_criteria": "States 96.1%.",
+      "partial_criteria": "Mentions Meridian Steel pilot with an approximate but incorrect accuracy number (e.g. 95% or 96%).",
+      "num_results": 10,
+      "elapsed_seconds": 0.001,
+      "results": [
+        {
+          "content": "scope 1 accuracy was 94.2% initially but the prototype is running against meridian's production data now. scope 2 is at 87.6% \u2014 dev thinks we can get above 90 if we integrate the EPA eGRID dataset",
+          "score": 1.0,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-05T21:08:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 26
+          }
+        },
+        {
+          "content": "set up infrastructure with dev, start the meridian steel pilot deployment, get the carbonsense.io domain running. dev already has github actions CI/CD, terraform for AWS, react 18 with typescript and vite frontend. we're using ECS on AWS",
+          "score": 0.7348194748063187,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-07-16T20:12:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 21
+          }
+        },
+        {
+          "content": "meridian pilot is deployed on ECS with RDS postgres. dev set up VPC with private subnets, encryption at rest AES-256, TLS 1.3, IAM roles with least privilege. security is solid",
+          "score": 0.5586245861271192,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-05T21:04:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 24
+          }
+        },
+        {
+          "content": "meridian steel, lone star cement, and gulf coast plastics. all texas manufacturers. dev's lawyer said we should incorporate as a delaware c-corp for VC fundraising later",
+          "score": 0.5176949940207829,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-07-01T09:12:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 7
+          }
+        },
+        {
+          "content": "it's like a fitbit for factories. monitors scope 1 and scope 2 emissions in near real-time. dev says carbon tracking has the most clear regulatory tailwind. we already have three companies interested in piloting it",
+          "score": 0.5077245125451597,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-07-01T09:08:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 5
+          }
+        },
+        {
+          "content": "That's a mature security setup for a two-person startup. What about the actual data accuracy?",
+          "score": 0.4586046701861394,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-05T21:06:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 25
+          }
+        },
+        {
+          "content": "The eGRID integration could be a differentiator. What about scope 3?",
+          "score": 0.42159742262845373,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-05T21:10:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 27
+          }
+        },
+        {
+          "content": "Three pilot commitments before you've even launched is a strong signal. That's rare. What companies?",
+          "score": 0.3432766328232832,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-01T09:10:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 6
+          }
+        },
+        {
+          "content": "working on getting back to squatting 315 by end of summer. bench was stuck at 225 for months but i just broke through to 235 using pause reps and close-grip sets. creatine is definitely helping",
+          "score": 0.3430870702665025,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-20T19:04:00",
+            "category": "session_5",
+            "source": "fts",
+            "message_id": 31
+          }
+        },
+        {
+          "content": "Three paid pilots before incorporation is exceptional. What are you calling the company?",
+          "score": 0.32580412372635115,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-16T20:06:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 18
+          }
+        }
+      ]
+    },
+    {
+      "query_id": 5,
+      "query": "What is the address of Jordan's new house?",
+      "category": "single_hop_fact",
+      "expected": "2847 Chicon St, Austin TX 78702. 4 bed/2 bath, $495,000, closed October 15, 2025.",
+      "scoring_notes": "HIT requires street address. PARTIAL if neighborhood or price only.",
+      "hit_criteria": "States 2847 Chicon St.",
+      "partial_criteria": "Mentions East Austin or purchase price without exact address.",
+      "num_results": 10,
+      "elapsed_seconds": 0.001,
+      "results": [
+        {
+          "content": "Dev quitting Oracle is a big commitment signal. With your savings you have roughly 18-20 months of runway if you're careful. What about Riley's income?",
+          "score": 1.0,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-05T19:10:00",
+            "category": "session_2",
+            "source": "fts",
+            "message_id": 13
+          }
+        },
+        {
+          "content": "Six months of building already puts you way ahead. The carbon tracking idea seems most viable since you have a working prototype. What does it actually do?",
+          "score": 0.9740281332691534,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-01T09:06:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 4
+          }
+        },
+        {
+          "content": "Three paid pilots before incorporation is exceptional. What are you calling the company?",
+          "score": 0.6442081397667202,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-16T20:06:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 18
+          }
+        },
+        {
+          "content": "first week as founders. working out of dev's apartment. my morning routine is wake 6am, meditate 10 min with headspace, gym or run, breakfast (usually overnight oats or eggs), work by 8:30",
+          "score": 0.5915454472238878,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-05T21:00:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 22
+          }
+        },
+        {
+          "content": "working on getting back to squatting 315 by end of summer. bench was stuck at 225 for months but i just broke through to 235 using pause reps and close-grip sets. creatine is definitely helping",
+          "score": 0.575673118154163,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-20T19:04:00",
+            "category": "session_5",
+            "source": "fts",
+            "message_id": 31
+          }
+        },
+        {
+          "content": "honestly i'm sleeping 5-6 hours and freaking out about money. no revenue yet, $3k in unexpected legal fees. riley is supportive but i can tell she's worried. sam keeps telling me to breathe and that first 6 months of any startup is pure grind",
+          "score": 0.5524205472798586,
+          "metadata": {
+            "sender": "jordan",
+            "recipient": "assistant",
+            "timestamp": "2024-08-20T19:08:00",
+            "category": "session_5",
+            "source": "fts",
+            "message_id": 33
+          }
+        },
+        {
+          "content": "Great name. What's the plan for the first month after you leave Dataflux?",
+          "score": 0.5013515789780277,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-16T20:10:00",
+            "category": "session_3",
+            "source": "fts",
+            "message_id": 20
+          }
+        },
+        {
+          "content": "The eGRID integration could be a differentiator. What about scope 3?",
+          "score": 0.4933068889017879,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-05T21:10:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 27
+          }
+        },
+        {
+          "content": "Three pilot commitments before you've even launched is a strong signal. That's rare. What companies?",
+          "score": 0.48717316767230506,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-07-01T09:10:00",
+            "category": "session_1",
+            "source": "fts",
+            "message_id": 6
+          }
+        },
+        {
+          "content": "That's a mature security setup for a two-person startup. What about the actual data accuracy?",
+          "score": 0.4409478852097002,
+          "metadata": {
+            "sender": "assistant",
+            "recipient": "jordan",
+            "timestamp": "2024-08-05T21:06:00",
+            "category": "session_4",
+            "source": "fts",
+            "message_id": 25
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "system": "Neuromem",
+  "version": "2.0.0",
+  "benchmark": "LoCoMo",
+  "search_mode": "agentic",
+  "top_k": 25,
+  "conversations_tested": 1,
+  "total_qa_pairs": 152,
+  "total_turns": 419,
+  "avg_recall_at_k": 0.5866,
+  "avg_content_overlap": 0.5483,
+  "per_conversation": [
+    {
+      "conversation": "conv-26",
+      "overall_recall_at_k": 0.5866,
+      "overall_content_overlap": 0.5483,
+      "total_questions": 152,
+      "top_k": 25,
+      "by_category": {
+        "single_hop": {
+          "count": 32,
+          "avg_recall_at_k": 0.2552,
+          "avg_content_overlap": 0.3961,
+          "avg_query_ms": 1906.0
+        },
+        "multi_hop": {
+          "count": 37,
+          "avg_recall_at_k": 0.8378,
+          "avg_content_overlap": 0.482,
+          "avg_query_ms": 1546.6
+        },
+        "temporal": {
+          "count": 13,
+          "avg_recall_at_k": 0.1923,
+          "avg_content_overlap": 0.2732,
+          "avg_query_ms": 1827.8
+        },
+        "open_domain": {
+          "count": 70,
+          "avg_recall_at_k": 0.6786,
+          "avg_content_overlap": 0.7039,
+          "avg_query_ms": 1956.7
+        }
+      }
+    }
+  ]
+}

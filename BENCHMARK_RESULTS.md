@@ -113,16 +113,46 @@ Our custom benchmark covering factual recall, temporal reasoning, personality un
 
 ---
 
+## Prompt Fairness Verification
+
+We discovered the two systems used different answer prompts (EverMemOS: 380-word CoT, Neuromem: 80-word simple). To verify the gap wasn't from prompt engineering, we re-ran both systems with an identical neutral prompt using the same search results.
+
+| Experiment | Neuromem | EverMemOS | Gap |
+|---|---|---|---|
+| Original (own prompts) | 72.34% | 92.77% | 20.4 pp |
+| Identical neutral prompt | 66.10% | 86.88% | 20.8 pp |
+
+Each system's custom prompt helped it by ~6 points. The gap stayed at ~20 points regardless. **The gap is retrieval quality, not prompt engineering.**
+
+---
+
+## Failure Analysis (357 questions)
+
+We analyzed the 357 questions where Neuromem failed but EverMemOS succeeded:
+
+| Root Cause | % of Failures | Description |
+|---|---|---|
+| Retrieval miss | 30% | Search didn't find the relevant message at all |
+| Temporal | 25% | Failed to resolve time references ("when", "how long ago") |
+| Multi-hop | 19% | Needed to connect 2+ separate messages |
+| Insufficient detail | 16% | Found the right area, missed specific names/numbers |
+| Wrong inference | 7% | Found right context, drew wrong conclusion |
+| Vocab mismatch | 3% | Question used different words than message |
+
+Vocabulary mismatch — originally assumed to be the main problem — is only 3% of failures. The real bottlenecks are retrieval depth (30%) and temporal reasoning (25%).
+
+---
+
 ## Key Observations
 
 1. **No knowledge leakage:** The 5.67% no-retrieval floor confirms LoCoMo questions genuinely require memory retrieval.
 
 2. **Neuromem beats Mem0, Zep, and OpenAI Memory** on LoCoMo despite being pure SQLite with $0 infrastructure cost.
 
-3. **The 20-point gap to EverMemOS/MemMachine comes from information density at ingestion.** Systems that run 10-17 LLM prompts per message during ingestion create much richer searchable content. Neuromem's episode extraction (1 prompt per session) helps enormously (29% → 72%) but doesn't match per-message atomic fact extraction.
+3. **The 20-point gap to EverMemOS/MemMachine comes from retrieval depth and temporal reasoning.** Failure analysis shows 30% of gaps are search misses (relevant messages not found) and 25% are temporal resolution failures. Only 3% are vocabulary mismatch.
 
 4. **Temporal reasoning (Cat 3) is the hardest category for everyone.** Even EverMemOS only hits 78.1% here.
 
 5. **Neuromem is 11x faster** — the tradeoff for lower scores is dramatically cheaper and faster operation.
 
-6. **The gap is fixable.** Adding atomic fact extraction at ingestion (1-2 LLM prompts per message) would likely close 15-20 points of the gap, bringing Neuromem to ~87-92%. The architecture supports it — episode extraction already uses the same pattern.
+6. **The gap is fixable.** Three targeted improvements (better retrieval, temporal date extraction, entity linking) would address 74% of failures, potentially bringing Neuromem to ~87-90%.

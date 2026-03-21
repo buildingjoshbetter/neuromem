@@ -229,6 +229,70 @@ class NeuromemEngine:
         self._has_clustering = _HAS_CLUSTERING
 
     # ──────────────────────────────────────────────────────────────────────
+    # Open existing database (for benchmarking / testing)
+    # ──────────────────────────────────────────────────────────────────────
+
+    def open(self, rebuild_vectors: bool = True) -> "NeuromemEngine":
+        """Open an existing database for search (no ingestion).
+
+        Connects to the database at ``self.db_path`` and detects which
+        optional layers are available based on the tables present.
+        Optionally rebuilds vector indexes if missing.
+
+        Returns self for chaining: ``engine = NeuromemEngine(path).open()``
+        """
+        if not self.db_path.exists():
+            raise FileNotFoundError(f"Database not found: {self.db_path}")
+
+        self.conn = sqlite3.connect(str(self.db_path))
+        self.conn.row_factory = None  # Use default tuple rows
+
+        # Detect available tables
+        tables = {
+            row[0]
+            for row in self.conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table'"
+            ).fetchall()
+        }
+
+        # Load sqlite-vec extension if available
+        if _HAS_VECTOR:
+            try:
+                import sqlite_vec
+                self.conn.enable_load_extension(True)
+                sqlite_vec.load(self.conn)
+            except Exception:
+                pass
+
+        # Check for vector tables — rebuild if missing
+        self._has_vectors = False
+        if _HAS_VECTOR:
+            try:
+                self.conn.execute("SELECT COUNT(*) FROM vec_messages").fetchone()
+                self._has_vectors = True
+            except Exception:
+                if rebuild_vectors:
+                    try:
+                        init_vec_table(self.conn)
+                        n = build_vectors(self.conn)
+                        self._has_vectors = n > 0
+                    except Exception:
+                        self._has_vectors = False
+
+        self._has_hybrid = _HAS_HYBRID and self._has_vectors
+        self._has_clustering = _HAS_CLUSTERING and "message_clusters" in tables
+
+        # Count messages for stats
+        try:
+            count = self.conn.execute("SELECT COUNT(*) FROM messages").fetchone()[0]
+            self.stats["message_count"] = count
+        except Exception:
+            self.stats["message_count"] = 0
+
+        self.ready = True
+        return self
+
+    # ──────────────────────────────────────────────────────────────────────
     # Ingestion
     # ──────────────────────────────────────────────────────────────────────
 
@@ -914,10 +978,11 @@ class NeuromemEngine:
                 key=lambda d: (-d.get("score", d.get("rrf_score", 0)), d.get("id", 0))
             )
 
-        # ── Cross-encoder reranking ───────────────────────────────────────
+        # ── Cross-encoder reranking (modality-aware) ──────────────────────
         if use_reranker and self._has_reranker and len(primary_results) > 1:
             try:
-                final_results = rerank_with_fusion(
+                from neuromem.reranker import rerank_with_modality_fusion
+                final_results = rerank_with_modality_fusion(
                     query, primary_results[:limit * 5],
                     top_k=limit * 2 if (max_per_session > 0 or use_llm_reranker) else limit,
                     rrf_weight=0.4,
@@ -1160,6 +1225,36 @@ Return ONLY the queries, one per line, no numbering or explanation:"""
                     pass
 
         return results
+
+    # ──────────────────────────────────────────────────────────────────────
+    # Query paraphrasing helper
+    # ──────────────────────────────────────────────────────────────────────
+
+    def _generate_query_paraphrases(
+        self, query: str, llm_fn, max_paraphrases: int = 2,
+    ) -> list[str]:
+        """
+        Generate semantic paraphrases of a query to catch vocabulary
+        variations. Unlike HyDE (hypothetical answers), this generates
+        alternative question phrasings with different vocabulary.
+        """
+        prompt = f"""Given this question: "{query}"
+
+Generate {max_paraphrases} alternative phrasings that ask the SAME question but use DIFFERENT vocabulary.
+Each paraphrase should be short and search-friendly (not a hypothetical answer).
+
+Return ONLY the paraphrases, one per line, no numbering:"""
+
+        try:
+            response = llm_fn(prompt)
+            lines = [
+                line.strip().strip('"').strip("'").strip("-").strip()
+                for line in response.strip().split("\n")
+                if line.strip() and len(line.strip()) > 5
+            ]
+            return lines[:max_paraphrases]
+        except Exception:
+            return []
 
     # ──────────────────────────────────────────────────────────────────────
     # Result cleaning helper

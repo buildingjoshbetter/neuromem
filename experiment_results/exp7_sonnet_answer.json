@@ -1,0 +1,530 @@
+{
+  "experiment": "exp7_sonnet_answer",
+  "description": "Claude Sonnet 4.5 for answer generation",
+  "timestamp": "2026-03-19T03:48:07.007863",
+  "total_questions": 50,
+  "correct": 0,
+  "recovery_rate": 0.0,
+  "estimated_locomo_score": 72.40259740259741,
+  "time_seconds": 181.02079701423645,
+  "category_breakdown": {
+    "1": {
+      "correct": 0,
+      "total": 19
+    },
+    "2": {
+      "correct": 0,
+      "total": 7
+    },
+    "3": {
+      "correct": 0,
+      "total": 5
+    },
+    "4": {
+      "correct": 0,
+      "total": 19
+    }
+  },
+  "results": [
+    {
+      "question": "What is Caroline's relationship status?",
+      "gold": "Single",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-06-27T10:41:30 | session_4] Thanks, Caroline! Family time matters to me. What's up with you lately?\n\n[Melanie | 2023-08-17T13:59:30 | session_12] Yeah, Caroline! I'll start thinking ab",
+      "num_results": 15
+    },
+    {
+      "question": "How long has Caroline had her current group of friends for?",
+      "gold": "4 years",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-06T20:23:00 | session_6] [Caroline shared an image: a photo of a group of women sitting on a blanket in a park] Wow, that's great! It sure shows how important friendship and compas",
+      "num_results": 15
+    },
+    {
+      "question": "What activities does Melanie partake in?",
+      "gold": "pottery, camping, painting, swimming",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-03T13:37:30 | session_5] [Melanie shared an image: a photo of a person holding a frisbee in their hand] Wow, Caroline! That's great! I just signed up for a pottery class yesterday. ",
+      "num_results": 15
+    },
+    {
+      "question": "What do Melanie's kids like?",
+      "gold": "dinosaurs, nature",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-08-14T14:27:00 | session_11] [Melanie shared an image: a photo of a group of people sitting on chairs watching a band] Wow, Caroline! That sounds awesome. This pic's from last night - ",
+      "num_results": 15
+    },
+    {
+      "question": "When did Melanie read the book \"nothing is impossible\"?",
+      "gold": "2022",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-12T16:36:30 | session_7] [Melanie shared an image: a photography of a book cover with a gold coin on it] Caroline, so glad you got the support! Your experience really brought you to",
+      "num_results": 15
+    },
+    {
+      "question": "Would Caroline pursue writing as a career option?",
+      "gold": "LIkely no; though she likes reading, she wants to be a counselor",
+      "conv_id": "locomo_exp_user_0",
+      "category": "3",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-05-08T14:00:00 | session_1] Gonna continue my edu and check out career options, which is pretty exciting!\n\n[Melanie | 2023-07-12T16:36:30 | session_7] [Melanie shared an image: a phot",
+      "num_results": 15
+    },
+    {
+      "question": "What events has Caroline participated in to help children?",
+      "gold": "Mentoring program, school speech",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-20T20:58:30 | session_10] Wow, Caroline, your group sounds awesome! Supporting each other and making good things happen - that's so inspiring! Have you been part of any events or ca",
+      "num_results": 15
+    },
+    {
+      "question": "What activities has Melanie done with her family?",
+      "gold": "Pottery, painting, camping, museum, swimming, hiking",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-03T13:37:30 | session_5] [Melanie shared an image: a photo of a person holding a frisbee in their hand] Wow, Caroline! That's great! I just signed up for a pottery class yesterday. ",
+      "num_results": 15
+    },
+    {
+      "question": "What kind of art does Caroline make?",
+      "gold": "abstract art",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-17T14:37:30 | session_9] [Caroline shared an image: a photography of a painting of a tree with a bright sun in the background] Check out my painting for the art show! Hope you like",
+      "num_results": 15
+    },
+    {
+      "question": "When did Caroline and Melanie go to a pride fesetival together?",
+      "gold": "2022",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-17T14:34:30 | session_9] [Caroline shared an image: a photo of a woman holding a rainbow umbrella in the air] The pride event was awesome! It was so encouraging to be surrounded by",
+      "num_results": 15
+    },
+    {
+      "question": "When did Melanie make a plate in pottery class?",
+      "gold": "24 August 2023",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-08-25T13:34:30 | session_14] Yeah, I made it in pottery class yesterday. I love it! Pottery's so relaxing and creative. Have you tried it yet?\n\n[Caroline | 2023-08-25T13:34:00 | sessio",
+      "num_results": 15
+    },
+    {
+      "question": "Would Caroline be considered religious?",
+      "gold": "Somewhat, but not extremely religious",
+      "conv_id": "locomo_exp_user_0",
+      "category": "3",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-08-23T15:38:30 | session_13] Wow, Caroline! That's amazing. You really care about being real and helping others. Wishing you the best on your adoption journey!\n\n[Melanie | 2023-07-15T1",
+      "num_results": 15
+    },
+    {
+      "question": "What instruments does Melanie play?",
+      "gold": "clarinet and violin",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-08-28T15:31:00 | session_15] Thanks, Melanie! Appreciate it. You play any instruments?\n\n[Caroline | 2023-07-03T13:38:00 | session_5] Wow, Melanie! I'm getting creative too, just learn",
+      "num_results": 15
+    },
+    {
+      "question": "What musical artists/bands has Melanie seen?",
+      "gold": "Summer Sounds, Matt Patterson",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-08-28T15:24:30 | session_15] [Melanie shared an image: a photo of a band playing on a stage in a park] That's so cool, Caroline! That's a great way to show off and be proud of everyone",
+      "num_results": 15
+    },
+    {
+      "question": "How long has Melanie been practicing art?",
+      "gold": "Since 2016",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-09-13T00:11:30 | session_16] Wow, Caroline, that looks awesome! I love how it shows the togetherness and power you were talking about. How long have you been creating art?\n\n[Caroline |",
+      "num_results": 15
+    },
+    {
+      "question": "What transgender-specific events has Caroline attended?",
+      "gold": "Poetry reading, conference",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-06-09T19:55:00 | session_3] Hey Melanie! How's it going? I wanted to tell you about my school event last week. It was awesome! I talked about my transgender journey and encouraged stu",
+      "num_results": 15
+    },
+    {
+      "question": "What book did Melanie read from Caroline's suggestion?",
+      "gold": "\"Becoming Nicole\"",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-12T16:37:30 | session_7] Wow, Caroline! Books have such an awesome power! Which one has been your favorite guide?\n\n[Melanie | 2023-07-06T20:22:30 | session_6] [Melanie shared an ima",
+      "num_results": 15
+    },
+    {
+      "question": "When did Melanie's friend adopt a child?",
+      "gold": "2022",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-08-23T15:31:00 | session_13] [Caroline shared an image: a photo of a sign with a picture of a guinea pig] Hi Melanie! Hope you're doing good. Guess what I did this week? I took the fi",
+      "num_results": 15
+    },
+    {
+      "question": "How many children does Melanie have?",
+      "gold": "3",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-15T14:05:00 | session_8] That's awesome, Melanie! How have your family been supportive during your move?\n\n[Melanie | 2023-10-20T18:57:00 | session_18] [Melanie shared an image: a p",
+      "num_results": 15
+    },
+    {
+      "question": "Would Melanie go on another roadtrip soon?",
+      "gold": "Likely no; since this one went badly",
+      "conv_id": "locomo_exp_user_0",
+      "category": "3",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-10-20T18:55:00 | session_18] [Melanie shared an image: a photo of a car dashboard with a white cloth and a steering wheel] Hey Caroline, that roadtrip this past weekend was insane! We ",
+      "num_results": 15
+    },
+    {
+      "question": "What items has Melanie bought?",
+      "gold": "Figurines, shoes",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-10-22T09:55:30 | session_19] [Melanie shared an image: a photo of a couple of wooden dolls sitting on top of a table] Congrats, Caroline! Adoption sounds awesome. I'm so happy for you.",
+      "num_results": 15
+    },
+    {
+      "question": "Would Caroline want to move back to her home country soon?",
+      "gold": "No; she's in the process of adopting children.",
+      "conv_id": "locomo_exp_user_0",
+      "category": "3",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-12T16:35:30 | session_7] Wow, Caroline! You're so inspiring for wanting to help others with their mental health. What's pushing you to keep going forward with it?\n\n[Caroline | 2023-",
+      "num_results": 15
+    },
+    {
+      "question": "How does Melanie prioritize self-care?",
+      "gold": "by carving out some me-time each day for activities like running, reading, or playing the violin",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-05-25T13:15:00 | session_2] Thanks, Caroline! The event was really thought-provoking. I'm starting to realize that self-care is really important. It's a journey for me, but when I look",
+      "num_results": 15
+    },
+    {
+      "question": "Why did Caroline choose the adoption agency?",
+      "gold": "because of their inclusivity and support for LGBTQ+ individuals",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-08-23T15:31:00 | session_13] [Caroline shared an image: a photo of a sign with a picture of a guinea pig] Hi Melanie! Hope you're doing good. Guess what I did this week? I took the fi",
+      "num_results": 15
+    },
+    {
+      "question": "How long have Mel and her husband been married?",
+      "gold": "Mel and her husband have been married for 5 years.",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-06-09T20:02:00 | session_3] Wow, what an amazing family pic! How long have you been married?\n\n[Melanie | 2023-07-15T13:58:30 | session_8] [Melanie shared an image: a photo of a man an",
+      "num_results": 15
+    },
+    {
+      "question": "What did Melanie and her family do while camping?",
+      "gold": "explored nature, roasted marshmallows, and went on a hike",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-20T21:02:00 | session_10] Wow, Mel, that's awesome! What's your best camping memory?\n\n[Melanie | 2023-07-20T21:01:30 | session_10] [Melanie shared an image: a photo of a fire pit w",
+      "num_results": 15
+    },
+    {
+      "question": "What kind of counseling and mental health services is Caroline interested in pursuing?",
+      "gold": "working with trans people, helping them accept themselves and supporting their mental health",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-06-27T10:42:00 | session_4] Lately, I've been looking into counseling and mental health as a career. I want to help people who have gone through the same things as me.\n\n[Caroline | 20",
+      "num_results": 15
+    },
+    {
+      "question": "What workshop did Caroline attend recently?",
+      "gold": "LGBTQ+ counseling workshop",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-15T13:51:30 | session_8] [Melanie shared an image: a photography of a group of children making clay sculptures in a classroom] Hey Caroline, it's been super busy here. So much since",
+      "num_results": 15
+    },
+    {
+      "question": "What book did Caroline recommend to Melanie?",
+      "gold": "\"Becoming Nicole\"",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-10-13T10:35:30 | session_17] Thanks, Caroline. It was tough, but I'm doing ok. Been reading that book you recommended a while ago and painting to keep busy.\n\n[Melanie | 2023-07-12T16:3",
+      "num_results": 15
+    },
+    {
+      "question": "What did Caroline take away from the book \"Becoming Nicole\"?",
+      "gold": "Lessons on self-acceptance and finding support",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-12T16:36:30 | session_7] [Melanie shared an image: a photography of a book cover with a gold coin on it] Caroline, so glad you got the support! Your experience really brought you to",
+      "num_results": 15
+    },
+    {
+      "question": "What are the new shoes that Melanie got used for?",
+      "gold": "Running",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-12T16:41:30 | session_7] [Melanie shared an image: a photo of a person wearing pink sneakers on a white rug] Luna and Oliver! They are so sweet and playful - they really liven up th",
+      "num_results": 15
+    },
+    {
+      "question": "What creative project do Mel and her kids do together besides pottery?",
+      "gold": "painting",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-15T13:53:00 | session_8] Aww, that's so sweet! That cup is so cute. It's awesome to see how kids show their personalities through art. What other creative projects do you do with t",
+      "num_results": 15
+    },
+    {
+      "question": "Who performed at the concert at Melanie's daughter's birthday?",
+      "gold": "Matt Patterson",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-08-14T14:24:00 | session_11] Hey Caroline! Last night was amazing! We celebrated my daughter's birthday with a concert surrounded by music, joy and the warm summer breeze. Seeing my ki",
+      "num_results": 15
+    },
+    {
+      "question": "What pets does Melanie have?",
+      "gold": "Two cats and a dog",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-08-23T15:31:30 | session_13] Caroline, congrats! So proud of you for taking this step. How does it feel? Also, do you have any pets?\n\n[Caroline | 2023-07-12T16:40:00 | session_7] That'",
+      "num_results": 15
+    },
+    {
+      "question": "How long has Melanie been creating art?",
+      "gold": "7 years",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-09-13T00:11:30 | session_16] Wow, Caroline, that looks awesome! I love how it shows the togetherness and power you were talking about. How long have you been creating art?\n\n[Caroline |",
+      "num_results": 15
+    },
+    {
+      "question": "What did Melanie do after the road trip to relax?",
+      "gold": "Went on a nature walk or hike",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-10-20T19:03:00 | session_18] Thanks, Caroline! Yup, we just did it yesterday! The kids loved it and it was a nice way to relax after the road trip.\n\n[Caroline | 2023-08-17T14:00:00 | s",
+      "num_results": 15
+    },
+    {
+      "question": "Which city have both Jean and John visited?",
+      "gold": "Rome",
+      "conv_id": "locomo_exp_user_1",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Gina | 2023-01-29T14:34:00 | session_2] Wow, nice spot! Where is it? Got any other features you want to think about before you decide? Paris?! That is really great Jon! Never had a chance to visit it",
+      "num_results": 15
+    },
+    {
+      "question": "When did Jon receive mentorship to promote his venture?",
+      "gold": "15 June, 2023",
+      "conv_id": "locomo_exp_user_1",
+      "category": "2",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Gina | 2023-07-23T18:50:30 | session_19] You're welcome, Jon! I'm here to support you. Every step's getting you closer to your dream. Never give up! You're doing great.\n\n[Jon | 2023-03-16T14:35:00 | ",
+      "num_results": 15
+    },
+    {
+      "question": "How long did it take for Jon to open his studio?",
+      "gold": "six months",
+      "conv_id": "locomo_exp_user_1",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Gina | 2023-05-27T19:18:00 | session_12] Hey Jon! Long time no talk! A lot's happened - I just got accepted for a fashion internship!\n\n[Gina | 2023-05-11T15:14:30 | session_11] Hi! You're so inspirin",
+      "num_results": 15
+    },
+    {
+      "question": "What is Gina's favorite style of dance?",
+      "gold": "Contemporary",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Gina | 2023-04-09T10:36:30 | session_9] [Gina shared an image: a photo of a group of young women in ballet attire] Yeah, I do remember those dance classes! I used to love spending time in the studio.",
+      "num_results": 15
+    },
+    {
+      "question": "What do the dancers in the photo represent?",
+      "gold": "They are performing at the festival",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Jon | 2023-01-20T16:15:30 | session_1] [Jon shared an image: a photo of a group of dancers in white dresses on a stage] Thanks! I rehearsed with a small group of dancers after work. We do all kinds o",
+      "num_results": 15
+    },
+    {
+      "question": "What did Jon and Gina compare their entrepreneurial journeys to?",
+      "gold": "dancing together and supporting each other",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Gina | 2023-03-16T14:41:30 | session_6] Thanks, Jon! Your words are really encouraging. Glad my journey is inspiring others.\n\n[Gina | 2023-04-25T11:25:30 | session_10] Thanks, Jon! After losing my jo",
+      "num_results": 15
+    },
+    {
+      "question": "What does Jon plan to do at the grand opening of his dance studio?",
+      "gold": "savor all the good vibes",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Jon | 2023-06-19T10:06:00 | session_15] [Jon shared an image: a photo of a group of young dancers in a dance studio] The official opening night is tomorrow. I'm working hard to make everything just r",
+      "num_results": 15
+    },
+    {
+      "question": "What does Gina say to Jon about the grand opening?",
+      "gold": "Let's live it up and make some great memories",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Gina | 2023-06-19T10:12:30 | session_15] Can't wait for tomorrow's grand opening!\n\n[Jon | 2023-06-19T10:10:00 | session_15] Yeah! Let's make some awesome memories tomorrow at the grand opening!\n\n[Jon",
+      "num_results": 15
+    },
+    {
+      "question": "What martial arts has John done?",
+      "gold": "Kickboxing, Taekwondo",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Maria | 2023-07-22T18:25:30 | session_25] Thanks, John! Is it a martial arts place or a yoga studio? It looks awesome!\n\n[Maria | 2022-12-17T11:01:00 | session_1] Hey John! Long time no see! What's up",
+      "num_results": 15
+    },
+    {
+      "question": "What items des John mention having as a child?",
+      "gold": "A doll, a film camera",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Maria | 2023-04-02T09:40:00 | session_9] Yeah, I remember you mentioning those areas. How have your experiences in the community meeting and involvement shaped your views on them?\n\n[Maria | 2023-04-0",
+      "num_results": 15
+    },
+    {
+      "question": "What people has Maria met and helped while volunteering?",
+      "gold": "David, Jean, Cindy, Laura",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[John | 2023-07-17T15:34:00 | session_24] Hey Maria, last week was really eye-opening. I visited a veteran's hospital and met some amazing people. It made me appreciate what we have and the need to gi",
+      "num_results": 15
+    },
+    {
+      "question": "Would John be considered a patriotic person?",
+      "gold": "Yes",
+      "conv_id": "locomo_exp_user_2",
+      "category": "3",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[Maria | 2023-07-03T20:49:00 | session_21] Thanks, John! Really appreciate your offer. Anything you can find would be great.\n\n[Maria | 2023-08-03T18:22:30 | session_27] [Maria shared an image: a photo",
+      "num_results": 15
+    },
+    {
+      "question": "Who did John go to yoga with?",
+      "gold": "Rob",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[John | 2023-04-07T00:24:00 | session_10] Hey Maria, I'm so excited to tell you I started a weekend yoga class with a colleague - it's awesome! I feel great, both mentally and physically after each se",
+      "num_results": 15
+    },
+    {
+      "question": "What European countries has Maria been to?",
+      "gold": "Spain, England",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Error generating answer",
+      "correct": false,
+      "context_preview": "[John | 2022-12-22T18:10:30 | session_2] Hi Maria! It's been an interesting ride so far. I've been networking with some people to get their input.\n\n[John | 2023-05-04T15:18:00 | session_13] Hey Maria!",
+      "num_results": 15
+    }
+  ]
+}

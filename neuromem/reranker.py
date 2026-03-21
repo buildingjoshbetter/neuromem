@@ -173,6 +173,96 @@ def rerank_with_fusion(
 
 
 # ---------------------------------------------------------------------------
+# Modality-aware reranking
+# ---------------------------------------------------------------------------
+
+def rerank_with_modality_fusion(
+    query: str,
+    results: list[dict],
+    top_k: int = 10,
+    rrf_weight: float = 0.3,
+    rerank_weight: float = 0.7,
+    **kwargs,
+) -> list[dict]:
+    """
+    Rerank with cross-encoder, then apply modality-aware score adjustments.
+
+    Episodes and facts are summaries; their scores are adjusted based on
+    question type:
+    - Detail questions (specific names, dates, numbers) → prefer raw messages
+    - Synthesis questions (explain, describe, why) → boost episodes/facts
+    - General questions → no modality adjustment
+    """
+    if not results:
+        return []
+
+    reranked = rerank(query, results, top_k=len(results), **kwargs)
+    question_type = _classify_question_type(query)
+
+    for r in reranked:
+        modality = r.get("modality", "conversation")
+
+        if question_type == "detail":
+            if modality in ("episode", "fact"):
+                r["rerank_score"] = r["rerank_score"] * 0.7
+        elif question_type == "synthesis":
+            if modality in ("episode", "fact"):
+                r["rerank_score"] = r["rerank_score"] * 1.2
+
+    # Normalize and fuse
+    rerank_scores = [r["rerank_score"] for r in reranked]
+    rr_min, rr_max = min(rerank_scores), max(rerank_scores)
+    rr_range = rr_max - rr_min if rr_max > rr_min else 1.0
+
+    orig_scores = [r.get("score", r.get("rrf_score", 0)) for r in reranked]
+    orig_min, orig_max = min(orig_scores), max(orig_scores)
+    orig_range = orig_max - orig_min if orig_max > orig_min else 1.0
+
+    for r in reranked:
+        norm_rerank = (r["rerank_score"] - rr_min) / rr_range
+        norm_orig = (r.get("score", r.get("rrf_score", 0)) - orig_min) / orig_range
+        r["fused_score"] = rerank_weight * norm_rerank + rrf_weight * norm_orig
+        r["score"] = r["fused_score"]
+
+    reranked.sort(key=lambda r: r["fused_score"], reverse=True)
+    return reranked[:top_k]
+
+
+def _classify_question_type(query: str) -> str:
+    """
+    Classify question as 'detail', 'synthesis', or 'general'.
+
+    Detail: specific facts, names, dates, numbers
+    Synthesis: explanations, summaries, reasoning
+    """
+    import re
+    q = query.lower().strip()
+
+    detail_patterns = [
+        r"\bwhat date\b", r"\bwhat time\b", r"\bwhat is the name\b",
+        r"\bhow many\b", r"\bhow much\b", r"\bwhat number\b",
+        r"\bwhat.*address\b", r"\bwhat.*phone\b", r"\bwhat.*email\b",
+        r"\bwhen did\b", r"\bwhen was\b", r"\bwhen is\b",
+        r"\bwhere did\b", r"\bwhere was\b", r"\bwhere is\b",
+        r"\bwho is\b", r"\bwho was\b", r"\bwho did\b",
+    ]
+
+    synthesis_patterns = [
+        r"^explain\b", r"^describe\b", r"^summarize\b",
+        r"\bwhat kind of\b", r"\bwhat type of\b",
+        r"^why\b", r"\bhow does\b", r"\bhow do\b",
+        r"\bwhat fields\b", r"\bwhat activities\b",
+        r"\brelationship\b", r"\blikely\b",
+    ]
+
+    if any(re.search(p, q) for p in detail_patterns):
+        return "detail"
+    if any(re.search(p, q) for p in synthesis_patterns):
+        return "synthesis"
+    return "general"
+
+
+# ---------------------------------------------------------------------------
 # LLM-based reranking
 # ---------------------------------------------------------------------------
 

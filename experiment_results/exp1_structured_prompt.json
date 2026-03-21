@@ -1,0 +1,530 @@
+{
+  "experiment": "exp1_structured_prompt",
+  "description": "Better answer prompt with step-by-step reasoning",
+  "timestamp": "2026-03-19T03:50:43.835221",
+  "total_questions": 50,
+  "correct": 28,
+  "recovery_rate": 56.00000000000001,
+  "estimated_locomo_score": 74.22077922077922,
+  "time_seconds": 339.54978466033936,
+  "category_breakdown": {
+    "1": {
+      "correct": 9,
+      "total": 19
+    },
+    "2": {
+      "correct": 4,
+      "total": 7
+    },
+    "3": {
+      "correct": 4,
+      "total": 5
+    },
+    "4": {
+      "correct": 11,
+      "total": 19
+    }
+  },
+  "results": [
+    {
+      "question": "What is Caroline's relationship status?",
+      "gold": "Single",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Review all excerpts for any mention of Caroline's relationship status.\nStep 2: Caroline talks about her personal journey affecting relationships, mentioning some friends supported her while others did not, but no mention of a romantic partner or relationship status.\nStep 3: No direct or indirect information about Caroline's romantic relationship status is provided in the context.\n\nFinal answer: Not enough information.",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-06-27T10:41:30 | session_4] Thanks, Caroline! Family time matters to me. What's up with you lately?\n\n[Melanie | 2023-08-17T13:59:30 | session_12] Yeah, Caroline! I'll start thinking ab",
+      "num_results": 15
+    },
+    {
+      "question": "How long has Caroline had her current group of friends for?",
+      "gold": "4 years",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Step 1: Melanie asked Caroline on 2023-06-09 how long she had such a great support system, implying Caroline already had a supportive group by then.\n\nStep 2: Caroline mentioned on 2023-07-06 that she appreciates her friends and family helping with her transition and that they make all the difference, indicating the support system was already established.\n\nStep 3: On 2023-08-17, Caroline referred to supportive friends from last year at Pride fest, showing the group has been around at least since the previous year.\n\nStep 4: There is no explicit mention of when the group first formed, but references to \"last year\" and ongoing support suggest the group has been together for at least over a year.\n\nFinal answer: Caroline has had her current group of friends for at least over a year, including through last year's Pride fest.",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-06T20:23:00 | session_6] [Caroline shared an image: a photo of a group of women sitting on a blanket in a park] Wow, that's great! It sure shows how important friendship and compas",
+      "num_results": 15
+    },
+    {
+      "question": "What activities does Melanie partake in?",
+      "gold": "pottery, camping, painting, swimming",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Melanie partakes in pottery, which she started around early July 2023, describing it as therapeutic and a way to express herself creatively. She also seems interested in music, as Caroline asked if she plays any instruments. \n\nFinal answer: Melanie takes pottery classes and is interested in creative activities like music.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-07-03T13:37:30 | session_5] [Melanie shared an image: a photo of a person holding a frisbee in their hand] Wow, Caroline! That's great! I just signed up for a pottery class yesterday. ",
+      "num_results": 15
+    },
+    {
+      "question": "What do Melanie's kids like?",
+      "gold": "dinosaurs, nature",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Melanie shared a photo of a cup with a dog face made by her kids, and Caroline asked about other creative projects. Melanie said the kids loved making pottery and getting their hands dirty with clay (session_8).\n\nStep 2: Melanie mentioned taking her kids to a park where they had fun exploring and playing outdoors (session_15).\n\nStep 3: Melanie talked about kids getting excited learning about nature, roasting marshmallows, and sharing stories around a campfire (session_16).\n\nStep 4: Overall, Melanie's kids like creative activities like pottery, outdoor play at parks, and nature-related experiences like campfires.\n\nFinal answer: Melanie's kids like creative activities such as pottery, playing outdoors at parks, and learning about nature through experiences like campfires.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-08-14T14:27:00 | session_11] [Melanie shared an image: a photo of a group of people sitting on chairs watching a band] Wow, Caroline! That sounds awesome. This pic's from last night - ",
+      "num_results": 15
+    },
+    {
+      "question": "When did Melanie read the book \"nothing is impossible\"?",
+      "gold": "2022",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Step 1: Review all mentions of books Melanie read.  \n- On 2023-07-06, Melanie mentioned reading \"Charlotte's Web\" as a kid.  \n- On 2023-07-12, Melanie shared a book cover with a gold coin and said she read that book last year (which would be 2022).  \n- On 2023-10-13, Melanie mentioned reading a book Caroline recommended a while ago but did not name it.  \n\nStep 2: Check if \"nothing is impossible\" is mentioned anywhere.  \n- The title \"nothing is impossible\" does not appear explicitly in the excerpts.  \n- The only book Melanie explicitly says she read last year is the one in the 2023-07-12 message with the gold coin on the cover.  \n\nStep 3: Since \"nothing is impossible\" is not directly mentioned, but Melanie said she read a book last year that inspired her to pursue dreams, it is likely that \"nothing is impossible\" is that book.  \n\nFinal answer: Melanie read the book \"nothing is impossible\" in 2022.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-07-12T16:36:30 | session_7] [Melanie shared an image: a photography of a book cover with a gold coin on it] Caroline, so glad you got the support! Your experience really brought you to",
+      "num_results": 15
+    },
+    {
+      "question": "Would Caroline pursue writing as a career option?",
+      "gold": "LIkely no; though she likes reading, she wants to be a counselor",
+      "conv_id": "locomo_exp_user_0",
+      "category": "3",
+      "answer": "Step 1: Review Caroline's stated career interests.  \n- On 2023-05-08, Caroline mentioned continuing education and checking out career options.  \n- On 2023-06-27 and 2023-07-12, Caroline specifically mentioned looking into counseling and mental health as a career to help others with similar experiences.\n\nStep 2: Look for any mention of writing as a career.  \n- There is no mention in any excerpt of Caroline pursuing writing or expressing interest in writing as a career.\n\nStep 3: Consider Melanie's comments for any hints.  \n- Melanie's comments focus on Caroline's counseling and mental health journey, support, and motivation, but do not mention writing.\n\nFinal answer: There is no evidence that Caroline would pursue writing as a career option; she is focused on counseling and mental health.",
+      "correct": true,
+      "context_preview": "[Caroline | 2023-05-08T14:00:00 | session_1] Gonna continue my edu and check out career options, which is pretty exciting!\n\n[Melanie | 2023-07-12T16:36:30 | session_7] [Melanie shared an image: a phot",
+      "num_results": 15
+    },
+    {
+      "question": "What events has Caroline participated in to help children?",
+      "gold": "Mentoring program, school speech",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Look for mentions of Caroline participating in events related to children.\n- Melanie on 2023-08-28 (session_15) talks about Caroline volunteering and creating community, especially for kids.\n- Melanie on 2023-07-20 (session_10) asks Caroline about events or campaigns, implying Caroline is involved in community activities.\n- No direct mention of Caroline organizing or attending specific children-focused events, but volunteering and community support for kids is noted.\n\nStep 2: Check if Caroline herself mentions any events with children.\n- Caroline on 2023-07-06 (session_6) shares a photo of a picnic with friends and family, but no direct mention of children-focused events.\n- No explicit mention of Caroline attending or organizing children-specific events like workshops or play areas.\n\nStep 3: Synthesize the information.\n- Caroline has volunteered and created community support for kids.\n- No specific named events or campaigns for children are detailed.\n\nFinal answer: Caroline has participated in volunteering and community support activities focused on helping children, but no specific events are named.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-07-20T20:58:30 | session_10] Wow, Caroline, your group sounds awesome! Supporting each other and making good things happen - that's so inspiring! Have you been part of any events or ca",
+      "num_results": 15
+    },
+    {
+      "question": "What activities has Melanie done with her family?",
+      "gold": "Pottery, painting, camping, museum, swimming, hiking",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Identify mentions of activities Melanie has done with her family.\n- On 2023-07-06, Melanie mentioned taking her kids to the museum and enjoying their excitement.\n- On 2023-07-20, Melanie shared a photo of her family on the beach at sunset, indicating spending time together outdoors.\n- On 2023-07-20, Melanie also mentioned witnessing her youngest child's first steps, a significant family moment.\n\nStep 2: Summarize the activities.\nMelanie has taken her kids to the museum, spent time on the beach with her family, and shared in important milestones like her child's first steps.\n\nFinal answer:  \nMelanie has taken her kids to the museum, spent time on the beach with her family, and shared special moments like her youngest child's first steps.",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-15T14:05:00 | session_8] That's awesome, Melanie! How have your family been supportive during your move?\n\n[Melanie | 2023-07-03T13:37:30 | session_5] [Melanie shared an image: a ph",
+      "num_results": 15
+    },
+    {
+      "question": "What kind of art does Caroline make?",
+      "gold": "abstract art",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Caroline shares multiple images of her artwork, including paintings and drawings.\nStep 2: The artworks mentioned include paintings of a tree with a bright sun, a woman with a blue face (self-portrait), a heart on a table, flowers, and a woman in a dress.\nStep 3: Caroline talks about painting and drawing as her mediums, expressing herself and emotions through these forms.\nStep 4: Melanie also refers to Caroline's paintings and drawings, confirming these are the types of art Caroline creates.\n\nFinal answer: Caroline makes paintings and drawings, often using them to express emotions and personal themes.",
+      "correct": true,
+      "context_preview": "[Caroline | 2023-07-17T14:37:30 | session_9] [Caroline shared an image: a photography of a painting of a tree with a bright sun in the background] Check out my painting for the art show! Hope you like",
+      "num_results": 15
+    },
+    {
+      "question": "When did Caroline and Melanie go to a pride fesetival together?",
+      "gold": "2022",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Step 1: Caroline mentioned in session_12 on 2023-08-17 that they \"had a blast last year at the Pride fest,\" indicating they attended a Pride festival together the previous year (2022).\n\nStep 2: Caroline also shared images and comments about Pride events in 2023 (sessions_9 and 14), but these do not explicitly state they attended together.\n\nStep 3: Melanie responded positively to Caroline's Pride event experiences in July 2023 but did not confirm attending together that year.\n\nFinal answer: Caroline and Melanie went to a Pride festival together in 2022.",
+      "correct": true,
+      "context_preview": "[Caroline | 2023-08-17T13:57:00 | session_12] [Caroline shared an image: a photo of a group of people walking down a street with balloons] I'm always here for you, Mel! We had a blast last year at the",
+      "num_results": 15
+    },
+    {
+      "question": "When did Melanie make a plate in pottery class?",
+      "gold": "24 August 2023",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Step 1: Melanie mentioned making a bowl with a black and white flower design on 2023-07-03 (session_5).\n\nStep 2: On 2023-08-25 (session_14), Melanie shared an image of a plate with flowers and Caroline asked if she made it, to which Melanie confirmed she did.\n\nStep 3: This indicates Melanie made the plate sometime before or around 2023-08-25.\n\nFinal answer: Melanie made the plate in pottery class by at least August 25, 2023.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-08-25T13:34:30 | session_14] Yeah, I made it in pottery class yesterday. I love it! Pottery's so relaxing and creative. Have you tried it yet?\n\n[Melanie | 2023-07-15T13:51:30 | session",
+      "num_results": 15
+    },
+    {
+      "question": "Would Caroline be considered religious?",
+      "gold": "Somewhat, but not extremely religious",
+      "conv_id": "locomo_exp_user_0",
+      "category": "3",
+      "answer": "Step 1: Caroline mentioned encountering a group of religious conservatives who upset her during a hike (session_12, 2023-08-17). This suggests she is aware of religious groups but does not imply she is religious herself.\n\nStep 2: Caroline's focus is on LGBTQ rights, acceptance, and support, including volunteering at an LGBTQ+ youth center (session_15, 2023-08-28), which often contrasts with conservative religious views.\n\nStep 3: There is no direct statement from Caroline indicating she identifies as religious or practices a religion.\n\nFinal answer: Caroline would not be considered religious based on the provided context.",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-08-23T15:38:30 | session_13] Wow, Caroline! That's amazing. You really care about being real and helping others. Wishing you the best on your adoption journey!\n\n[Melanie | 2023-07-15T1",
+      "num_results": 15
+    },
+    {
+      "question": "What instruments does Melanie play?",
+      "gold": "clarinet and violin",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Caroline mentions learning piano on 2023-07-03 but asks Melanie about pottery, not instruments.\n\nStep 2: Melanie shares a photo of a band playing but does not specify if she plays an instrument.\n\nStep 3: Caroline says her main instrument is guitar on 2023-08-28.\n\nStep 4: Melanie asks Caroline about the type of guitar and how long she has been playing, but Melanie never states that she plays any instrument herself.\n\nStep 5: No direct mention of Melanie playing any instrument is found in the conversation excerpts.\n\nFinal answer: Not enough information to determine what instruments Melanie plays.",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-08-28T15:31:00 | session_15] Thanks, Melanie! Appreciate it. You play any instruments?\n\n[Melanie | 2023-08-28T15:24:30 | session_15] [Melanie shared an image: a photo of a band playin",
+      "num_results": 15
+    },
+    {
+      "question": "What musical artists/bands has Melanie seen?",
+      "gold": "Summer Sounds, Matt Patterson",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step-by-step reasoning:\n- Melanie shared a photo of a band playing on a stage in a park.\n- Caroline asked what the band was, and Melanie replied it was \"Summer Sounds,\" playing an awesome pop song.\n- Melanie also mentioned she enjoys classical artists like Bach and Mozart, and modern music like Ed Sheeran's \"Perfect,\" but these are preferences, not necessarily artists she has seen live.\n\nFinal answer:\nMelanie has seen the band \"Summer Sounds\" perform live.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-08-28T15:24:30 | session_15] [Melanie shared an image: a photo of a band playing on a stage in a park] That's so cool, Caroline! That's a great way to show off and be proud of everyone",
+      "num_results": 15
+    },
+    {
+      "question": "How long has Melanie been practicing art?",
+      "gold": "Since 2016",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Step 1: Caroline mentions in session_16 (2023-09-13) that she has been creating art since she was 17, but this refers to Caroline, not Melanie.\n\nStep 2: Melanie is asked by Caroline in session_16 how long she has been into art, but Melanie does not directly answer this question in the provided excerpts.\n\nStep 3: Melanie talks about her art and shares images of her paintings and pottery, indicating she is actively practicing art, but no specific duration is mentioned.\n\nStep 4: No other messages from Melanie or Caroline specify how long Melanie has been practicing art.\n\nFinal answer: Not enough information.",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-09-13T00:11:30 | session_16] Wow, Caroline, that looks awesome! I love how it shows the togetherness and power you were talking about. How long have you been creating art?\n\n[Melanie | ",
+      "num_results": 15
+    },
+    {
+      "question": "What transgender-specific events has Caroline attended?",
+      "gold": "Poetry reading, conference",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Identify mentions of events Caroline attended related to transgender or LGBTQ topics.\n\n- 2023-06-09: Caroline talked about a school event where she shared her transgender journey.\n- 2023-07-03: Caroline attended an LGBTQ+ pride parade.\n- 2023-07-12: Caroline went to an LGBTQ conference.\n- 2023-07 (unspecified date): Attended an LGBT pride event with the teen she mentors.\n- 2023-10-13: Attended a transgender poetry reading event.\n\nStep 2: Confirm these are transgender-specific or inclusive LGBTQ events.\n\n- The school event involved her transgender journey.\n- Pride parade and pride event are LGBTQ+ inclusive.\n- LGBTQ conference likely includes transgender topics.\n- Transgender poetry reading is explicitly transgender-specific.\n\nFinal answer:  \nCaroline has attended a school event about her transgender journey, an LGBTQ+ pride parade, an LGBTQ conference, an LGBT pride event, and a transgender poetry reading.",
+      "correct": true,
+      "context_preview": "[Caroline | 2023-06-09T19:55:00 | session_3] Hey Melanie! How's it going? I wanted to tell you about my school event last week. It was awesome! I talked about my transgender journey and encouraged stu",
+      "num_results": 15
+    },
+    {
+      "question": "What book did Melanie read from Caroline's suggestion?",
+      "gold": "\"Becoming Nicole\"",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Identify where Melanie mentions reading a book recommended by Caroline.  \n- In the message from 2023-10-13T10:35:30 (session_17), Melanie says: \"Been reading that book you recommended a while ago and painting to keep busy.\"\n\nStep 2: Check if the specific book title is mentioned anywhere in the context.  \n- Melanie mentions reading \"Charlotte's Web\" as a kid (2023-07-06T20:22:30), but this is not linked to Caroline's recommendation.  \n- Caroline talks about creating a library for kids and mentions having many kids' books (2023-07-06T20:22:00), but no specific book title is given as a recommendation to Melanie.  \n- No other explicit book title is linked to Caroline's recommendation.\n\nStep 3: Since Melanie only refers to \"that book you recommended\" without naming it, and no other excerpt specifies the title, the exact book title is not provided.\n\nFinal answer:  \nNot enough information to determine the specific book Melanie read from Caroline's suggestion.",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-12T16:36:30 | session_7] [Melanie shared an image: a photography of a book cover with a gold coin on it] Caroline, so glad you got the support! Your experience really brought you to",
+      "num_results": 15
+    },
+    {
+      "question": "When did Melanie's friend adopt a child?",
+      "gold": "2022",
+      "conv_id": "locomo_exp_user_0",
+      "category": "2",
+      "answer": "Step 1: Identify mentions of adoption by Melanie's friend.  \n- Melanie said on 2023-10-13: \"a buddy of mine adopted last year.\"\n\nStep 2: Determine the year of the conversation.  \n- The conversation is in 2023, so \"last year\" refers to 2022.\n\nFinal answer:  \nMelanie's friend adopted a child in 2022.",
+      "correct": true,
+      "context_preview": "[Caroline | 2023-08-23T15:31:00 | session_13] [Caroline shared an image: a photo of a sign with a picture of a guinea pig] Hi Melanie! Hope you're doing good. Guess what I did this week? I took the fi",
+      "num_results": 15
+    },
+    {
+      "question": "How many children does Melanie have?",
+      "gold": "3",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Melanie shared multiple photos involving children:\n- On 2023-07-15, Melanie shared a photo of a man and two children around a campfire.\n- On 2023-07-20, Melanie shared a photo of three children playing on the beach.\n- On 2023-07-06, Melanie shared a photo of two children playing in a water play area.\n- On 2023-07-15, Melanie mentioned taking \"my kids\" to a pottery workshop.\n- On 2023-10-20, Melanie shared a photo of two children standing on a cliff.\n\nStep 2: Caroline refers to \"the kids\" multiple times, implying Melanie has more than one child.\n\nStep 3: The consistent number of children mentioned or shown in photos is two children, except for the beach photo with three children playing, which could include a friend or relative.\n\nStep 4: Melanie refers to \"my kids\" in plural, and the majority of photos show two children, suggesting she has two children.\n\nFinal answer: Melanie has two children.",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-15T14:05:00 | session_8] That's awesome, Melanie! How have your family been supportive during your move?\n\n[Caroline | 2023-06-09T20:03:00 | session_3] Congrats, Melanie! You both l",
+      "num_results": 15
+    },
+    {
+      "question": "Would Melanie go on another roadtrip soon?",
+      "gold": "Likely no; since this one went badly",
+      "conv_id": "locomo_exp_user_0",
+      "category": "3",
+      "answer": "Step 1: Melanie mentioned a recent roadtrip in session_18 on 2023-10-20, describing it as \"insane\" and scary due to her son's accident, but they were lucky he was okay.\n\nStep 2: Immediately after, Melanie said they went camping the day after the roadtrip, and the kids loved it, indicating they are still engaging in family outings.\n\nStep 3: There is no explicit mention of plans for another roadtrip soon, but Melanie's positive attitude toward family trips and recent activities suggests she is open to more.\n\nStep 4: However, given the recent traumatic experience with the accident, it is unclear if she would plan another roadtrip very soon.\n\nFinal answer: Not enough information to confirm if Melanie would go on another roadtrip soon.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-07-15T14:06:30 | session_8] [Melanie shared an image: a photo of a man and two children sitting around a campfire] Yeah, Caroline, my family's been great - their love and support reall",
+      "num_results": 15
+    },
+    {
+      "question": "What items has Melanie bought?",
+      "gold": "Figurines, shoes",
+      "conv_id": "locomo_exp_user_0",
+      "category": "1",
+      "answer": "Step 1: Identify mentions of items Melanie has bought.\n- In the message from Melanie on 2023-10-22, she shared an image of wooden dolls and mentioned, \"These figurines I bought yesterday remind me of family love.\"\n\nStep 2: Check for any other mentions of items Melanie bought.\n- No other explicit mentions of items Melanie has bought are found in the context.\n\nFinal answer:  \nMelanie has bought wooden dolls (figurines) that remind her of family love.",
+      "correct": true,
+      "context_preview": "[Caroline | 2023-08-28T15:19:00 | session_15] Hey Melanie, great to hear from you. What's been up since we talked?\n\n[Melanie | 2023-10-22T09:55:30 | session_19] [Melanie shared an image: a photo of a ",
+      "num_results": 15
+    },
+    {
+      "question": "Would Caroline want to move back to her home country soon?",
+      "gold": "No; she's in the process of adopting children.",
+      "conv_id": "locomo_exp_user_0",
+      "category": "3",
+      "answer": "Step 1: Caroline mentioned she has friends who have supported her since she moved from her home country 4 years ago (session_3, 2023-06-09). This implies she currently lives away from her home country.\n\nStep 2: There is no mention in any excerpt of Caroline expressing a desire or plan to move back to her home country soon.\n\nStep 3: Caroline is focused on building a life where she is, including adoption plans and mental health goals, which suggests she is settled and not planning to move back soon.\n\nFinal answer: Not enough information to say she wants to move back soon, and the context suggests she is currently settled away from her home country.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-07-12T16:35:30 | session_7] Wow, Caroline! You're so inspiring for wanting to help others with their mental health. What's pushing you to keep going forward with it?\n\n[Melanie | 2023-0",
+      "num_results": 15
+    },
+    {
+      "question": "How does Melanie prioritize self-care?",
+      "gold": "by carving out some me-time each day for activities like running, reading, or playing the violin",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Melanie mentions in session_2 (2023-05-25) that self-care is a journey for her and that when she looks after herself, she can better look after her family.\n\nStep 2: In session_1 (2023-05-08), Melanie says she is going swimming with the kids, indicating she incorporates physical activity and family time as part of her self-care.\n\nStep 3: Caroline supports Melanie's focus on mental health and self-care in sessions_7 and _8 (July 2023), showing Melanie is mindful of mental health as a priority.\n\nStep 4: Melanie reflects on meaningful family moments (session_10, 2023-07-20), which suggests she values family connection as part of her well-being.\n\nFinal answer:  \nMelanie prioritizes self-care by actively engaging in physical activities like swimming, focusing on mental health, and valuing family time and meaningful moments to support her overall well-being.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-05-25T13:15:00 | session_2] Thanks, Caroline! The event was really thought-provoking. I'm starting to realize that self-care is really important. It's a journey for me, but when I look",
+      "num_results": 15
+    },
+    {
+      "question": "Why did Caroline choose the adoption agency?",
+      "gold": "because of their inclusivity and support for LGBTQ+ individuals",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Caroline mentioned researching adoption agencies and wanting to give a loving home to kids in need.  \nStep 2: She shared that she chose a specific agency because they help LGBTQ+ folks with adoption.  \nStep 3: She emphasized that the agency's inclusivity and support really spoke to her.\n\nFinal answer:  \nCaroline chose the adoption agency because they help LGBTQ+ individuals with adoption, and their inclusivity and support resonated with her.",
+      "correct": true,
+      "context_preview": "[Caroline | 2023-05-25T13:17:30 | session_2] Researching adoption agencies \u2014 it's been a dream to have a family and give a loving home to kids who need it.\n\n[Caroline | 2023-08-23T15:31:00 | session_1",
+      "num_results": 15
+    },
+    {
+      "question": "How long have Mel and her husband been married?",
+      "gold": "Mel and her husband have been married for 5 years.",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Caroline asked Mel on 2023-06-09 how long she had been married, but Mel did not directly answer that question in the provided excerpts.\n\nStep 2: On 2023-06-09, Caroline congratulated Mel on her wedding day and said they looked great, implying the wedding was recent or at least memorable.\n\nStep 3: Melanie shared a photo on 2023-07-15 about marrying her partner and promising to be together forever, but no specific date or duration was mentioned.\n\nStep 4: No other messages provide a specific length of time for Mel and her husband's marriage.\n\nFinal answer: Not enough information to determine how long Mel and her husband have been married.",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-06-09T20:02:00 | session_3] Wow, what an amazing family pic! How long have you been married?\n\n[Melanie | 2023-07-15T13:58:30 | session_8] [Melanie shared an image: a photo of a man an",
+      "num_results": 15
+    },
+    {
+      "question": "What did Melanie and her family do while camping?",
+      "gold": "explored nature, roasted marshmallows, and went on a hike",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Melanie and her family roasted marshmallows, told stories around the campfire, explored nature, went on hikes, and enjoyed watching the Perseid meteor shower together. They also spent quality time bonding and creating special memories during their camping trips.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-07-15T14:06:30 | session_8] [Melanie shared an image: a photo of a man and two children sitting around a campfire] Yeah, Caroline, my family's been great - their love and support reall",
+      "num_results": 15
+    },
+    {
+      "question": "What kind of counseling and mental health services is Caroline interested in pursuing?",
+      "gold": "working with trans people, helping them accept themselves and supporting their mental health",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Caroline expresses a general interest in counseling and mental health careers multiple times (sessions 1, 4, 5, 6, 7).\n\nStep 2: In session_4 on 2023-06-27, Caroline specifically mentions wanting to work with trans people, helping them accept themselves and supporting their mental health.\n\nStep 3: She attended an LGBTQ+ counseling workshop focused on therapeutic methods for working with trans people, indicating a specialized interest.\n\nStep 4: Caroline's motivation is based on her own mental health journey and the support she received, which she wants to extend to others, especially in creating safe, inviting spaces.\n\nFinal answer: Caroline is interested in pursuing counseling and mental health services focused on supporting trans people, helping them with self-acceptance and mental health in safe, supportive environments.",
+      "correct": true,
+      "context_preview": "[Caroline | 2023-05-08T14:01:00 | session_1] I'm keen on counseling or working in mental health - I'd love to support those with similar issues.\n\n[Caroline | 2023-06-27T10:42:00 | session_4] Lately, I",
+      "num_results": 15
+    },
+    {
+      "question": "What workshop did Caroline attend recently?",
+      "gold": "LGBTQ+ counseling workshop",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Identify mentions of workshops Caroline attended.  \n- On 2023-06-27, Caroline mentioned attending an LGBTQ+ counseling workshop last Friday.  \n- On 2023-07-15, Melanie mentioned taking her kids to a pottery workshop, but that was Melanie's activity, not Caroline's.  \n- On 2023-08-23, Caroline mentioned attending an adoption advice/assistance group, which is more of a support group than a workshop.\n\nStep 2: Determine which workshop is the most recent Caroline attended.  \n- The LGBTQ+ counseling workshop was mentioned on 2023-06-27 as having happened \"last Friday\" (around 2023-06-23).  \n- The adoption advice/assistance group was attended \"this week\" as of 2023-08-23, which is more recent.\n\nStep 3: Clarify the nature of the adoption group. Caroline called it an \"adoption advice/assistance group,\" which is likely a workshop or support session related to adoption.\n\nFinal answer: The most recent workshop Caroline attended was an adoption advice/assistance group.",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-06-27T10:43:00 | session_4] I'm still figuring out the details, but I'm thinking of working with trans people, helping them accept themselves and supporting their mental health. Last ",
+      "num_results": 15
+    },
+    {
+      "question": "What book did Caroline recommend to Melanie?",
+      "gold": "\"Becoming Nicole\"",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Melanie mentioned reading a book Caroline recommended in the message from 2023-10-13T10:35:30.\n\nStep 2: On 2023-07-12T16:37:30, Melanie asked Caroline which book has been her favorite guide.\n\nStep 3: Caroline responded on 2023-07-12T16:38:00 that she loved \"Becoming Nicole\" by Amy Ellis Nutt and highly recommended it.\n\nStep 4: This matches the context of a book Caroline recommended to Melanie.\n\nFinal answer: Caroline recommended the book \"Becoming Nicole\" by Amy Ellis Nutt to Melanie.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-10-13T10:35:30 | session_17] Thanks, Caroline. It was tough, but I'm doing ok. Been reading that book you recommended a while ago and painting to keep busy.\n\n[Melanie | 2023-07-12T16:3",
+      "num_results": 15
+    },
+    {
+      "question": "What did Caroline take away from the book \"Becoming Nicole\"?",
+      "gold": "Lessons on self-acceptance and finding support",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Identify where Caroline talks about the book \"Becoming Nicole.\"  \n- In session_7 on 2023-07-12, Caroline says: \"I loved 'Becoming Nicole' by Amy Ellis Nutt. It's a real inspiring true story about a trans girl and her family.\"  \nStep 2: Look for what Caroline says she gained from reading it.  \n- She mentions it \"made me feel connected and gave me a lot of hope for my own path.\"  \nStep 3: Summarize the takeaway.  \n- The book inspired Caroline by providing connection and hope for her personal journey.\n\nFinal answer:  \nCaroline took away a sense of connection and a lot of hope for her own path from the book \"Becoming Nicole.\"",
+      "correct": true,
+      "context_preview": "[Caroline | 2023-08-23T15:31:00 | session_13] [Caroline shared an image: a photo of a sign with a picture of a guinea pig] Hi Melanie! Hope you're doing good. Guess what I did this week? I took the fi",
+      "num_results": 15
+    },
+    {
+      "question": "What are the new shoes that Melanie got used for?",
+      "gold": "Running",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Melanie mentioned getting new shoes in the same message where she introduced Luna and Oliver, saying they \"really liven up the house,\" and shared a photo of a person wearing pink sneakers on a white rug. There is no direct statement about the purpose of the new shoes, but given the casual context and the photo, it is likely they are for everyday use or casual wear.\n\nFinal answer:  \nMelanie's new shoes are likely for casual or everyday use, as implied by the photo and casual mention alongside her pets.",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-07-12T16:41:30 | session_7] [Melanie shared an image: a photo of a person wearing pink sneakers on a white rug] Luna and Oliver! They are so sweet and playful - they really liven up th",
+      "num_results": 15
+    },
+    {
+      "question": "What creative project do Mel and her kids do together besides pottery?",
+      "gold": "painting",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Review all mentions of creative projects Mel and her kids do together.\n- Mel mentions pottery multiple times as a creative project with her kids.\n- Caroline asks Mel in session_8 (2023-07-15) what other creative projects they do besides pottery.\n- There is no direct response from Mel about other creative projects besides pottery.\n- Mel shares images and talks about pottery workshops and making clay sculptures.\n- Caroline mentions drawing flowers as her favorite art, but this is her own preference, not Mel's.\n- No other specific creative projects involving Mel and her kids are mentioned in the context.\n\nStep 2: Confirm if any other creative projects besides pottery are mentioned.\n- No other creative projects besides pottery are explicitly mentioned for Mel and her kids.\n\nFinal answer:  \nNot enough information.",
+      "correct": false,
+      "context_preview": "[Caroline | 2023-07-15T13:53:00 | session_8] Aww, that's so sweet! That cup is so cute. It's awesome to see how kids show their personalities through art. What other creative projects do you do with t",
+      "num_results": 15
+    },
+    {
+      "question": "Who performed at the concert at Melanie's daughter's birthday?",
+      "gold": "Matt Patterson",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Melanie mentioned celebrating her daughter's birthday with a concert on 2023-08-14 (session_11).\n\nStep 2: Caroline asked what concert it was, but Melanie did not specify the band or performers.\n\nStep 3: Later, Melanie shared a photo of a band playing on a stage in a park (session_15, 2023-08-28) and expressed excitement about live music, but did not link this band to the birthday concert.\n\nStep 4: No other messages specify who performed at the birthday concert.\n\nFinal answer: Not enough information.",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-08-14T14:24:00 | session_11] Hey Caroline! Last night was amazing! We celebrated my daughter's birthday with a concert surrounded by music, joy and the warm summer breeze. Seeing my ki",
+      "num_results": 15
+    },
+    {
+      "question": "What pets does Melanie have?",
+      "gold": "Two cats and a dog",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Melanie mentioned having a pup and a kitty in session_7 on 2023-07-12 at 16:40:30, sharing photos of both.\n\nStep 2: In the same session, Melanie shared a photo of a cat and a dog.\n\nStep 3: Later, on 2023-08-23 at 15:32:30 in session_13, Melanie said they got another cat named Bailey and shared a photo of Oliver (likely the dog).\n\nStep 4: So, Melanie has two cats (one named Bailey) and at least one dog (named Oliver).\n\nFinal answer: Melanie has two cats, including one named Bailey, and a dog named Oliver.",
+      "correct": true,
+      "context_preview": "[Melanie | 2023-08-23T15:31:30 | session_13] Caroline, congrats! So proud of you for taking this step. How does it feel? Also, do you have any pets?\n\n[Caroline | 2023-07-12T16:40:00 | session_7] That'",
+      "num_results": 15
+    },
+    {
+      "question": "How long has Melanie been creating art?",
+      "gold": "7 years",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Caroline asks Melanie, \"How long have you been creating art?\" in session_16 (2023-09-13), indicating the question is posed to Melanie but no direct answer from Melanie about the duration is given in the excerpts.\n\nStep 2: Melanie responds by sharing paintings and expressing how art helps her emotionally, but she does not specify how long she has been creating art.\n\nStep 3: Caroline mentions her own art journey and how it helped her during her transition but does not mention Melanie's art timeline.\n\nStep 4: No explicit statement or timeframe about how long Melanie has been creating art is found in the provided context.\n\nFinal answer: Not enough information",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-09-13T00:11:30 | session_16] Wow, Caroline, that looks awesome! I love how it shows the togetherness and power you were talking about. How long have you been creating art?\n\n[Caroline |",
+      "num_results": 15
+    },
+    {
+      "question": "What did Melanie do after the road trip to relax?",
+      "gold": "Went on a nature walk or hike",
+      "conv_id": "locomo_exp_user_0",
+      "category": "4",
+      "answer": "Step 1: Identify mentions of the road trip in the context.  \n- Melanie on 2023-10-20 says, \"Yup, we just did it yesterday! The kids loved it and it was a nice way to relax after the road trip.\"  \n- This indicates the activity done right after the road trip was relaxing and enjoyed by the kids.\n\nStep 2: Look for what specific activity Melanie did to relax after the road trip.  \n- On the same date, Melanie also says, \"Absolutely! It really helps me reset and recharge. I love camping trips with my fam, 'cause nature brings such peace and serenity.\"  \n- This suggests that the relaxing activity after the road trip was a camping trip with her family.\n\nFinal answer:  \nMelanie went on a camping trip with her family to relax after the road trip.",
+      "correct": false,
+      "context_preview": "[Melanie | 2023-10-20T19:03:00 | session_18] Thanks, Caroline! Yup, we just did it yesterday! The kids loved it and it was a nice way to relax after the road trip.\n\n[Caroline | 2023-08-17T14:00:00 | s",
+      "num_results": 15
+    },
+    {
+      "question": "Which city have both Jean and John visited?",
+      "gold": "Rome",
+      "conv_id": "locomo_exp_user_1",
+      "category": "1",
+      "answer": "Step 1: Identify mentions of cities visited by Jon and Gina.\n- Jon mentioned: \"Oh, I've been to Paris yesterday! It was sooo cool.\" (session_2, 2023-01-29)\n- Gina mentioned: \"Paris?! That is really great Jon! Never had a chance to visit it. Been only to Rome once.\" (session_2, 2023-01-29)\n\nStep 2: Analyze Gina's statement about Paris.\n- Gina says she has never had a chance to visit Paris, only Rome once.\n\nStep 3: Conclusion.\n- Jon has visited Paris.\n- Gina has not visited Paris but has been to Rome.\n- There is no mention of Jon visiting Rome.\n- Therefore, there is no city both have visited.\n\nFinal answer: Not enough information; no city is mentioned as visited by both Jon and Gina.",
+      "correct": false,
+      "context_preview": "[Gina | 2023-01-29T14:34:00 | session_2] Wow, nice spot! Where is it? Got any other features you want to think about before you decide? Paris?! That is really great Jon! Never had a chance to visit it",
+      "num_results": 15
+    },
+    {
+      "question": "When did Jon receive mentorship to promote his venture?",
+      "gold": "15 June, 2023",
+      "conv_id": "locomo_exp_user_1",
+      "category": "2",
+      "answer": "Step 1: Identify mentions of mentorship related to Jon's venture.  \n- On 2023-06-13, Gina mentions Jon's \"one-on-one mentoring and training\" that will help dancers reach their goals, implying Jon is providing mentorship rather than receiving it.  \n- No direct mention of Jon receiving mentorship to promote his venture is found in the excerpts.  \n\nStep 2: Look for any indirect clues about Jon receiving mentorship.  \n- Jon talks about starting the gym and balancing things (2023-03-16), doing promotion (2023-06-16), and receiving support from Gina, but no explicit mention of mentorship received.  \n- Gina mentions she had a mentor when learning to dance (2023-06-13), but this is about herself, not Jon.  \n\nStep 3: Conclusion  \nThere is no clear evidence or date indicating when Jon received mentorship to promote his venture.\n\nFinal answer: Not enough information",
+      "correct": false,
+      "context_preview": "[Gina | 2023-07-23T18:50:30 | session_19] You're welcome, Jon! I'm here to support you. Every step's getting you closer to your dream. Never give up! You're doing great.\n\n[Jon | 2023-03-16T14:35:00 | ",
+      "num_results": 15
+    },
+    {
+      "question": "How long did it take for Jon to open his studio?",
+      "gold": "six months",
+      "conv_id": "locomo_exp_user_1",
+      "category": "1",
+      "answer": "Step 1: The earliest mention of Jon opening a studio is Gina's message on 2023-04-09, where she says, \"The dance studio looks awesome,\" implying it was already established or at least in progress.\n\nStep 2: On 2023-06-19, Jon says the official opening night is tomorrow, meaning the studio officially opens on 2023-06-20.\n\nStep 3: There is no explicit start date for when Jon began working on the studio, but the earliest mention of the studio is in early April 2023.\n\nStep 4: Since the official opening is mid-June 2023, and the studio was already being talked about in April, it suggests it took a few months (likely from early 2023 or before April) to open.\n\nStep 5: Without a precise start date, the best estimate is that it took Jon a few months (approximately 2-3 months) to open the studio.\n\nFinal answer: Jon took about 2-3 months to open his dance studio, with the official opening on June 20, 2023.",
+      "correct": false,
+      "context_preview": "[Gina | 2023-05-11T15:14:30 | session_11] Hi! You're so inspiring taking it on and opening your own studio!\n\n[Gina | 2023-06-19T10:05:30 | session_15] When are you opening the studio?\n\n[Gina | 2023-05",
+      "num_results": 15
+    },
+    {
+      "question": "What is Gina's favorite style of dance?",
+      "gold": "Contemporary",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Step 1: Review all mentions of Gina's dance preferences or favorite styles.\n- Gina reminisces about dance classes and loves spending time in the studio (session_9).\n- Jon asks Gina about her favorite dance style in session_1, but Gina does not directly answer.\n- Gina mentions dance as her stress relief and shares photos related to dance but does not specify a style.\n- Gina talks about having a mentor when learning to dance but no style is mentioned.\n- No direct statement from Gina about a favorite dance style is found in the excerpts.\n\nStep 2: Check if any indirect clues point to a style.\n- Gina shared a photo of a group of young women in ballet attire (session_9), which may imply familiarity or fondness for ballet.\n- Jon mentions contemporary as his favorite but Gina does not confirm or deny.\n\nStep 3: Conclusion\n- Gina does not explicitly state her favorite dance style.\n- The only hint is the ballet attire photo, but that is not a direct statement of preference.\n\nFinal answer: Not enough information.",
+      "correct": false,
+      "context_preview": "[Gina | 2023-04-09T10:36:30 | session_9] [Gina shared an image: a photo of a group of young women in ballet attire] Yeah, I do remember those dance classes! I used to love spending time in the studio.",
+      "num_results": 15
+    },
+    {
+      "question": "What do the dancers in the photo represent?",
+      "gold": "They are performing at the festival",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Step 1: Identify the relevant photo mentioned in the context. Jon shared multiple photos of dancers in various settings: rehearsals, performances, and studio groups.\n\nStep 2: Look for descriptions or explanations about what the dancers represent. Jon mentions rehearsing with a small group, finishing choreography for a festival, and working with young dancers showing passion and commitment.\n\nStep 3: Gina reflects on dance as a happy place and mentions mentoring and training helping dancers reach their goals.\n\nStep 4: Jon talks about the dance studio being a place of support and encouragement, and the dancers representing passion, commitment, and the realization of dreams through dance.\n\nFinal answer: The dancers in the photo represent passion, commitment, and the supportive community Jon has built through his dance studio, showcasing their dedication to dance and growth.",
+      "correct": true,
+      "context_preview": "[Jon | 2023-01-20T16:15:30 | session_1] [Jon shared an image: a photo of a group of dancers in white dresses on a stage] Thanks! I rehearsed with a small group of dancers after work. We do all kinds o",
+      "num_results": 15
+    },
+    {
+      "question": "What did Jon and Gina compare their entrepreneurial journeys to?",
+      "gold": "dancing together and supporting each other",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Step 1: Review the excerpts for any metaphor or comparison related to their entrepreneurial journeys.\n\nStep 2: Gina mentioned her journey as \"tough but very rewarding\" after losing her job and taking control of her destiny (2023-04-25).\n\nStep 3: Jon talked about staying \"determined and focused\" and going to networking events to \"make things happen\" (2023-06-21).\n\nStep 4: Gina encouraged Jon with \"Let's make a difference and show 'em what we got. We can do amazing things together!\" (2023-07-21).\n\nStep 5: No explicit metaphor or direct comparison like \"journey is like a dance\" or \"like climbing a mountain\" is found.\n\nStep 6: However, Jon shared a photo of his students doing a dance routine and mentioned how seeing them succeed motivates him (2023-03-23), and Gina said she is glad to be part of this journey (2023-03-23).\n\nStep 7: The closest implied comparison is that their journeys are like a dance or a process of growth and learning, but this is indirect.\n\nFinal answer:  \nJon and Gina implicitly compared their entrepreneurial journeys to a process of growth and learning, similar to a dance routine where progress and support motivate them.",
+      "correct": true,
+      "context_preview": "[Gina | 2023-03-16T14:41:30 | session_6] Thanks, Jon! Your words are really encouraging. Glad my journey is inspiring others.\n\n[Jon | 2023-06-16T21:42:00 | session_14] Wow, Gina! You did great taking ",
+      "num_results": 15
+    },
+    {
+      "question": "What does Jon plan to do at the grand opening of his dance studio?",
+      "gold": "savor all the good vibes",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Step 1: Jon mentions on 2023-06-19 that the official opening night is tomorrow and he is working hard to make everything just right, indicating preparation for a special event.\n\nStep 2: He shares a photo of young dancers in a studio, showing that dancers will be involved in the event.\n\nStep 3: Jon expresses excitement to see everything come together, implying a performance or showcase.\n\nStep 4: Earlier, Jon talked about rehearsing choreography and working with dancers, suggesting a dance performance is planned.\n\nFinal answer: Jon plans to showcase a dance performance by his young dancers at the grand opening of his dance studio.",
+      "correct": true,
+      "context_preview": "[Jon | 2023-06-19T10:06:00 | session_15] [Jon shared an image: a photo of a group of young dancers in a dance studio] The official opening night is tomorrow. I'm working hard to make everything just r",
+      "num_results": 15
+    },
+    {
+      "question": "What does Gina say to Jon about the grand opening?",
+      "gold": "Let's live it up and make some great memories",
+      "conv_id": "locomo_exp_user_1",
+      "category": "4",
+      "answer": "Step 1: Identify all mentions of the grand opening in the context.  \n- Gina says on 2023-06-19T10:12:30: \"Can't wait for tomorrow's grand opening!\"  \n- Jon responds on 2023-06-19T10:10:00: \"Yeah! Let's make some awesome memories tomorrow at the grand opening!\"\n\nStep 2: Note that Gina's statement expresses excitement and anticipation for the grand opening happening the next day.\n\nFinal answer:  \nGina says to Jon that she \"can't wait for tomorrow's grand opening,\" expressing her excitement.",
+      "correct": true,
+      "context_preview": "[Gina | 2023-06-19T10:12:30 | session_15] Can't wait for tomorrow's grand opening!\n\n[Jon | 2023-06-19T10:10:00 | session_15] Yeah! Let's make some awesome memories tomorrow at the grand opening!\n\n[Jon",
+      "num_results": 15
+    },
+    {
+      "question": "What martial arts has John done?",
+      "gold": "Kickboxing, Taekwondo",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Step 1: Maria asked John if the place he was at was a martial arts place or a yoga studio (2023-07-22).\n\nStep 2: John responded that he has done weight training and described it as challenging but peaceful, \"kinda like yoga\" (2023-07-22).\n\nStep 3: There is no mention of John specifying any particular martial arts he has done.\n\nFinal answer: Not enough information about what specific martial arts John has done.",
+      "correct": false,
+      "context_preview": "[Maria | 2023-07-22T18:25:30 | session_25] Thanks, John! Is it a martial arts place or a yoga studio? It looks awesome!\n\n[Maria | 2022-12-17T11:01:00 | session_1] Hey John! Long time no see! What's up",
+      "num_results": 15
+    },
+    {
+      "question": "What items des John mention having as a child?",
+      "gold": "A doll, a film camera",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Step 1: Review all excerpts for mentions of John talking about items he had as a child.  \nStep 2: Check for any references to childhood possessions or experiences.  \nStep 3: The only relevant mention is John sharing a photo of a banana split ice cream sundae and mentioning he made an apple pie for the kids recently, but this is about current times, not childhood.  \nStep 4: No direct mention of items John had as a child is found in the context.\n\nFinal answer: Not enough information.",
+      "correct": false,
+      "context_preview": "[Maria | 2023-04-02T09:40:00 | session_9] Yeah, I remember you mentioning those areas. How have your experiences in the community meeting and involvement shaped your views on them?\n\n[Maria | 2023-04-0",
+      "num_results": 15
+    },
+    {
+      "question": "What people has Maria met and helped while volunteering?",
+      "gold": "David, Jean, Cindy, Laura",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Step 1: Maria volunteers at a homeless shelter (multiple mentions: 2023-08-03, 2023-04-10, 2023-03-06).\n\nStep 2: She met a family struggling on the streets, which inspired her to start volunteering (2023-08-03).\n\nStep 3: While volunteering, she met an amazing woman named Jean, who had been through a lot but stayed optimistic and resilient (2023-02-25).\n\nStep 4: She also mentioned making friends with fellow volunteers who share her passion for helping others (2023-01-09).\n\nFinal answer: Maria has met and helped homeless families and individuals, including a resilient woman named Jean, as well as connecting with fellow volunteers while working at the homeless shelter.",
+      "correct": true,
+      "context_preview": "[Maria | 2023-08-03T18:20:30 | session_27] [Maria shared an image: a photography of a group of people standing around a table] Wow, John! Way to go helping veterans! I'm doing my part too, volunteerin",
+      "num_results": 15
+    },
+    {
+      "question": "Would John be considered a patriotic person?",
+      "gold": "Yes",
+      "conv_id": "locomo_exp_user_2",
+      "category": "3",
+      "answer": "Step 1: John is involved in a virtual support group advocating for the military, as he invited family and friends to join and support those serving the nation (John | 2023-08-03T18:20:00).\n\nStep 2: John emphasizes the importance of teaching respect and appreciation for veterans and those who served the country (John | 2023-08-03T18:26:00).\n\nStep 3: Maria praises John for his initiative and dedication to an important cause related to veterans and military support (Maria | 2023-08-09T20:08:00; Maria | 2023-08-03T18:26:30).\n\nStep 4: Maria also acknowledges the positive effect John\u2019s efforts have on his hometown (Maria | 2023-08-05T17:24:30).\n\nThese points indicate John is actively engaged in supporting and honoring military service, which aligns with patriotic values.\n\nFinal answer: Yes, John would be considered a patriotic person based on his active support and advocacy for the military and veterans.",
+      "correct": true,
+      "context_preview": "[Maria | 2023-07-03T20:49:00 | session_21] Thanks, John! Really appreciate your offer. Anything you can find would be great.\n\n[Maria | 2023-08-03T18:22:30 | session_27] [Maria shared an image: a photo",
+      "num_results": 15
+    },
+    {
+      "question": "Who did John go to yoga with?",
+      "gold": "Rob",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Step 1: John mentioned starting a weekend yoga class with a colleague on 2023-04-07 (session_10).  \nStep 2: Earlier, on 2023-02-25 (session_7), John said his colleague Rob invited him to a beginner's yoga class.  \nStep 3: No other names are mentioned as yoga partners with John.\n\nFinal answer: John went to yoga with his colleague Rob.",
+      "correct": true,
+      "context_preview": "[John | 2023-07-22T18:26:00 | session_25] Yup, it's a yoga studio I go to often. The vibe is really chill and the instructors are awesome.\n\n[John | 2023-04-07T00:24:00 | session_10] Hey Maria, I'm so ",
+      "num_results": 15
+    },
+    {
+      "question": "What European countries has Maria been to?",
+      "gold": "Spain, England",
+      "conv_id": "locomo_exp_user_2",
+      "category": "1",
+      "answer": "Step 1: Look for any mention of Maria traveling to European countries in the context.  \nStep 2: In the message from Maria on 2023-03-06T18:10:00 (session_8), she mentions a trip to England a few years ago.  \nStep 3: England is part of the United Kingdom, which is in Europe.\n\nNo other European countries are mentioned in the context.\n\nFinal answer:  \nMaria has been to England.",
+      "correct": false,
+      "context_preview": "[John | 2022-12-22T18:10:30 | session_2] Hi Maria! It's been an interesting ride so far. I've been networking with some people to get their input.\n\n[John | 2023-05-04T15:18:00 | session_13] Hey Maria!",
+      "num_results": 15
+    }
+  ]
+}

@@ -32,7 +32,7 @@ if TYPE_CHECKING:
 # ---------------------------------------------------------------------------
 
 _model = None
-_model_name: str = "cross-encoder/ms-marco-MiniLM-L6-v2"
+_model_name: str = "mixedbread-ai/mxbai-rerank-large-v1"
 
 
 def get_reranker(model_name: str | None = None, device: str | None = None):

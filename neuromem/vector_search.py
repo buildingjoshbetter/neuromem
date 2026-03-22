@@ -43,6 +43,7 @@ if TYPE_CHECKING:
 #   "model2vec"   → minishlab/potion-base-8M (256-dim, ~30MB, ultra-fast)
 #   "minilm"      → all-MiniLM-L6-v2 (384-dim, ~80MB, much better quality)
 #   "bge-small"   → BAAI/bge-small-en-v1.5 (384-dim, ~130MB, best quality/size)
+#   "qwen3"       → Qwen/Qwen3-Embedding-0.6B (1024-dim, ~1.5GB, highest quality)
 EMBEDDING_MODEL = "model2vec"  # Default, override via set_embedding_model()
 
 _model = None
@@ -64,6 +65,7 @@ def get_embedding_dim(name: str | None = None) -> int:
         "model2vec": 256,
         "minilm": 384,
         "bge-small": 384,
+        "qwen3": 1024,
     }
     return dims.get(name, 256)
 
@@ -90,6 +92,10 @@ def get_model():
             from sentence_transformers import SentenceTransformer
             _model = SentenceTransformer("BAAI/bge-small-en-v1.5")
             _embedding_dim = 384
+        elif EMBEDDING_MODEL == "qwen3":
+            from sentence_transformers import SentenceTransformer
+            _model = SentenceTransformer("Qwen/Qwen3-Embedding-0.6B")
+            _embedding_dim = 1024
         else:
             from model2vec import StaticModel
             _model = StaticModel.from_pretrained("minishlab/potion-base-8M")

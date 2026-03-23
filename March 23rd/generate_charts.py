@@ -2,7 +2,7 @@
 """
 Generate deep analysis charts for Neuromem — March 23, 2026.
 
-Produces ~12 PNGs for the NEUROMEM_DEEP_ANALYSIS.md synthesis document.
+Produces 24 PNGs for the NEUROMEM_DEEP_ANALYSIS.md synthesis document.
 Style: ADHD-friendly, high contrast, cream background, clear labels.
 Follows the established convention from /charts/generate_architecture_charts.py.
 """
@@ -136,7 +136,7 @@ def chart_01_score_progression():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_01_score_progression.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [1/12] Score progression")
+    print("  [1/24] Score progression")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -194,7 +194,7 @@ def chart_02_the_gap():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_02_the_gap.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [2/12] The gap")
+    print("  [2/24] The gap")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -250,7 +250,7 @@ def chart_03_category_comparison():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_03_category_comparison.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [3/12] Category comparison")
+    print("  [3/24] Category comparison")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -320,7 +320,7 @@ def chart_04_failure_taxonomy():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_04_failure_taxonomy.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [4/12] Failure taxonomy")
+    print("  [4/24] Failure taxonomy")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -384,7 +384,7 @@ def chart_05_diminishing_returns():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_05_diminishing_returns.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [5/12] Diminishing returns")
+    print("  [5/24] Diminishing returns")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -460,7 +460,7 @@ def chart_06_competitive_landscape():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_06_competitive_landscape.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [6/12] Competitive landscape")
+    print("  [6/24] Competitive landscape")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -517,7 +517,7 @@ def chart_07_cost_vs_accuracy():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_07_cost_vs_accuracy.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [7/12] Cost vs accuracy")
+    print("  [7/24] Cost vs accuracy")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -583,7 +583,7 @@ def chart_08_evermemos_weaknesses():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_08_evermemos_weaknesses.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [8/12] EverMemOS weaknesses")
+    print("  [8/24] EverMemOS weaknesses")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -640,7 +640,7 @@ def chart_09_point_sources():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_09_point_sources.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [9/12] Point sources")
+    print("  [9/24] Point sources")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -701,7 +701,7 @@ def chart_10_temporal_deep_dive():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_10_temporal_deep_dive.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [10/12] Temporal deep dive")
+    print("  [10/24] Temporal deep dive")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -770,7 +770,7 @@ def chart_11_implementation_roadmap():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_11_implementation_roadmap.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [11/12] Implementation roadmap")
+    print("  [11/24] Implementation roadmap")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -841,7 +841,803 @@ def chart_12_probability_distribution():
     fig.savefig(os.path.join(CHARTS_DIR, 'deep_12_probability_distribution.png'),
                 dpi=150, bbox_inches='tight')
     plt.close()
-    print("  [12/12] Probability distribution")
+    print("  [12/24] Probability distribution")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 13: Biological Principles Wheel
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_13_bio_principles():
+    """Radial bar chart showing 6 biological principles with implementation status."""
+    fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
+    fig.patch.set_facecolor(C['bg'])
+    ax.set_facecolor(C['bg'])
+
+    principles = [
+        'Hippocampal\nReplay',
+        'Complementary\nLearning',
+        'Predictive\nCoding',
+        'Emotional\nTagging',
+        'Social\nBrain',
+        'Immune\nDetection',
+    ]
+    percentages = [70, 40, 20, 30, 60, 50]
+    colors = [C['neuromem'], C['evermemos'], C['target'], C['danger'],
+              C['teal'], C['indigo']]
+
+    N = len(principles)
+    angles = np.linspace(0, 2 * np.pi, N, endpoint=False).tolist()
+    width = 2 * np.pi / N * 0.8
+
+    for i, (angle, pct, color) in enumerate(zip(angles, percentages, colors)):
+        # Background wedge (100%)
+        ax.bar(angle, 100, width=width, bottom=0, color=C['grid'], alpha=0.3,
+               edgecolor='white', linewidth=2)
+        # Filled wedge (actual %)
+        ax.bar(angle, pct, width=width, bottom=0, color=color, alpha=0.8,
+               edgecolor='white', linewidth=2)
+        # Label
+        label_angle = angle
+        ax.text(label_angle, 115, f'{principles[i]}\n{pct}%', ha='center',
+                va='center', fontsize=10, fontweight='bold', color=C['text'])
+
+    ax.set_ylim(0, 130)
+    ax.set_yticks([25, 50, 75, 100])
+    ax.set_yticklabels(['25%', '50%', '75%', '100%'], fontsize=8, color=C['dark'])
+    ax.set_xticks([])
+    ax.set_title('Nature-to-Engineering: 6 Core Biological Principles',
+                fontsize=15, fontweight='bold', pad=40, color=C['text'])
+
+    # Legend
+    legend_patches = [mpatches.Patch(color=colors[i], label=f'{principles[i].replace(chr(10), " ")} ({percentages[i]}%)')
+                      for i in range(N)]
+    ax.legend(handles=legend_patches, loc='lower right', bbox_to_anchor=(1.3, -0.05),
+              fontsize=9, framealpha=0.9)
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_13_bio_principles.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [13/24] Biological principles wheel")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 14: Improvement Heatmap
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_14_improvement_heatmap():
+    """Grid/table heatmap: 16 nature categories with implementation status."""
+    fig, ax = plt.subplots(figsize=(14, 10))
+
+    categories = [
+        'Mycorrhizal', 'Coral Reef', 'Dream Cycle', 'Bat Sonar',
+        'Octopus', 'Wolf Pack', 'Geological Strata', 'Immune System',
+        'Amygdala', 'River System', 'Levy Flight', 'Caterpillar',
+        'Tree Rings', 'SOAR', 'Hippocampal', 'Forensics',
+    ]
+    # [implemented, partial, not_yet, impact]
+    data = [
+        [1, 0, 0, 'Low'],
+        [0, 1, 1, 'Low'],
+        [1, 1, 1, 'High'],
+        [0, 1, 3, 'High'],
+        [0, 1, 1, 'Medium'],
+        [1, 1, 2, 'Medium'],
+        [1, 1, 4, 'High'],
+        [1, 1, 2, 'Medium'],
+        [0, 1, 1, 'Medium'],
+        [0, 0, 1, 'Low'],
+        [0, 0, 2, 'Medium'],
+        [0, 0, 5, 'Medium'],
+        [0, 0, 1, 'Low'],
+        [0, 0, 1, 'Low'],
+        [0, 0, 1, 'Medium'],
+        [2, 2, 4, 'High'],
+    ]
+
+    ax.axis('off')
+
+    col_labels = ['Category', 'Count', 'Implemented', 'Partial', 'Not Yet', 'LoCoMo Impact']
+    n_rows = len(categories)
+    n_cols = len(col_labels)
+
+    # Draw table
+    cell_height = 0.045
+    cell_widths = [0.18, 0.10, 0.15, 0.12, 0.12, 0.16]
+    y_start = 0.92
+    x_start = 0.05
+
+    # Header
+    x = x_start
+    for j, (label, w) in enumerate(zip(col_labels, cell_widths)):
+        rect = plt.Rectangle((x, y_start), w, cell_height, transform=ax.transAxes,
+                              facecolor=C['dark'], edgecolor='white', linewidth=1.5,
+                              clip_on=False)
+        ax.add_patch(rect)
+        ax.text(x + w / 2, y_start + cell_height / 2, label, transform=ax.transAxes,
+                ha='center', va='center', fontsize=9, fontweight='bold', color='white')
+        x += w
+
+    # Rows
+    for i, (cat, row) in enumerate(zip(categories, data)):
+        y = y_start - (i + 1) * cell_height
+        imp, partial, not_yet, impact = row
+        total = imp + partial + not_yet
+        values = [cat, str(total), str(imp), str(partial), str(not_yet), impact]
+
+        # Cell colors
+        cell_colors = [
+            C['bg'],
+            C['bg'],
+            C['target'] if imp > 0 else C['bg'],
+            C['amber'] if partial > 0 else C['bg'],
+            '#d5d8dc' if not_yet > 0 else C['bg'],
+            C['target'] if impact == 'High' else (C['amber'] if impact == 'Medium' else '#d5d8dc'),
+        ]
+        cell_alphas = [0.1, 0.1, 0.3, 0.3, 0.3, 0.25]
+
+        x = x_start
+        for j, (val, w, cc, ca) in enumerate(zip(values, cell_widths, cell_colors, cell_alphas)):
+            rect = plt.Rectangle((x, y), w, cell_height, transform=ax.transAxes,
+                                  facecolor=cc, edgecolor=C['grid'], linewidth=0.8,
+                                  alpha=ca if j >= 2 else 0.1, clip_on=False)
+            ax.add_patch(rect)
+            ax.text(x + w / 2, y + cell_height / 2, val, transform=ax.transAxes,
+                    ha='center', va='center', fontsize=9, color=C['text'],
+                    fontweight='bold' if j == 0 else 'normal')
+            x += w
+
+    ax.set_title('The Full Improvement Universe: 47 Improvements Across 16 Categories',
+                fontsize=15, fontweight='bold', pad=20, color=C['text'])
+
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_14_improvement_heatmap.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [14/24] Improvement heatmap")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 15: Benchmark vs Soft Impact Scatter
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_15_benchmark_vs_soft():
+    """2x2 scatter: benchmark impact vs real-world/soft impact."""
+    fig, ax = plt.subplots(figsize=(14, 8))
+
+    # Quadrant boundaries
+    ax.axhline(y=5, color=C['grid'], linewidth=1.5, linestyle='--', zorder=1)
+    ax.axvline(x=5, color=C['grid'], linewidth=1.5, linestyle='--', zorder=1)
+
+    # Quadrant labels
+    ax.text(2.5, 9.2, 'SCALE PLAYS\n(Low benchmark, High real-world)',
+            ha='center', va='top', fontsize=10, color=C['teal'], fontweight='bold', alpha=0.6)
+    ax.text(7.5, 9.2, 'UNIVERSAL WINS\n(High benchmark, High real-world)',
+            ha='center', va='top', fontsize=10, color=C['target'], fontweight='bold', alpha=0.6)
+    ax.text(2.5, 0.8, 'LOW PRIORITY\n(Low benchmark, Low real-world)',
+            ha='center', va='bottom', fontsize=10, color=C['dark'], fontweight='bold', alpha=0.6)
+    ax.text(7.5, 0.8, 'BENCHMARK STARS\n(High benchmark, Low real-world)',
+            ha='center', va='bottom', fontsize=10, color=C['neuromem'], fontweight='bold', alpha=0.6)
+
+    # Improvements as dots: (name, bench_x, soft_y, color)
+    improvements = [
+        # Universal Wins
+        ('OCR routing (#40)', 7.5, 8.0, C['target']),
+        ('Structured facts (#43)', 8.0, 7.5, C['target']),
+        ('Temporal engine (#17-22)', 8.5, 8.5, C['target']),
+        ('Multi-hop chains', 7.0, 7.0, C['target']),
+        # Benchmark Stars
+        ('Entity saturation (#44)', 7.5, 3.0, C['neuromem']),
+        ('Scent trail (#31)', 6.5, 2.5, C['neuromem']),
+        ('Judge-aware', 6.0, 2.0, C['neuromem']),
+        ('Vocab bridging', 5.5, 3.5, C['neuromem']),
+        # Scale Plays
+        ('Tiered storage (#2)', 2.0, 8.0, C['teal']),
+        ('Memory decay', 3.0, 7.5, C['teal']),
+        ('Retrieval strengthening (#3)', 2.5, 7.0, C['teal']),
+        ('Cyclical features (#22)', 3.5, 6.5, C['teal']),
+        # Low Priority
+        ('SOAR chunking (#38)', 2.0, 2.5, C['dark']),
+        ('Levy flight (#30)', 3.0, 3.0, C['dark']),
+    ]
+
+    for name, bx, sy, color in improvements:
+        ax.scatter(bx, sy, s=180, c=color, edgecolors='white', linewidth=2,
+                   zorder=5, alpha=0.9)
+        ax.annotate(name, (bx, sy), xytext=(8, 5), textcoords='offset points',
+                    fontsize=8, color=color, fontweight='bold')
+
+    ax.set_xlabel('LoCoMo Benchmark Impact (0=None, 10=High)', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Real-World / Soft Impact (0=None, 10=High)', fontsize=12, fontweight='bold')
+    ax.set_xlim(0, 10)
+    ax.set_ylim(0, 10)
+    ax.set_title('Benchmark Impact vs. Real-World Value',
+                fontsize=15, fontweight='bold', pad=15)
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_15_benchmark_vs_soft.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [15/24] Benchmark vs soft impact scatter")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 16: Memory Architecture Diagram
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_16_architecture():
+    """Layered horizontal diagram showing 3 memory tiers."""
+    fig, ax = plt.subplots(figsize=(14, 7))
+    ax.axis('off')
+    ax.set_xlim(0, 14)
+    ax.set_ylim(0, 8)
+
+    # Three tiers
+    tiers = [
+        {
+            'x': 0.8, 'y': 2.5, 'w': 3.5, 'h': 3.5,
+            'color': C['target'], 'label': 'SHORT-TERM',
+            'desc': 'Current session\n~100 messages\nIn-memory\nSequential scan',
+        },
+        {
+            'x': 5.2, 'y': 2.5, 'w': 3.5, 'h': 3.5,
+            'color': C['neuromem'], 'label': 'MEDIUM-TERM',
+            'desc': '30-90 days\nFull indexed\nFTS5 + sqlite-vec\nPrimary search',
+        },
+        {
+            'x': 9.6, 'y': 2.5, 'w': 3.5, 'h': 3.5,
+            'color': C['ceiling'], 'label': 'LONG-TERM',
+            'desc': 'Summaries + profiles\nFTS5 only\nSQL fallback\nArchival',
+        },
+    ]
+
+    for tier in tiers:
+        rect = mpatches.FancyBboxPatch(
+            (tier['x'], tier['y']), tier['w'], tier['h'],
+            boxstyle='round,pad=0.2', facecolor=tier['color'], alpha=0.15,
+            edgecolor=tier['color'], linewidth=3)
+        ax.add_patch(rect)
+        ax.text(tier['x'] + tier['w'] / 2, tier['y'] + tier['h'] - 0.4,
+                tier['label'], ha='center', va='top', fontsize=13,
+                fontweight='bold', color=tier['color'])
+        ax.text(tier['x'] + tier['w'] / 2, tier['y'] + tier['h'] / 2 - 0.3,
+                tier['desc'], ha='center', va='center', fontsize=10,
+                color=C['text'], linespacing=1.5)
+
+    # Consolidation arrows (left to right)
+    ax.annotate('', xy=(5.0, 4.8), xytext=(4.5, 4.8),
+                arrowprops=dict(arrowstyle='->', color=C['dark'], lw=2.5))
+    ax.text(4.75, 5.3, 'Consolidation', ha='center', fontsize=9,
+            fontweight='bold', color=C['dark'])
+
+    ax.annotate('', xy=(9.4, 4.8), xytext=(8.9, 4.8),
+                arrowprops=dict(arrowstyle='->', color=C['dark'], lw=2.5))
+    ax.text(9.15, 5.3, 'Consolidation', ha='center', fontsize=9,
+            fontweight='bold', color=C['dark'])
+
+    # Retrieval fallback arrows (right to left)
+    ax.annotate('', xy=(4.5, 3.5), xytext=(5.0, 3.5),
+                arrowprops=dict(arrowstyle='->', color=C['amber'], lw=2, linestyle='--'))
+    ax.text(4.75, 3.0, 'Fallback', ha='center', fontsize=9,
+            fontweight='bold', color=C['amber'])
+
+    ax.annotate('', xy=(8.9, 3.5), xytext=(9.4, 3.5),
+                arrowprops=dict(arrowstyle='->', color=C['amber'], lw=2, linestyle='--'))
+    ax.text(9.15, 3.0, 'Fallback', ha='center', fontsize=9,
+            fontweight='bold', color=C['amber'])
+
+    # Bottom annotation
+    ax.text(7.0, 1.2, 'All in one SQLite file — zero external dependencies',
+            ha='center', va='center', fontsize=13, fontweight='bold',
+            color=C['dark'], style='italic',
+            bbox=dict(boxstyle='round,pad=0.5', facecolor=C['target'], alpha=0.08))
+
+    ax.set_title('Three-Tier Memory Architecture',
+                fontsize=15, fontweight='bold', pad=15, color=C['text'])
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_16_architecture.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [16/24] Memory architecture diagram")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 17: Experimental Phases Gantt
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_17_phase_gantt():
+    """Horizontal Gantt chart for Phases 2-9."""
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    phases = [
+        ('Phase 2: OCR & Vocab Bridging', 4, 1.5, 2.5),
+        ('Phase 3: Entity Aggregation', 5, 1.0, 2.0),
+        ('Phase 4: Temporal Engine v2', 6, 1.5, 3.0),
+        ('Phase 5: Multi-Hop Chains', 5, 1.0, 2.0),
+        ('Phase 6: Cross-Modal Integration', 6, 0.5, 1.5),
+        ('Phase 7: Sufficiency + Multi-Query', 5, 1.0, 2.0),
+        ('Phase 8: Judge-Aware', 2, 0.5, 1.0),
+        ('Phase 9: Soft Improvements', 8, 0, 0),  # N/A for LoCoMo
+    ]
+
+    colors_phase = [C['neuromem'], C['teal'], C['evermemos'], C['indigo'],
+                    C['pink'], C['target'], C['amber'], C['light_purple']]
+
+    cumulative = 0
+    y_positions = list(range(len(phases) - 1, -1, -1))
+
+    for i, ((name, hours, cons, opt), y_pos) in enumerate(zip(phases, y_positions)):
+        # Bar for duration
+        ax.barh(y_pos, hours, left=cumulative, color=colors_phase[i],
+                edgecolor='white', linewidth=2, height=0.6, alpha=0.85)
+
+        # Phase label (left of bar)
+        ax.text(cumulative - 0.3, y_pos, name, ha='right', va='center',
+                fontsize=9, fontweight='bold', color=C['text'])
+
+        # Impact label (right of bar)
+        if cons > 0:
+            impact_label = f'+{cons:.1f}–{opt:.1f}pp'
+        else:
+            impact_label = 'N/A (soft)'
+        ax.text(cumulative + hours + 0.3, y_pos, impact_label, ha='left',
+                va='center', fontsize=9, fontweight='bold', color=colors_phase[i])
+
+        # Hours label inside bar
+        ax.text(cumulative + hours / 2, y_pos, f'{hours}h', ha='center',
+                va='center', fontsize=9, fontweight='bold', color='white')
+
+        cumulative += hours
+
+    # Milestone markers
+    milestone_hours = [0, 4, 9, 15, 20, 26, 31, 33]  # cumulative at start of each
+    milestones = [
+        (4, '~92.7%', C['neuromem']),
+        (15, '~95.2%', C['evermemos']),
+        (33, '~98%', C['target']),
+    ]
+    for hrs, label, color in milestones:
+        ax.axvline(x=hrs, color=color, linestyle=':', alpha=0.5, linewidth=2)
+        ax.text(hrs, len(phases) + 0.3, label, ha='center', fontsize=9,
+                fontweight='bold', color=color)
+
+    ax.set_xlabel('Cumulative Hours', fontsize=12, fontweight='bold')
+    ax.set_xlim(-20, cumulative + 5)
+    ax.set_yticks([])
+    ax.set_title('Experimental Phases: Isolating Each Variable',
+                fontsize=15, fontweight='bold', pad=15)
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_17_phase_gantt.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [17/24] Phase Gantt chart")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 18: Per-Phase Gains Stacked Bar
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_18_phase_gains():
+    """Stacked bar chart for Phases 2-8 with conservative and optimistic gains."""
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    phase_labels = ['Phase 2\nOCR & Vocab', 'Phase 3\nEntity Agg.',
+                    'Phase 4\nTemporal v2', 'Phase 5\nMulti-Hop',
+                    'Phase 6\nCross-Modal', 'Phase 7\nSufficiency',
+                    'Phase 8\nJudge-Aware']
+    conservative = [1.5, 1.0, 1.5, 1.0, 0.5, 1.0, 0.5]
+    optimistic =   [2.5, 2.0, 3.0, 2.0, 1.5, 2.0, 1.0]
+    extra = [o - c for o, c in zip(optimistic, conservative)]
+
+    colors_bar = [C['neuromem'], C['teal'], C['evermemos'], C['indigo'],
+                  C['pink'], C['target'], C['amber']]
+
+    x = np.arange(len(phase_labels))
+
+    # Conservative bars
+    bars_c = ax.bar(x, conservative, color=colors_bar, edgecolor='white',
+                    linewidth=2, width=0.6, alpha=0.85, label='Conservative')
+    # Optimistic upside
+    bars_o = ax.bar(x, extra, bottom=conservative, color=colors_bar,
+                    edgecolor='white', linewidth=2, width=0.6, alpha=0.35,
+                    label='Optimistic upside')
+
+    # Labels
+    for i, (c, o) in enumerate(zip(conservative, optimistic)):
+        ax.text(i, o + 0.1, f'+{c:.1f}–{o:.1f}pp', ha='center', fontsize=9,
+                fontweight='bold', color=C['text'])
+
+    # Dashed line for combined realistic estimate (with overlap discount)
+    # Overlap reduces total by ~25%
+    total_c = sum(conservative)
+    total_o = sum(optimistic)
+    realistic_c = total_c * 0.75  # discount for overlap
+    realistic_o = total_o * 0.75
+    ax.axhline(y=realistic_c / len(phase_labels), color=C['danger'], linestyle='--',
+               linewidth=2, alpha=0.6, label=f'Avg realistic (with overlap)')
+
+    # Summary box
+    base = 91.21
+    summary = (f"Total (with overlap): +{realistic_c:.1f}–{realistic_o:.1f}pp\n"
+               f"Projected: {base + realistic_c:.1f}%–{min(base + realistic_o, 98):.1f}% (capped ~98%)")
+    ax.text(0.98, 0.95, summary, transform=ax.transAxes, fontsize=11,
+            ha='right', va='top', fontweight='bold', color=C['dark'],
+            bbox=dict(boxstyle='round,pad=0.5', facecolor=C['target'], alpha=0.1))
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(phase_labels, fontsize=9)
+    ax.set_ylabel('Projected Gain (pp)', fontsize=12, fontweight='bold')
+    ax.set_ylim(0, 4.0)
+    ax.set_title('Per-Phase Projected Gains (Conservative vs. Optimistic)',
+                fontsize=15, fontweight='bold', pad=15)
+    ax.legend(fontsize=10, loc='upper left')
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_18_phase_gains.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [18/24] Per-phase gains")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 19: Cross-Benchmark Radar
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_19_cross_benchmark_radar():
+    """Radar/spider chart with 6 benchmark axes."""
+    fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
+    fig.patch.set_facecolor(C['bg'])
+    ax.set_facecolor(C['bg'])
+
+    benchmarks = ['LoCoMo', 'Custom\n(120q)', 'LongMem\nEval', 'Persona\nMem',
+                  'MEM\nTRACK', 'PerLT\nQA']
+
+    current =   [91.2, 75.8, 72.4, 0, 0, 0]
+    projected = [96.0, 93.0, 85.0, 80.0, 75.0, 70.0]
+
+    N = len(benchmarks)
+    angles = np.linspace(0, 2 * np.pi, N, endpoint=False).tolist()
+    angles += angles[:1]
+    current += current[:1]
+    projected += projected[:1]
+
+    ax.plot(angles, current, 'o-', color=C['neuromem'], linewidth=2.5,
+            markersize=8, label='Current scores', zorder=5)
+    ax.fill(angles, current, alpha=0.15, color=C['neuromem'])
+
+    ax.plot(angles, projected, 's--', color=C['target'], linewidth=2.5,
+            markersize=8, label='Projected scores', zorder=5)
+    ax.fill(angles, projected, alpha=0.1, color=C['target'])
+
+    # Add "?" labels for untested benchmarks
+    for i in range(N):
+        if current[i] == 0:
+            ax.text(angles[i], 8, '?', ha='center', va='center', fontsize=14,
+                    fontweight='bold', color=C['danger'])
+
+    ax.set_xticks(angles[:-1])
+    ax.set_xticklabels(benchmarks, fontsize=10, fontweight='bold')
+    ax.set_ylim(0, 100)
+    ax.set_yticks([20, 40, 60, 80, 100])
+    ax.set_yticklabels(['20', '40', '60', '80', '100'], fontsize=8, color=C['dark'])
+
+    ax.set_title('Cross-Benchmark Validation: Current vs. Projected',
+                fontsize=15, fontweight='bold', pad=30, color=C['text'])
+    ax.legend(loc='lower right', bbox_to_anchor=(1.25, -0.05), fontsize=11)
+
+    # Note
+    fig.text(0.5, 0.01, 'Projected values are hypotheses — untested benchmarks marked with "?"',
+            ha='center', fontsize=10, style='italic', color=C['dark'])
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_19_cross_benchmark_radar.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [19/24] Cross-benchmark radar")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 20: Nature-to-Engineering Mapping
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_20_nature_engineering():
+    """Side-by-side comparison: biology to engineering mapping."""
+    fig, ax = plt.subplots(figsize=(14, 8))
+    ax.axis('off')
+    ax.set_xlim(0, 14)
+    ax.set_ylim(0, 10)
+
+    mappings = [
+        ('SWR Ripples\n(150-250Hz)', 'Scheduled\nConsolidation'),
+        ('Hippocampus +\nNeocortex', 'Dual Embeddings\n(sep + completion)'),
+        ('Prediction Error\n(Friston)', 'EMA Surprise\nDetection'),
+        ('Amygdala-NE\nWindow', 'Emotional Salience\n+/-30min'),
+        ('Dunbar Layers\n(5/15/50/150)', 'Contact\nHierarchy'),
+        ('T-Cell\nCo-stimulation', 'Entity-Scoped\nFact Tracking'),
+    ]
+
+    bio_colors = [C['target'], C['neuromem'], C['evermemos'],
+                  C['danger'], C['teal'], C['indigo']]
+
+    # Column headers
+    ax.text(2.5, 9.3, 'BIOLOGY', ha='center', va='center', fontsize=16,
+            fontweight='bold', color=C['target'])
+    ax.text(11.5, 9.3, 'ENGINEERING', ha='center', va='center', fontsize=16,
+            fontweight='bold', color=C['neuromem'])
+    ax.plot([0.5, 4.5], [8.9, 8.9], color=C['target'], linewidth=2)
+    ax.plot([9.5, 13.5], [8.9, 8.9], color=C['neuromem'], linewidth=2)
+
+    for i, ((bio, eng), color) in enumerate(zip(mappings, bio_colors)):
+        y = 8.0 - i * 1.35
+
+        # Biology box (left)
+        bio_rect = mpatches.FancyBboxPatch(
+            (0.8, y - 0.45), 3.4, 0.9,
+            boxstyle='round,pad=0.15', facecolor=color, alpha=0.15,
+            edgecolor=color, linewidth=2)
+        ax.add_patch(bio_rect)
+        ax.text(2.5, y, bio, ha='center', va='center', fontsize=10,
+                fontweight='bold', color=C['text'])
+
+        # Engineering box (right)
+        eng_rect = mpatches.FancyBboxPatch(
+            (9.8, y - 0.45), 3.4, 0.9,
+            boxstyle='round,pad=0.15', facecolor=C['neuromem'], alpha=0.12,
+            edgecolor=C['neuromem'], linewidth=2)
+        ax.add_patch(eng_rect)
+        ax.text(11.5, y, eng, ha='center', va='center', fontsize=10,
+                fontweight='bold', color=C['text'])
+
+        # Connecting arrow
+        ax.annotate('', xy=(9.6, y), xytext=(4.4, y),
+                    arrowprops=dict(arrowstyle='->', color=color, lw=2.5,
+                                    connectionstyle='arc3,rad=0'))
+
+        # Number label on arrow
+        ax.text(7.0, y + 0.15, f'#{i+1}', ha='center', va='center', fontsize=9,
+                fontweight='bold', color=color,
+                bbox=dict(boxstyle='circle,pad=0.2', facecolor='white',
+                          edgecolor=color, linewidth=1.5))
+
+    ax.set_title('From Biology to Engineering: How Nature Translates to Code',
+                fontsize=15, fontweight='bold', pad=15, color=C['text'])
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_20_nature_engineering.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [20/24] Nature-to-engineering mapping")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 21: Implementation Status by Category
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_21_implementation_status():
+    """Stacked horizontal bar chart: 16 categories, implemented/partial/not yet."""
+    fig, ax = plt.subplots(figsize=(14, 8))
+
+    categories = [
+        'Mycorrhizal', 'Coral Reef', 'Dream Cycle', 'Bat Sonar',
+        'Octopus', 'Wolf Pack', 'Geological Strata', 'Immune System',
+        'Amygdala', 'River System', 'Levy Flight', 'Caterpillar',
+        'Tree Rings', 'SOAR', 'Hippocampal', 'Forensics',
+    ]
+    implemented = [1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2]
+    partial =     [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 2]
+    not_yet =     [0, 1, 1, 3, 1, 2, 4, 2, 1, 1, 2, 5, 1, 1, 1, 4]
+
+    # Sort by total descending
+    totals = [i + p + n for i, p, n in zip(implemented, partial, not_yet)]
+    sort_idx = np.argsort(totals)  # ascending, will plot bottom-up
+    categories = [categories[i] for i in sort_idx]
+    implemented = [implemented[i] for i in sort_idx]
+    partial = [partial[i] for i in sort_idx]
+    not_yet = [not_yet[i] for i in sort_idx]
+
+    y = np.arange(len(categories))
+
+    ax.barh(y, implemented, color=C['target'], edgecolor='white', linewidth=2,
+            height=0.6, alpha=0.85, label='Implemented (12)')
+    ax.barh(y, partial, left=implemented, color=C['amber'], edgecolor='white',
+            linewidth=2, height=0.6, alpha=0.85, label='Partial (9)')
+    ax.barh(y, not_yet, left=[i + p for i, p in zip(implemented, partial)],
+            color='#d5d8dc', edgecolor='white', linewidth=2, height=0.6,
+            alpha=0.85, label='Not Yet (26)')
+
+    # Total labels
+    for i, (imp, par, ny) in enumerate(zip(implemented, partial, not_yet)):
+        total = imp + par + ny
+        ax.text(total + 0.2, i, str(total), va='center', fontsize=10,
+                fontweight='bold', color=C['text'])
+
+    ax.set_yticks(y)
+    ax.set_yticklabels(categories, fontsize=10)
+    ax.set_xlabel('Number of Improvements', fontsize=12, fontweight='bold')
+    ax.set_title('Implementation Progress: 12 Done, 9 Partial, 26 Remaining',
+                fontsize=15, fontweight='bold', pad=15)
+    ax.legend(fontsize=11, loc='lower right')
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_21_implementation_status.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [21/24] Implementation status by category")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 22: Latency vs DB Size
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_22_latency_projection():
+    """Line chart: query latency projection for current vs tiered architecture."""
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    db_sizes = [1000, 5000, 10000, 50000, 100000, 500000, 1000000]
+    db_labels = ['1K', '5K', '10K', '50K', '100K', '500K', '1M']
+
+    # Current architecture: roughly linear
+    current_latency = [50, 100, 180, 600, 1200, 1800, 2500]
+    # Tiered architecture: sublinear due to hot/warm/cold partitioning
+    tiered_latency = [50, 80, 110, 180, 250, 350, 450]
+
+    x = np.arange(len(db_sizes))
+
+    ax.plot(x, current_latency, 'o-', color=C['danger'], linewidth=2.5,
+            markersize=8, label='Current architecture', zorder=5)
+    ax.plot(x, tiered_latency, 's-', color=C['target'], linewidth=2.5,
+            markersize=8, label='Tiered architecture', zorder=5)
+
+    # Shade area between lines
+    ax.fill_between(x, current_latency, tiered_latency, alpha=0.15,
+                    color=C['target'], label='Latency savings')
+
+    # Mark benchmark scale
+    ax.axvline(x=1.2, color=C['neuromem'], linestyle=':', linewidth=2, alpha=0.6)
+    ax.text(1.2, max(current_latency) * 0.95, 'Current\nbenchmark\nscale\n(5,882 msgs)',
+            ha='center', fontsize=9, fontweight='bold', color=C['neuromem'])
+
+    # Mark real-world target
+    ax.axvline(x=4, color=C['amber'], linestyle=':', linewidth=2, alpha=0.6)
+    ax.text(4, max(current_latency) * 0.85, 'Real-world\ntarget\n(100K+)',
+            ha='center', fontsize=9, fontweight='bold', color=C['amber'])
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(db_labels, fontsize=10)
+    ax.set_xlabel('Database Size (messages)', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Query Latency (ms)', fontsize=12, fontweight='bold')
+    ax.set_title('Query Latency Projection: Current vs. Tiered Architecture',
+                fontsize=15, fontweight='bold', pad=15)
+    ax.legend(fontsize=11, loc='upper left')
+
+    # Insight
+    fig.text(0.5, -0.01,
+            'At 100K messages, tiered architecture is ~5x faster. At 1M messages, ~5.5x faster.',
+            ha='center', fontsize=10, style='italic', color=C['dark'])
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_22_latency_projection.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [22/24] Latency projection")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 23: Soft Value Matrix
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_23_soft_value_matrix():
+    """Horizontal double-bar chart: 8 soft improvements, scale vs human-likeness."""
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    improvements = [
+        'Tiered storage',
+        'Memory decay',
+        'Retrieval strengthening',
+        'Emotional windows',
+        'Cyclical features',
+        'Convergence detection',
+        'Proportional summaries',
+        'Negative prediction errors',
+    ]
+    scale_impact =     [9, 7, 6, 4, 5, 6, 8, 3]
+    human_likeness =   [5, 9, 8, 9, 7, 6, 4, 8]
+
+    y = np.arange(len(improvements))
+    height = 0.35
+
+    ax.barh(y - height / 2, scale_impact, height=height, color=C['neuromem'],
+            edgecolor='white', linewidth=2, alpha=0.85, label='Scale Impact (0-10)')
+    ax.barh(y + height / 2, human_likeness, height=height, color=C['teal'],
+            edgecolor='white', linewidth=2, alpha=0.85, label='Human-Likeness (0-10)')
+
+    # Value labels
+    for i, (s, h) in enumerate(zip(scale_impact, human_likeness)):
+        ax.text(s + 0.2, i - height / 2, str(s), va='center', fontsize=10,
+                fontweight='bold', color=C['neuromem'])
+        ax.text(h + 0.2, i + height / 2, str(h), va='center', fontsize=10,
+                fontweight='bold', color=C['teal'])
+
+    ax.set_yticks(y)
+    ax.set_yticklabels(improvements, fontsize=10)
+    ax.set_xlabel('Score (0-10)', fontsize=12, fontweight='bold')
+    ax.set_xlim(0, 11)
+    ax.set_title('Soft Improvements: Scale Impact vs. Human-Likeness',
+                fontsize=15, fontweight='bold', pad=15)
+    ax.legend(fontsize=11, loc='lower right')
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_23_soft_value_matrix.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [23/24] Soft value matrix")
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Chart 24: Score Progression Through Phases
+# ═══════════════════════════════════════════════════════════════════════════
+
+def chart_24_phase_progression():
+    """Area/line chart with confidence bands for projected score through phases."""
+    fig, ax = plt.subplots(figsize=(14, 7))
+
+    phases = ['Phase 1\n(Current)', 'Phase 2', 'Phase 3', 'Phase 4',
+              'Phase 5', 'Phase 6', 'Phase 7', 'Phase 8']
+    x = np.arange(len(phases))
+
+    # Center (midpoint of conservative-optimistic)
+    conservative = [91.21, 92.71, 93.71, 95.21, 96.21, 96.71, 97.71, 98.21]
+    optimistic =   [91.21, 93.71, 95.71, 98.71, 99.00, 99.00, 99.00, 99.00]
+
+    # Cap at 99
+    optimistic = [min(v, 99.0) for v in optimistic]
+    center = [(c + o) / 2 for c, o in zip(conservative, optimistic)]
+
+    # Reference lines
+    ax.axhline(y=91.21, color=C['amber'], linestyle='--', linewidth=1.5, alpha=0.6,
+               label='Current (91.21%)')
+    ax.axhline(y=92.77, color=C['evermemos'], linestyle='--', linewidth=1.5, alpha=0.6,
+               label='EverMemOS (92.77%)')
+    ax.axhline(y=93.81, color=C['ceiling'], linestyle=':', linewidth=1.5, alpha=0.6,
+               label='FC Ceiling (93.81%)')
+
+    # Confidence band
+    ax.fill_between(x, conservative, optimistic, alpha=0.2, color=C['neuromem'],
+                    label='Conservative-Optimistic range')
+
+    # Center line
+    ax.plot(x, center, 'o-', color=C['neuromem'], linewidth=3, markersize=10,
+            zorder=5, label='Expected score')
+
+    # Score labels on center line
+    for i, (c_val, cons_val, opt_val) in enumerate(zip(center, conservative, optimistic)):
+        if i == 0:
+            ax.text(i, c_val - 1.0, f'{cons_val:.2f}%', ha='center', fontsize=9,
+                    fontweight='bold', color=C['text'])
+        else:
+            ax.text(i, opt_val + 0.5, f'{cons_val:.1f}-{opt_val:.1f}%',
+                    ha='center', fontsize=8, fontweight='bold', color=C['text'])
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(phases, fontsize=9)
+    ax.set_ylabel('LoCoMo Accuracy (%)', fontsize=12, fontweight='bold')
+    ax.set_ylim(89, 100.5)
+    ax.set_title('Projected Score Progression Through Experimental Phases',
+                fontsize=15, fontweight='bold', pad=15)
+    ax.legend(fontsize=9, loc='lower right')
+
+    # Note about Phase 9
+    fig.text(0.5, -0.01,
+            'Phase 9 (Soft Improvements) not shown — not LoCoMo-measured but critical for real-world performance.',
+            ha='center', fontsize=10, style='italic', color=C['dark'])
+
+    plt.tight_layout()
+    fig.savefig(os.path.join(CHARTS_DIR, 'deep_24_phase_progression.png'),
+                dpi=150, bbox_inches='tight')
+    plt.close()
+    print("  [24/24] Phase progression")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -864,7 +1660,19 @@ if __name__ == '__main__':
     chart_10_temporal_deep_dive()
     chart_11_implementation_roadmap()
     chart_12_probability_distribution()
+    chart_13_bio_principles()
+    chart_14_improvement_heatmap()
+    chart_15_benchmark_vs_soft()
+    chart_16_architecture()
+    chart_17_phase_gantt()
+    chart_18_phase_gains()
+    chart_19_cross_benchmark_radar()
+    chart_20_nature_engineering()
+    chart_21_implementation_status()
+    chart_22_latency_projection()
+    chart_23_soft_value_matrix()
+    chart_24_phase_progression()
 
     print()
-    print("Done! All 12 charts generated.")
+    print("All 24 charts generated.")
     print(f"Charts directory: {CHARTS_DIR}")

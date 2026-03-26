@@ -1,7 +1,7 @@
 # Neuromem: The Path to 96%
 ## A Deep Analysis of Where We Are, What's Left, and How to Get There
 
-**Author:** Joshua Adler
+**Author:** building_josh
 **Date:** March 23, 2026
 **Status:** Research complete — strategies ready for implementation
 

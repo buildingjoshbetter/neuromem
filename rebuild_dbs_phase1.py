@@ -13,7 +13,7 @@ Usage:
     python rebuild_dbs_phase1.py              # Rebuild all 10
     python rebuild_dbs_phase1.py --conv 0 3   # Rebuild only conv 0 and 3
 
-Author: Joshua Adler
+Author: building_josh
 Date: March 22, 2026
 """
 

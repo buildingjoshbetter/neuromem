@@ -19,7 +19,7 @@ Usage:
     python run_phase3_benchmark.py --run 2
     python run_phase3_benchmark.py --run 3
 
-Author: Joshua Adler
+Author: building_josh
 Date: March 22, 2026
 """
 

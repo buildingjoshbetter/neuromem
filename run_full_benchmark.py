@@ -25,7 +25,7 @@ Usage:
     python run_full_benchmark.py --run 2
     python run_full_benchmark.py --run 3
 
-Author: Joshua Adler
+Author: building_josh
 Date: March 21, 2026
 """
 

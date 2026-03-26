@@ -73,8 +73,10 @@ How Neuromem compares to published results from other memory systems:
 |--------|---------------|--------|
 | EverMemOS | 92.8% | Our fair test |
 | MemMachine v0.2 | 91.7% | Published (agent mode, gpt-4.1-mini) |
+| **Neuromem (Phase 1)** | **91.2%** | Our fair test (Qwen3 embeddings + mxbai reranker) |
+| Neuromem (v3) | 87.7% | Our fair test |
 | Mem0 | 80.0% | MemMachine's eval |
-| **Neuromem** | **72.3%** | Our fair test |
+| Neuromem (v2) | 72.3% | Our fair test |
 | Mem0-Graph | 68.4% | Mem0 published |
 | Mem0 | 66.9% | Mem0 published |
 | Zep | 58.4% | Corrected (originally claimed 84%) |

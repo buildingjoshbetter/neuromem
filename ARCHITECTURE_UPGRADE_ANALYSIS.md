@@ -1,6 +1,6 @@
 # Architecture Upgrade Analysis: The Triple Model Swap
 
-**Author:** Joshua Adler
+**Author:** building_josh
 **Date:** March 21, 2026
 **Status:** Proposed — awaiting benchmark validation
 

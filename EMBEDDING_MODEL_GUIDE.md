@@ -1,6 +1,6 @@
 # Embedding Models: A Complete Guide for Neuromem
 
-**Author:** Joshua Adler
+**Author:** building_josh
 **Date:** March 19, 2026
 **Version:** 1.0
 **Based on:** 10 parallel research agents covering MTEB leaderboard, Qwen, Nomic, BGE, GTE/E5, Jina, Snowflake Arctic, CPU/Apple Silicon performance, conversational retrieval, and Model2Vec families

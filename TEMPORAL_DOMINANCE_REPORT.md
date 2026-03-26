@@ -1,7 +1,7 @@
 # Temporal Dominance
 ### How Neuromem Can Crush EverMemOS on Time-Based Reasoning
 
-**Author:** Joshua Adler (with 10 AI research agents) | **Date:** March 21, 2026 | **v1.1**
+**Author:** building_josh (with 10 AI research agents) | **Date:** March 21, 2026 | **v1.1**
 
 ---
 

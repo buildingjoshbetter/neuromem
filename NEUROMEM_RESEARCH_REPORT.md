@@ -1,7 +1,7 @@
 # Neuromem vs. EverMemOS: A Comprehensive Benchmark Analysis on LoCoMo
 
 **Technical Research Report**
-**Author:** Joshua Adler
+**Author:** building_josh
 **Date:** March 19, 2026
 **Version:** 4.0 (honest rewrite: bias fixes, FC mode removed from comparisons, scalability + cost analysis, research synthesis, plain-English explanations)
 

@@ -598,7 +598,13 @@ class IngestionPipeline:
                 pass
         return result
 
-    def ingest_text(self, text: str, session_id: str = "") -> IngestionResult:
+    def ingest_text(
+        self,
+        text: str,
+        session_id: str = "",
+        metadata: dict | None = None,
+        source_type: str = "conversation",
+    ) -> IngestionResult:
         """
         Ingest a raw text string (not a file path).
 
@@ -617,9 +623,11 @@ class IngestionPipeline:
 
         # Extract facts
         if self.llm_config:
-            facts = extract_facts(text, self.llm_config)
+            facts = extract_facts(text, self.llm_config, source_type=source_type)
         else:
-            facts = extract_facts_simple(text)
+            source = source_type.strip().lower()
+            heuristic_text = text if source in {"conversation", "transcript"} else f"User: {text}"
+            facts = extract_facts_simple(heuristic_text)
         result.facts_extracted = len(facts)
 
         if not facts:
@@ -654,14 +662,14 @@ class IngestionPipeline:
 
                 if dedup.action == DedupAction.ADD:
                     try:
-                        self._store_fact(dedup.fact, fact, session_id)
+                        self._store_fact(dedup.fact, fact, session_id, metadata)
                     except sqlite3.OperationalError as e:
                         log.error("Storage failed in ingest_text: %s — fact=%r", e, _safe_log(dedup.fact[:120]))
                         continue
                     result.facts_stored += 1
                 elif dedup.action == DedupAction.UPDATE:
                     try:
-                        self._update_fact(dedup.existing_id, dedup.fact, fact, session_id)
+                        self._update_fact(dedup.existing_id, dedup.fact, fact, session_id, metadata)
                     except sqlite3.OperationalError as e:
                         log.error(
                             "Update failed in ingest_text for memory id=%s: %s — fact=%r",
@@ -680,14 +688,12 @@ class IngestionPipeline:
         content: str,
         fact: ExtractedFact,
         session_id: str,
+        metadata: dict | None = None,
     ) -> None:
         """Store a new fact in truememory.
 
-        Note: truememory's client.Memory.add() currently treats the `metadata`
-        parameter as "reserved for future use" (client.py:59) and discards it.
-        To preserve the category signal — which is important for retrieval
-        weighting — we encode it as a prefix tag in the content itself and
-        also pass it through the engine's `category` column when possible.
+        Metadata is passed through to storage. To preserve the category signal
+        for older client implementations, it is also encoded as a prefix tag.
         """
         now = datetime.datetime.now(datetime.timezone.utc).isoformat()
 
@@ -712,6 +718,7 @@ class IngestionPipeline:
                     sender=self.user_id or "",
                     timestamp=now,
                     category=fact.category or "",
+                    metadata=metadata,
                 )
                 return
             except sqlite3.OperationalError:
@@ -727,6 +734,7 @@ class IngestionPipeline:
         self.memory.add(
             content=tagged_content,
             user_id=self.user_id or None,
+            metadata=metadata,
         )
 
     def _update_fact(
@@ -735,6 +743,7 @@ class IngestionPipeline:
         new_content: str,
         fact: ExtractedFact,
         session_id: str,
+        metadata: dict | None = None,
     ) -> None:
         """Update an existing memory with new content using the public API."""
         if existing_id is not None:
@@ -756,7 +765,7 @@ class IngestionPipeline:
                 log.warning("Failed to update memory %d: %s, storing as new", existing_id, e)
 
         # Fallback: store as new if update fails or isn't available
-        self._store_fact(new_content, fact, session_id)
+        self._store_fact(new_content, fact, session_id, metadata)
 
 
 def save_trace(result: IngestionResult, output_path: str | Path) -> bool:

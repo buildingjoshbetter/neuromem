@@ -37,7 +37,13 @@ __version__ = "0.4.0"
 
 from truememory.ingest.pipeline import IngestionPipeline, IngestionResult, save_trace
 from truememory.ingest.encoding_gate import EncodingGate, EncodingDecision
-from truememory.ingest.extractor import extract_facts, ExtractedFact
+from truememory.ingest.extractor import (
+    EXTRACTION_PROMPT_CHAT,
+    EXTRACTION_PROMPT_DOCUMENT,
+    EXTRACTION_PROMPT_EMAIL,
+    ExtractedFact,
+    extract_facts,
+)
 from truememory.ingest.transcript import parse_transcript, format_for_extraction, Message
 from truememory.ingest.dedup import check_duplicate, DedupAction, DedupDecision
 from truememory.ingest.models import LLMConfig, auto_detect
@@ -86,12 +92,15 @@ def ingest_text(
     gate_threshold: float = 0.30,
     llm_config: LLMConfig | None = None,
     session_id: str = "",
+    metadata: dict | None = None,
+    source_type: str = "conversation",
 ) -> IngestionResult:
     """
     Ingest raw text into TrueMemory.
 
     Useful for processing conversation excerpts or direct fact input
-    without a transcript file.
+    without a transcript file. ``source_type`` selects source-aware extraction
+    for email, documents, and chat systems.
     """
     pipeline = IngestionPipeline(
         user_id=user_id,
@@ -99,7 +108,9 @@ def ingest_text(
         gate_threshold=gate_threshold,
         llm_config=llm_config,
     )
-    return pipeline.ingest_text(text, session_id=session_id)
+    return pipeline.ingest_text(
+        text, session_id=session_id, metadata=metadata, source_type=source_type
+    )
 
 
 __all__ = [
@@ -116,6 +127,9 @@ __all__ = [
     # Extractor
     "extract_facts",
     "ExtractedFact",
+    "EXTRACTION_PROMPT_EMAIL",
+    "EXTRACTION_PROMPT_DOCUMENT",
+    "EXTRACTION_PROMPT_CHAT",
     # Transcript
     "parse_transcript",
     "format_for_extraction",

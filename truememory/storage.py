@@ -575,6 +575,7 @@ def create_db(db_path: str | Path) -> sqlite3.Connection:
     # misleading raw error on the first WAL write.
     _check_dir_writable(db_path)
 
+    breakpoint()
     conn = sqlite3.connect(str(db_path), check_same_thread=False)
     # S1-2 (#688): the DB file holds every stored memory (PII). Restrict it to
     # owner-only so it isn't world-readable on a multi-user host. No-op on

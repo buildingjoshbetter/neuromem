@@ -122,3 +122,61 @@ class TestModelServerMemoryWatchdog:
 
         assert server._embed_state is None
         assert flushed[0] is True
+
+
+class TestModelServerCache:
+    """Test LRU caching in ModelServer for embeddings and reranking."""
+
+    def test_embed_lru_cache_hit(self):
+        import numpy as np
+        server = ModelServer()
+        vec = np.array([0.1, 0.2, 0.3], dtype=np.float32)
+
+        server._set_cached_embed("pro", "hello world", vec)
+        cached = server._get_cached_embed("pro", "hello world")
+
+        assert cached is not None
+        assert np.allclose(cached, vec)
+
+    def test_rerank_lru_cache_hit(self):
+        server = ModelServer()
+        server._set_cached_rerank("gte-reranker", "query text", "doc text", 0.95)
+        score = server._get_cached_rerank("gte-reranker", "query text", "doc text")
+
+        assert score is not None
+        assert score == 0.95
+
+    def test_embed_batch_partial_cache(self):
+        import numpy as np
+        server = ModelServer()
+        vec1 = np.array([1.0, 0.0], dtype=np.float32)
+        vec2 = np.array([0.0, 1.0], dtype=np.float32)
+
+        # Pre-seed cache with text1
+        server._set_cached_embed("pro", "text1", vec1)
+
+        # Mock model that only sees "text2"
+        mock_model = MagicMock()
+        mock_model.encode = MagicMock(return_value=np.array([vec2]))
+        server._get_embed_model = MagicMock(return_value=mock_model)
+
+        req = {"op": "embed", "texts": ["text1", "text2"], "tier": "pro"}
+        res = server.handle_request(req)
+
+        assert res["ok"] is True
+        assert len(res["vectors"]) == 2
+        assert np.allclose(res["vectors"][0], vec1)
+        assert np.allclose(res["vectors"][1], vec2)
+        # Verify model was only called with missing text ("text2")
+        mock_model.encode.assert_called_once_with(["text2"], show_progress_bar=False)
+
+    def test_clear_caches(self):
+        import numpy as np
+        server = ModelServer()
+        server._set_cached_embed("pro", "text", np.array([1.0]))
+        server._set_cached_rerank("model", "q", "d", 0.5)
+
+        server._clear_caches()
+
+        assert server._get_cached_embed("pro", "text") is None
+        assert server._get_cached_rerank("model", "q", "d") is None

@@ -103,11 +103,47 @@ def flush_mps_cache() -> None:
         import torch
         if hasattr(torch, "mps") and hasattr(torch.mps, "empty_cache"):
             torch.mps.empty_cache()
-        if hasattr(torch, "cuda"):
+            if hasattr(torch.mps, "synchronize"):
+                try:
+                    torch.mps.synchronize()
+                except Exception:
+                    pass
+        if hasattr(torch, "cuda") and torch.cuda.is_available():
             torch.cuda.empty_cache()
     except Exception:
         pass
     gc.collect()
+
+
+def get_process_memory_mb(pid: int | None = None) -> float:
+    """Return resident set size (RSS) memory usage in megabytes."""
+    try:
+        import psutil
+        proc = psutil.Process(pid if pid is not None else os.getpid())
+        return proc.memory_info().rss / (1024.0 * 1024.0)
+    except Exception:
+        return 0.0
+
+
+def check_memory_pressure(max_mb: float | None = None) -> dict:
+    """Check whether process memory exceeds threshold.
+
+    Defaults to TRUEMEMORY_MAX_MEMORY_MB env var or 1500.0 MB.
+    """
+    if max_mb is None:
+        raw = os.environ.get("TRUEMEMORY_MAX_MEMORY_MB", "").strip()
+        try:
+            max_mb = float(raw) if raw else 1500.0
+        except ValueError:
+            max_mb = 1500.0
+
+    rss_mb = get_process_memory_mb()
+    return {
+        "rss_mb": rss_mb,
+        "max_mb": max_mb,
+        "warning": rss_mb >= (max_mb * 0.75),
+        "exceeded": rss_mb >= max_mb,
+    }
 
 
 def encode_with_mps_fallback(model, texts, **kwargs):

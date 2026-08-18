@@ -70,6 +70,8 @@ PID_PATH = _TRUEMEMORY_DIR / "model_server.pid"
 PORT_PATH = _TRUEMEMORY_DIR / "model_server.port"
 TOKEN_PATH = _TRUEMEMORY_DIR / "model_server.token"
 IDLE_TIMEOUT = _env_int("TRUEMEMORY_MODEL_SERVER_IDLE", 300, lo=0)
+MAX_MEMORY_MB = float(_env_int("TRUEMEMORY_MAX_MEMORY_MB", 1500, lo=100))
+IDLE_UNLOAD_TIMEOUT = _env_int("TRUEMEMORY_IDLE_UNLOAD_TIMEOUT", 180, lo=0)
 
 LOCK_PATH = _TRUEMEMORY_DIR / "model_server.lock"
 
@@ -575,6 +577,7 @@ class ModelServer:
                 if should_deactivate:
                     self._deactivate_throttler()
 
+            self._check_memory_watchdog()
             return {"ok": True, "vectors": np.asarray(vectors, dtype=np.float32)}
 
         if op == "rerank":
@@ -610,6 +613,7 @@ class ModelServer:
                 scores = reranker.predict(
                     pairs, batch_size=64, show_progress_bar=False
                 )
+            self._check_memory_watchdog()
             return {"ok": True, "scores": np.asarray(scores, dtype=np.float32)}
 
         return {"ok": False, "error": f"Unknown op: {op}"}
@@ -659,15 +663,43 @@ class ModelServer:
         log.info("Workload ended — throttler deactivated")
 
     def _flush_mps_cache(self):
-        """Flush MPS cache — only called when throttler says to."""
-        try:
-            import torch
-            if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
-                torch.mps.empty_cache()
-                torch.mps.synchronize()
-        except Exception:
-            pass
-        gc.collect()
+        """Flush MPS/CUDA cache and run garbage collection."""
+        from truememory.mps_utils import flush_mps_cache
+        flush_mps_cache()
+
+    def _check_memory_watchdog(self) -> None:
+        """Monitor model server process memory and prevent uncontrolled leaks.
+
+        Triggers progressive MPS cache purge when memory reaches 75% of limit,
+        and unloads in-memory model instances if limit is exceeded.
+        """
+        from truememory.mps_utils import check_memory_pressure
+        pressure = check_memory_pressure(MAX_MEMORY_MB)
+        if pressure["warning"]:
+            self._flush_mps_cache()
+
+        if pressure["exceeded"]:
+            log.warning(
+                "Model server RSS (%.1f MB) exceeded limit (%.1f MB) — "
+                "triggering emergency model unload and cache purge",
+                pressure["rss_mb"], pressure["max_mb"],
+            )
+            with self._lock:
+                self._embed_state = None
+                self._reranker = None
+                self._reranker_name = None
+            with self._fast_lock:
+                self._fast_encoder = None
+                self._fast_model_id = None
+            self._flush_mps_cache()
+            # If still critically above limit after full model release, signal graceful recycle
+            post_pressure = check_memory_pressure(MAX_MEMORY_MB)
+            if post_pressure["exceeded"] and not self._sticky_cpu:
+                log.error(
+                    "Model server memory still excessive (%.1f MB) after unload — "
+                    "scheduling graceful recycle",
+                    post_pressure["rss_mb"],
+                )
 
     _CLIENT_TIMEOUT = 30.0  # seconds; caps how long any single client can block
 
@@ -743,13 +775,38 @@ class ModelServer:
 
     def _idle_checker(self):
         while self._running:
-            time.sleep(60)
+            time.sleep(30)
             if not self._running:
                 break
             with self._activity_lock:
                 last = self._last_activity
                 inflight = self._inflight
             elapsed = time.time() - last
+
+            # Idle model unloading (unload models to free unified memory before full shutdown)
+            if IDLE_UNLOAD_TIMEOUT > 0 and elapsed >= IDLE_UNLOAD_TIMEOUT and inflight == 0:
+                has_loaded = (
+                    self._embed_state is not None
+                    or self._reranker is not None
+                    or self._fast_encoder is not None
+                )
+                if has_loaded:
+                    log.info(
+                        "Idle for %.0fs (unload threshold %.0fs) — unloading inactive models to free memory",
+                        elapsed, IDLE_UNLOAD_TIMEOUT,
+                    )
+                    with self._lock:
+                        self._embed_state = None
+                        self._reranker = None
+                        self._reranker_name = None
+                    with self._fast_lock:
+                        self._fast_encoder = None
+                        self._fast_model_id = None
+                    self._flush_mps_cache()
+
+            # Memory watchdog check during periodic cycle
+            self._check_memory_watchdog()
+
             # Issue #646 (M-74): never idle-shut-down while a request is
             # mid-flight, even if its start timestamp is older than the idle
             # horizon (a long batch encode can outlast IDLE_TIMEOUT).

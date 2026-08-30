@@ -70,6 +70,10 @@ PID_PATH = _TRUEMEMORY_DIR / "model_server.pid"
 PORT_PATH = _TRUEMEMORY_DIR / "model_server.port"
 TOKEN_PATH = _TRUEMEMORY_DIR / "model_server.token"
 IDLE_TIMEOUT = _env_int("TRUEMEMORY_MODEL_SERVER_IDLE", 300, lo=0)
+MAX_MEMORY_MB = float(_env_int("TRUEMEMORY_MAX_MEMORY_MB", 1500, lo=100))
+IDLE_UNLOAD_TIMEOUT = _env_int("TRUEMEMORY_IDLE_UNLOAD_TIMEOUT", 180, lo=0)
+EMBED_CACHE_SIZE = _env_int("TRUEMEMORY_EMBED_CACHE_SIZE", 1024, lo=0)
+RERANK_CACHE_SIZE = _env_int("TRUEMEMORY_RERANK_CACHE_SIZE", 2048, lo=0)
 
 LOCK_PATH = _TRUEMEMORY_DIR / "model_server.lock"
 
@@ -191,12 +195,63 @@ class ModelServer:
         self._fast_encoder = None
         self._fast_model_id: str | None = None
         self._fast_lock = threading.Lock()
-        # Issue #646 (M-20): exclusive bind-lock fd, held for the process
-        # lifetime; released in _cleanup. None until run() acquires it.
         self._lock_fd: int | None = None
         # Issue #646 (M-74): in-flight request counter so idle shutdown never
         # kills a request mid-encode. Guarded by _activity_lock.
         self._inflight = 0
+        from collections import OrderedDict
+        self._embed_cache: OrderedDict[tuple[str, str], np.ndarray] = OrderedDict()
+        self._rerank_cache: OrderedDict[tuple[str, str, str], float] = OrderedDict()
+        self._cache_lock = threading.Lock()
+
+    def _get_cached_embed(self, tier: str, text: str) -> np.ndarray | None:
+        if EMBED_CACHE_SIZE <= 0:
+            return None
+        with self._cache_lock:
+            key = (tier, text)
+            if key in self._embed_cache:
+                val = self._embed_cache.pop(key)
+                self._embed_cache[key] = val
+                return val
+        return None
+
+    def _set_cached_embed(self, tier: str, text: str, vector: np.ndarray) -> None:
+        if EMBED_CACHE_SIZE <= 0:
+            return
+        with self._cache_lock:
+            key = (tier, text)
+            if key in self._embed_cache:
+                self._embed_cache.pop(key)
+            elif len(self._embed_cache) >= EMBED_CACHE_SIZE:
+                self._embed_cache.popitem(last=False)
+            self._embed_cache[key] = np.asarray(vector, dtype=np.float32)
+
+    def _get_cached_rerank(self, model_name: str, query: str, doc: str) -> float | None:
+        if RERANK_CACHE_SIZE <= 0:
+            return None
+        with self._cache_lock:
+            key = (model_name, query, doc)
+            if key in self._rerank_cache:
+                val = self._rerank_cache.pop(key)
+                self._rerank_cache[key] = val
+                return val
+        return None
+
+    def _set_cached_rerank(self, model_name: str, query: str, doc: str, score: float) -> None:
+        if RERANK_CACHE_SIZE <= 0:
+            return
+        with self._cache_lock:
+            key = (model_name, query, doc)
+            if key in self._rerank_cache:
+                self._rerank_cache.pop(key)
+            elif len(self._rerank_cache) >= RERANK_CACHE_SIZE:
+                self._rerank_cache.popitem(last=False)
+            self._rerank_cache[key] = float(score)
+
+    def _clear_caches(self) -> None:
+        with self._cache_lock:
+            self._embed_cache.clear()
+            self._rerank_cache.clear()
 
     def _mark_sticky_cpu(self, kind: str) -> bool:
         """Permanently degrade *kind* ("embed"/"rerank") to CPU after an
@@ -414,18 +469,12 @@ class ModelServer:
         return self._reranker
 
     def _handle_fast_embed(self, texts: list, tier: str) -> dict | None:
-        """Single-text fast lane (issue #577).
+        """Single-text fast lane (issue #577) with LRU caching."""
+        if len(texts) == 1:
+            cached = self._get_cached_embed(tier, texts[0])
+            if cached is not None:
+                return {"ok": True, "vectors": np.asarray([cached], dtype=np.float32)}
 
-        Tries the main path without blocking; when the global lock is busy
-        (a batch encode or OOM recovery is in progress) the text is encoded
-        on a dedicated CPU encoder OUTSIDE the global lock, so hook recall
-        queries never wait on ingestion work. Fast-lane requests skip the
-        sustained-workload bookkeeping entirely — a burst of small hook
-        queries must not trip the throttler's batch=1 ramp (finding C-7).
-
-        Returns a response dict, or None to fall through to the normal
-        (locked) path.
-        """
         if self._lock.acquire(blocking=False):
             try:
                 model = self._get_embed_model(tier)
@@ -440,6 +489,8 @@ class ModelServer:
                     # the retry stays under the lock too.
                     self._recover_embed_oom_locked(model)
                     vectors = model.encode(texts, show_progress_bar=False)
+                if len(texts) == 1 and vectors is not None and len(vectors) == 1:
+                    self._set_cached_embed(tier, texts[0], vectors[0])
                 return {"ok": True, "vectors": np.asarray(vectors, dtype=np.float32)}
             finally:
                 self._lock.release()
@@ -452,6 +503,8 @@ class ModelServer:
                     # guaranteed (custom model) — decline the fast lane.
                     return None
                 vectors = model.encode(texts, show_progress_bar=False)
+            if len(texts) == 1 and vectors is not None and len(vectors) == 1:
+                self._set_cached_embed(tier, texts[0], vectors[0])
             return {"ok": True, "vectors": np.asarray(vectors, dtype=np.float32)}
         except Exception:
             log.warning(
@@ -506,6 +559,21 @@ class ModelServer:
                 if fast is not None:
                     return fast
 
+            # Batch cache lookup — only compute missing texts
+            missing_indices: list[int] = []
+            missing_texts: list[str] = []
+            results: list[np.ndarray | None] = [None] * len(texts)
+            for idx, text in enumerate(texts):
+                cached = self._get_cached_embed(tier, text)
+                if cached is not None:
+                    results[idx] = cached
+                else:
+                    missing_indices.append(idx)
+                    missing_texts.append(text)
+
+            if not missing_texts:
+                return {"ok": True, "vectors": np.asarray(results, dtype=np.float32)}
+
             now = time.time()
             with self._lock:
                 self._embed_timestamps.append(now)
@@ -540,7 +608,7 @@ class ModelServer:
             with self._lock:
                 model = self._get_embed_model(tier)
                 try:
-                    vectors = model.encode(texts, show_progress_bar=False)
+                    vectors = model.encode(missing_texts, show_progress_bar=False)
                 except RuntimeError as exc:
                     from truememory.mps_utils import is_mps_oom
                     if not is_mps_oom(exc):
@@ -559,14 +627,20 @@ class ModelServer:
                     "MPS OOM during encoding — retrying on CPU outside the "
                     "request lock"
                 )
-                vectors = model.encode(texts, show_progress_bar=False)
+                vectors = model.encode(missing_texts, show_progress_bar=False)
             encode_time = time.time() - encode_start
+
+            # Populate results array and update cache
+            for orig_idx, text, vec in zip(missing_indices, missing_texts, vectors):
+                vec_arr = np.asarray(vec, dtype=np.float32)
+                results[orig_idx] = vec_arr
+                self._set_cached_embed(tier, text, vec_arr)
 
             # M-43: re-capture under the lock for the same reason as above.
             with self._lock:
                 throttler = self._throttler if self._throttler_active else None
             if throttler is not None:
-                throttler.after_batch(len(texts), encode_time)
+                throttler.after_batch(len(missing_texts), encode_time)
                 if throttler.should_flush_cache():
                     self._flush_mps_cache()
 
@@ -575,20 +649,39 @@ class ModelServer:
                 if should_deactivate:
                     self._deactivate_throttler()
 
-            return {"ok": True, "vectors": np.asarray(vectors, dtype=np.float32)}
+            self._check_memory_watchdog()
+            return {"ok": True, "vectors": np.asarray(results, dtype=np.float32)}
 
         if op == "rerank":
             pairs = request["pairs"]
-            model_name = request.get("model_name")
+            model_name = request.get("model_name") or ""
+
+            # Cache lookup for rerank pairs
+            missing_indices: list[int] = []
+            missing_pairs: list[tuple[str, str]] = []
+            results: list[float | None] = [None] * len(pairs)
+            for idx, pair in enumerate(pairs):
+                if isinstance(pair, (list, tuple)) and len(pair) == 2:
+                    q, d = str(pair[0]), str(pair[1])
+                    cached = self._get_cached_rerank(model_name, q, d)
+                    if cached is not None:
+                        results[idx] = cached
+                        continue
+                missing_indices.append(idx)
+                missing_pairs.append(pair)
+
+            if not missing_pairs:
+                return {"ok": True, "scores": np.asarray(results, dtype=np.float32)}
+
             oom = False
             with self._lock:
                 reranker = self._get_reranker(model_name)
                 try:
                     scores = reranker.predict(
-                        pairs, batch_size=64, show_progress_bar=False
+                        missing_pairs, batch_size=64, show_progress_bar=False
                     )
                 except RuntimeError as exc:
-                    from truememory.mps_utils import is_mps_oom, flush_mps_cache
+                    from truememory.mps_utils import flush_mps_cache, is_mps_oom
                     if not is_mps_oom(exc):
                         raise
                     # Issue #577: the rerank path previously had NO OOM
@@ -608,9 +701,17 @@ class ModelServer:
                 # Retry outside the lock — rerank batches are the expensive
                 # part; other clients must not starve behind the recovery.
                 scores = reranker.predict(
-                    pairs, batch_size=64, show_progress_bar=False
+                    missing_pairs, batch_size=64, show_progress_bar=False
                 )
-            return {"ok": True, "scores": np.asarray(scores, dtype=np.float32)}
+
+            for orig_idx, pair, score in zip(missing_indices, missing_pairs, scores):
+                sc_float = float(score)
+                results[orig_idx] = sc_float
+                if isinstance(pair, (list, tuple)) and len(pair) == 2:
+                    self._set_cached_rerank(model_name, str(pair[0]), str(pair[1]), sc_float)
+
+            self._check_memory_watchdog()
+            return {"ok": True, "scores": np.asarray(results, dtype=np.float32)}
 
         return {"ok": False, "error": f"Unknown op: {op}"}
 
@@ -659,15 +760,43 @@ class ModelServer:
         log.info("Workload ended — throttler deactivated")
 
     def _flush_mps_cache(self):
-        """Flush MPS cache — only called when throttler says to."""
-        try:
-            import torch
-            if hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
-                torch.mps.empty_cache()
-                torch.mps.synchronize()
-        except Exception:
-            pass
-        gc.collect()
+        """Flush MPS/CUDA cache and run garbage collection."""
+        from truememory.mps_utils import flush_mps_cache
+        flush_mps_cache()
+
+    def _check_memory_watchdog(self) -> None:
+        """Monitor model server process memory and prevent uncontrolled leaks.
+
+        Triggers progressive MPS cache purge when memory reaches 75% of limit,
+        and unloads in-memory model instances if limit is exceeded.
+        """
+        from truememory.mps_utils import check_memory_pressure
+        pressure = check_memory_pressure(MAX_MEMORY_MB)
+        if pressure["warning"]:
+            self._flush_mps_cache()
+
+        if pressure["exceeded"]:
+            log.warning(
+                "Model server RSS (%.1f MB) exceeded limit (%.1f MB) — "
+                "triggering emergency model unload and cache purge",
+                pressure["rss_mb"], pressure["max_mb"],
+            )
+            with self._lock:
+                self._embed_state = None
+                self._reranker = None
+                self._reranker_name = None
+            with self._fast_lock:
+                self._fast_encoder = None
+                self._fast_model_id = None
+            self._flush_mps_cache()
+            # If still critically above limit after full model release, signal graceful recycle
+            post_pressure = check_memory_pressure(MAX_MEMORY_MB)
+            if post_pressure["exceeded"] and not self._sticky_cpu:
+                log.error(
+                    "Model server memory still excessive (%.1f MB) after unload — "
+                    "scheduling graceful recycle",
+                    post_pressure["rss_mb"],
+                )
 
     _CLIENT_TIMEOUT = 30.0  # seconds; caps how long any single client can block
 
@@ -743,13 +872,38 @@ class ModelServer:
 
     def _idle_checker(self):
         while self._running:
-            time.sleep(60)
+            time.sleep(30)
             if not self._running:
                 break
             with self._activity_lock:
                 last = self._last_activity
                 inflight = self._inflight
             elapsed = time.time() - last
+
+            # Idle model unloading (unload models to free unified memory before full shutdown)
+            if IDLE_UNLOAD_TIMEOUT > 0 and elapsed >= IDLE_UNLOAD_TIMEOUT and inflight == 0:
+                has_loaded = (
+                    self._embed_state is not None
+                    or self._reranker is not None
+                    or self._fast_encoder is not None
+                )
+                if has_loaded:
+                    log.info(
+                        "Idle for %.0fs (unload threshold %.0fs) — unloading inactive models to free memory",
+                        elapsed, IDLE_UNLOAD_TIMEOUT,
+                    )
+                    with self._lock:
+                        self._embed_state = None
+                        self._reranker = None
+                        self._reranker_name = None
+                    with self._fast_lock:
+                        self._fast_encoder = None
+                        self._fast_model_id = None
+                    self._flush_mps_cache()
+
+            # Memory watchdog check during periodic cycle
+            self._check_memory_watchdog()
+
             # Issue #646 (M-74): never idle-shut-down while a request is
             # mid-flight, even if its start timestamp is older than the idle
             # horizon (a long batch encode can outlast IDLE_TIMEOUT).

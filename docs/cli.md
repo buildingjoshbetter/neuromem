@@ -38,7 +38,7 @@ truememory-ingest ingest /path/to/transcript.json --threshold 0.25
 | `--user` | `""` | User ID for memory scoping |
 | `--db` | `~/.truememory/memories.db` | Path to database |
 | `--threshold` | `0.30` | Encoding gate threshold (0.0-1.0) |
-| `--provider` | `auto` | LLM provider (auto/ollama/claude_cli/openrouter/anthropic/openai) |
+| `--provider` | `auto` | LLM provider (auto/ollama/claude_cli/openrouter/requesty/anthropic/openai) |
 | `--model` | `""` | LLM model name |
 | `--session` | `""` | Session identifier for tracing |
 | `--trace` | `None` | Save decision trace to file |

@@ -40,7 +40,7 @@ def main():
     p_ingest.add_argument("--db", default=None, help="Path to truememory database")
     p_ingest.add_argument("--threshold", type=float, default=0.30, help="Encoding gate threshold (0-1)")
     p_ingest.add_argument("--trace", default=None, help="Save decision trace to file")
-    p_ingest.add_argument("--provider", default="auto", help="LLM provider (auto/ollama/claude_cli/openrouter/anthropic)")
+    p_ingest.add_argument("--provider", default="auto", help="LLM provider (auto/ollama/claude_cli/openrouter/requesty/anthropic)")
     p_ingest.add_argument("--model", default="", help="LLM model name")
     p_ingest.add_argument("--session", default="", help="Session identifier to tag this ingestion trace with")
     p_ingest.add_argument("-v", "--verbose", action="store_true", help="Verbose logging")
@@ -183,7 +183,7 @@ def _run_ingest(args):
         # model) so `--provider anthropic` works without forcing the user
         # to also pass `--model` and figure out how to inject a key.
         config = hydrate_config(LLMConfig(provider=args.provider, model=args.model))
-        if not config.api_key and config.provider in ("anthropic", "openrouter", "openai"):
+        if not config.api_key and config.provider in ("anthropic", "openrouter", "requesty", "openai"):
             print(
                 f"ERROR: --provider {config.provider} requires an API key.\n"
                 f"       Set the corresponding env var "

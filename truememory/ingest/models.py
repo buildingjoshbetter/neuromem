@@ -118,7 +118,7 @@ def _retry_backoff(attempt: int) -> float:
 @dataclass
 class LLMConfig:
     """Configuration for an LLM backend."""
-    provider: str = "auto"       # auto, ollama, openrouter, anthropic, openai, groq
+    provider: str = "auto"       # auto, ollama, openrouter, requesty, anthropic, openai, groq
     model: str = ""              # Model name (auto-detected if empty)
     base_url: str = ""           # API base URL
     api_key: str = ""            # API key
@@ -153,6 +153,14 @@ def hydrate_config(config: LLMConfig) -> LLMConfig:
             config.base_url = "https://openrouter.ai/api/v1"
         if not config.model:
             config.model = "anthropic/claude-haiku-4-5-20251001"
+
+    elif provider == "requesty":
+        if not config.api_key:
+            config.api_key = os.environ.get("REQUESTY_API_KEY", "")
+        if not config.base_url:
+            config.base_url = "https://router.requesty.ai/v1"
+        if not config.model:
+            config.model = "openai/gpt-4o-mini"
 
     elif provider == "openai":
         if not config.api_key:
@@ -216,12 +224,17 @@ def auto_detect() -> LLMConfig:
         log.info("Auto-detected OpenRouter API key")
         return hydrate_config(LLMConfig(provider="openrouter"))
 
-    # 4. Anthropic
+    # 4. Requesty
+    if os.environ.get("REQUESTY_API_KEY", ""):
+        log.info("Auto-detected Requesty API key")
+        return hydrate_config(LLMConfig(provider="requesty"))
+
+    # 5. Anthropic
     if os.environ.get("ANTHROPIC_API_KEY", ""):
         log.info("Auto-detected Anthropic API key")
         return hydrate_config(LLMConfig(provider="anthropic"))
 
-    # 5. Groq (OpenAI-compatible, fast inference)
+    # 6. Groq (OpenAI-compatible, fast inference)
     if os.environ.get("GROQ_API_KEY", ""):
         log.info("Auto-detected Groq API key")
         return hydrate_config(LLMConfig(provider="groq"))
